@@ -1,0 +1,10 @@
+# 出图产物
+out/*
+!out/.gitkeep
+# 本地模型配置（含 Key，禁止提交）
+studio.ai.json
+# 依赖与系统文件
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

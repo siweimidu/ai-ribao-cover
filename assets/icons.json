@@ -1,0 +1,2986 @@
+{
+"count": 190,
+"items": [
+{
+"id": "360 智脑/纳米 P 视频",
+"vendor": "360 智脑",
+"product": "纳米 P 视频",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "360 智脑 纳米 p 视频 "
+},
+{
+"id": "360 智脑/纳米AI",
+"vendor": "360 智脑",
+"product": "纳米AI",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "360 智脑 纳米ai "
+},
+{
+"id": "AI21 Labs/AI21 Labs",
+"vendor": "AI21 Labs",
+"product": "AI21 Labs",
+"variants": [
+"symbol-black",
+"symbol-brand-black(旧)",
+"symbol-brand-color(旧)",
+"symbol-brand-color-dark(旧)",
+"symbol-brand-white(旧)",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "ai21 labs ai21 labs "
+},
+{
+"id": "Adobe/Adobe Firefly",
+"vendor": "Adobe",
+"product": "Adobe Firefly",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "adobe adobe firefly "
+},
+{
+"id": "Agnes Code/Agnes Code",
+"vendor": "Agnes Code",
+"product": "Agnes Code",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "agnes code agnes code "
+},
+{
+"id": "Ai2/Ai2",
+"vendor": "Ai2",
+"product": "Ai2",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "ai2 ai2 "
+},
+{
+"id": "Aleph Alpha/Aleph Alpha",
+"vendor": "Aleph Alpha",
+"product": "Aleph Alpha",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "aleph alpha aleph alpha "
+},
+{
+"id": "All Hands/OpenHands",
+"vendor": "All Hands",
+"product": "OpenHands",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "all hands openhands "
+},
+{
+"id": "Amp/Amp",
+"vendor": "Amp",
+"product": "Amp",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "amp amp "
+},
+{
+"id": "Anthropic/Anthropic",
+"vendor": "Anthropic",
+"product": "Anthropic",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "anthropic anthropic anthropic claude 克劳德"
+},
+{
+"id": "Anthropic/Claude",
+"vendor": "Anthropic",
+"product": "Claude",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "anthropic claude anthropic claude 克劳德"
+},
+{
+"id": "Anthropic/Claude Code",
+"vendor": "Anthropic",
+"product": "Claude Code",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "anthropic claude code anthropic claude 克劳德"
+},
+{
+"id": "AssemblyAI/AssemblyAI",
+"vendor": "AssemblyAI",
+"product": "AssemblyAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "assemblyai assemblyai 语音识别 asr"
+},
+{
+"id": "AtomCode/AtomCode",
+"vendor": "AtomCode",
+"product": "AtomCode",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "atomcode atomcode "
+},
+{
+"id": "Black Forest/Black Forest Labs",
+"vendor": "Black Forest",
+"product": "Black Forest Labs",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "black forest black forest labs "
+},
+{
+"id": "Black Forest/FLUX",
+"vendor": "Black Forest",
+"product": "FLUX",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "black forest flux "
+},
+{
+"id": "Bria AI/Bria AI",
+"vendor": "Bria AI",
+"product": "Bria AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "bria ai bria ai "
+},
+{
+"id": "CC Switch/CC Switch",
+"vendor": "CC Switch",
+"product": "CC Switch",
+"variants": [
+"appicon"
+],
+"kw": "cc switch cc switch "
+},
+{
+"id": "CSDN/InsCode",
+"vendor": "CSDN",
+"product": "InsCode",
+"variants": [
+"appicon"
+],
+"kw": "csdn inscode "
+},
+{
+"id": "Cherry Studio/Cherry Studio",
+"vendor": "Cherry Studio",
+"product": "Cherry Studio",
+"variants": [
+"appicon"
+],
+"kw": "cherry studio cherry studio "
+},
+{
+"id": "Civitai/Civitai",
+"vendor": "Civitai",
+"product": "Civitai",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "civitai civitai "
+},
+{
+"id": "Cline/Cline",
+"vendor": "Cline",
+"product": "Cline",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "cline cline "
+},
+{
+"id": "Cline/Roo Code",
+"vendor": "Cline",
+"product": "Roo Code",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "cline roo code "
+},
+{
+"id": "Clipdrop/Clipdrop",
+"vendor": "Clipdrop",
+"product": "Clipdrop",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "clipdrop clipdrop "
+},
+{
+"id": "Codebuff/Freebuff",
+"vendor": "Codebuff",
+"product": "Freebuff",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "codebuff freebuff "
+},
+{
+"id": "Cognition/Devin",
+"vendor": "Cognition",
+"product": "Devin",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "cognition devin devin 认知"
+},
+{
+"id": "Cognition/Windsurf",
+"vendor": "Cognition",
+"product": "Windsurf",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "cognition windsurf devin 认知"
+},
+{
+"id": "Cohere/Cohere",
+"vendor": "Cohere",
+"product": "Cohere",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "cohere cohere "
+},
+{
+"id": "ComfyUI/ComfyUI",
+"vendor": "ComfyUI",
+"product": "ComfyUI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "comfyui comfyui 工作流"
+},
+{
+"id": "CommandCode/CommandCode",
+"vendor": "CommandCode",
+"product": "CommandCode",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "commandcode commandcode "
+},
+{
+"id": "CopilotKit/CopilotKit",
+"vendor": "CopilotKit",
+"product": "CopilotKit",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "copilotkit copilotkit "
+},
+{
+"id": "Coqui/Coqui",
+"vendor": "Coqui",
+"product": "Coqui",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "coqui coqui "
+},
+{
+"id": "CrewAI/CrewAI",
+"vendor": "CrewAI",
+"product": "CrewAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "crewai crewai "
+},
+{
+"id": "Decart/Decart",
+"vendor": "Decart",
+"product": "Decart",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "decart decart "
+},
+{
+"id": "DeepSeek/DeepSeek",
+"vendor": "DeepSeek",
+"product": "DeepSeek",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "deepseek deepseek 深度求索 深度"
+},
+{
+"id": "DeepSeek/DeepSeek Harness",
+"vendor": "DeepSeek",
+"product": "DeepSeek Harness",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "deepseek deepseek harness 深度求索 深度"
+},
+{
+"id": "Dify/Dify",
+"vendor": "Dify",
+"product": "Dify",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "dify dify "
+},
+{
+"id": "DuMate/DuMate",
+"vendor": "DuMate",
+"product": "DuMate",
+"variants": [
+"appicon"
+],
+"kw": "dumate dumate "
+},
+{
+"id": "ElevenLabs/ElevenLabs",
+"vendor": "ElevenLabs",
+"product": "ElevenLabs",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "elevenlabs elevenlabs 语音 tts"
+},
+{
+"id": "FastGPT/FastGPT",
+"vendor": "FastGPT",
+"product": "FastGPT",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "fastgpt fastgpt "
+},
+{
+"id": "Fish Audio/Fish Audio",
+"vendor": "Fish Audio",
+"product": "Fish Audio",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "fish audio fish audio "
+},
+{
+"id": "FreeLLMAPI/FreeLLMAPI",
+"vendor": "FreeLLMAPI",
+"product": "FreeLLMAPI",
+"variants": [
+"appicon"
+],
+"kw": "freellmapi freellmapi "
+},
+{
+"id": "Genspark/Genspark",
+"vendor": "Genspark",
+"product": "Genspark",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "genspark genspark "
+},
+{
+"id": "Google/Antigravity",
+"vendor": "Google",
+"product": "Antigravity",
+"variants": [
+"appicon"
+],
+"kw": "google antigravity 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Gemini",
+"vendor": "Google",
+"product": "Gemini",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google gemini 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Gemini CLI",
+"vendor": "Google",
+"product": "Gemini CLI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google gemini cli 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Gemma",
+"vendor": "Google",
+"product": "Gemma",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google gemma 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Google Antigravity",
+"vendor": "Google",
+"product": "Google Antigravity",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google google antigravity 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Google DeepMind",
+"vendor": "Google",
+"product": "Google DeepMind",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google google deepmind 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/Imagen",
+"vendor": "Google",
+"product": "Imagen",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "google imagen 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Google/NotebookLM",
+"vendor": "Google",
+"product": "NotebookLM",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "google notebooklm 谷歌 谷大 gemini 双子"
+},
+{
+"id": "Goose/Goose",
+"vendor": "Goose",
+"product": "Goose",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "goose goose "
+},
+{
+"id": "Haiper/Haiper",
+"vendor": "Haiper",
+"product": "Haiper",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "haiper haiper "
+},
+{
+"id": "Hedra/Hedra",
+"vendor": "Hedra",
+"product": "Hedra",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "hedra hedra "
+},
+{
+"id": "Hermes/Hermes",
+"vendor": "Hermes",
+"product": "Hermes",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "hermes hermes "
+},
+{
+"id": "Ideogram/Ideogram",
+"vendor": "Ideogram",
+"product": "Ideogram",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "ideogram ideogram "
+},
+{
+"id": "Inflection/Inflection AI",
+"vendor": "Inflection",
+"product": "Inflection AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "inflection inflection ai "
+},
+{
+"id": "Junie/Junie",
+"vendor": "Junie",
+"product": "Junie",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "junie junie "
+},
+{
+"id": "Kilo Code/Kilo Code",
+"vendor": "Kilo Code",
+"product": "Kilo Code",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "kilo code kilo code "
+},
+{
+"id": "Kiro/Kiro",
+"vendor": "Kiro",
+"product": "Kiro",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "kiro kiro "
+},
+{
+"id": "Krea/Krea",
+"vendor": "Krea",
+"product": "Krea",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "krea krea "
+},
+{
+"id": "LangChain/LangChain",
+"vendor": "LangChain",
+"product": "LangChain",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "langchain langchain langchain 链"
+},
+{
+"id": "LangChain/LangGraph",
+"vendor": "LangChain",
+"product": "LangGraph",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "langchain langgraph langchain 链"
+},
+{
+"id": "LangChain/LangSmith",
+"vendor": "LangChain",
+"product": "LangSmith",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "langchain langsmith langchain 链"
+},
+{
+"id": "Langfuse/Langfuse",
+"vendor": "Langfuse",
+"product": "Langfuse",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "langfuse langfuse "
+},
+{
+"id": "LlamaIndex/LlamaIndex",
+"vendor": "LlamaIndex",
+"product": "LlamaIndex",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "llamaindex llamaindex "
+},
+{
+"id": "LobsterAI/LobsterAI",
+"vendor": "LobsterAI",
+"product": "LobsterAI",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "lobsterai lobsterai "
+},
+{
+"id": "Loomy/Loomy",
+"vendor": "Loomy",
+"product": "Loomy",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "loomy loomy "
+},
+{
+"id": "Lovable/Lovable",
+"vendor": "Lovable",
+"product": "Lovable",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "lovable lovable "
+},
+{
+"id": "Luma AI/Luma AI",
+"vendor": "Luma AI",
+"product": "Luma AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "luma ai luma ai "
+},
+{
+"id": "Manus/Manus",
+"vendor": "Manus",
+"product": "Manus",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "manus manus 马努斯"
+},
+{
+"id": "Manus/Monica",
+"vendor": "Manus",
+"product": "Monica",
+"variants": [
+"appicon",
+"appicon-trans",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-dark-app",
+"tile-light",
+"tile-light-app",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "manus monica 马努斯"
+},
+{
+"id": "Mastra/Mastra",
+"vendor": "Mastra",
+"product": "Mastra",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "mastra mastra "
+},
+{
+"id": "Meshy/Meshy",
+"vendor": "Meshy",
+"product": "Meshy",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "meshy meshy "
+},
+{
+"id": "Meta/Meta AI",
+"vendor": "Meta",
+"product": "Meta AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-white"
+],
+"kw": "meta meta ai 脸书 facebook 拉玛 llama"
+},
+{
+"id": "Meta/Meta Llama",
+"vendor": "Meta",
+"product": "Meta Llama",
+"variants": [
+"llama-symbol-black",
+"llama-symbol-brand-black",
+"llama-symbol-brand-color",
+"llama-symbol-brand-color-dark",
+"llama-symbol-brand-white",
+"llama-symbol-color",
+"llama-symbol-white",
+"llama-tile-dark",
+"llama-tile-light",
+"llama-wordmark-black",
+"llama-wordmark-white",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "meta meta llama 脸书 facebook 拉玛 llama"
+},
+{
+"id": "MetaGPT/MetaGPT",
+"vendor": "MetaGPT",
+"product": "MetaGPT",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "metagpt metagpt "
+},
+{
+"id": "Microsoft/GitHub Copilot",
+"vendor": "Microsoft",
+"product": "GitHub Copilot",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "microsoft github copilot 微软 copilot"
+},
+{
+"id": "Microsoft/Microsoft Copilot",
+"vendor": "Microsoft",
+"product": "Microsoft Copilot",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "microsoft microsoft copilot 微软 copilot"
+},
+{
+"id": "Microsoft/Microsoft Phi",
+"vendor": "Microsoft",
+"product": "Microsoft Phi",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "microsoft microsoft phi 微软 copilot"
+},
+{
+"id": "Midjourney/Midjourney",
+"vendor": "Midjourney",
+"product": "Midjourney",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "midjourney midjourney mj 中途"
+},
+{
+"id": "MiniMax/MiniMax",
+"vendor": "MiniMax",
+"product": "MiniMax",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "minimax minimax minimax 稀宇 海螺 hailuo"
+},
+{
+"id": "MiniMax/MiniMax Design",
+"vendor": "MiniMax",
+"product": "MiniMax Design",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "minimax minimax design minimax 稀宇 海螺 hailuo"
+},
+{
+"id": "MiniMax/星野",
+"vendor": "MiniMax",
+"product": "星野",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "minimax 星野 minimax 稀宇 海螺 hailuo"
+},
+{
+"id": "MiniMax/海螺 AI",
+"vendor": "MiniMax",
+"product": "海螺 AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "minimax 海螺 ai minimax 稀宇 海螺 hailuo"
+},
+{
+"id": "Mistral AI/Mistral AI",
+"vendor": "Mistral AI",
+"product": "Mistral AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "mistral ai mistral ai mstrl 米斯特拉尔"
+},
+{
+"id": "NVIDIA/NVIDIA Nemotron",
+"vendor": "NVIDIA",
+"product": "NVIDIA Nemotron",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "nvidia nvidia nemotron "
+},
+{
+"id": "NovelAI/NovelAI",
+"vendor": "NovelAI",
+"product": "NovelAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "novelai novelai "
+},
+{
+"id": "Ollama/Ollama",
+"vendor": "Ollama",
+"product": "Ollama",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "ollama ollama 本地 ollama"
+},
+{
+"id": "OmniRoute/OmniRoute",
+"vendor": "OmniRoute",
+"product": "OmniRoute",
+"variants": [
+"appicon"
+],
+"kw": "omniroute omniroute "
+},
+{
+"id": "OpenAI/ChatGPT",
+"vendor": "OpenAI",
+"product": "ChatGPT",
+"variants": [
+"appicon"
+],
+"kw": "openai chatgpt openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenAI/Codex",
+"vendor": "OpenAI",
+"product": "Codex",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "openai codex openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenAI/DALL·E",
+"vendor": "OpenAI",
+"product": "DALL·E",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "openai dall·e openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenAI/Gpt-oss",
+"vendor": "OpenAI",
+"product": "Gpt-oss",
+"variants": [
+"symbol-color",
+"symbol-trans-color",
+"tile-dark",
+"tile-light"
+],
+"kw": "openai gpt-oss openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenAI/OpenAI",
+"vendor": "OpenAI",
+"product": "OpenAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "openai openai openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenAI/Sora",
+"vendor": "OpenAI",
+"product": "Sora",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "openai sora openai gpt chatgpt 奥特曼"
+},
+{
+"id": "OpenCode/OpenCode",
+"vendor": "OpenCode",
+"product": "OpenCode",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "opencode opencode "
+},
+{
+"id": "OpenSquilla/OpenSquilla",
+"vendor": "OpenSquilla",
+"product": "OpenSquilla",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "opensquilla opensquilla "
+},
+{
+"id": "Pada/Pada",
+"vendor": "Pada",
+"product": "Pada",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "pada pada "
+},
+{
+"id": "Perplexity/Perplexity",
+"vendor": "Perplexity",
+"product": "Perplexity",
+"variants": [
+"appicon",
+"appicon-trans",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-dark-app",
+"tile-light",
+"tile-light-app",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "perplexity perplexity 困惑 搜索"
+},
+{
+"id": "Pika/Pika",
+"vendor": "Pika",
+"product": "Pika",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "pika pika 皮卡"
+},
+{
+"id": "PixVerse/PixVerse",
+"vendor": "PixVerse",
+"product": "PixVerse",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "pixverse pixverse "
+},
+{
+"id": "Pydantic AI/Pydantic AI",
+"vendor": "Pydantic AI",
+"product": "Pydantic AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "pydantic ai pydantic ai "
+},
+{
+"id": "Quora/Poe",
+"vendor": "Quora",
+"product": "Poe",
+"variants": [
+"appicon",
+"appicon-trans",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-dark-app",
+"tile-light",
+"tile-light-app",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "quora poe "
+},
+{
+"id": "Recraft/Recraft",
+"vendor": "Recraft",
+"product": "Recraft",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "recraft recraft "
+},
+{
+"id": "RedClaw/RedClaw",
+"vendor": "RedClaw",
+"product": "RedClaw",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "redclaw redclaw "
+},
+{
+"id": "Replit/Replit",
+"vendor": "Replit",
+"product": "Replit",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "replit replit "
+},
+{
+"id": "Runway/Runway",
+"vendor": "Runway",
+"product": "Runway",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "runway runway 跑道 视频生成"
+},
+{
+"id": "Stability AI/SDXL",
+"vendor": "Stability AI",
+"product": "SDXL",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "stability ai sdxl 绘图 diffusion 稳定"
+},
+{
+"id": "Stability AI/Stable Diffusion _ Stability",
+"vendor": "Stability AI",
+"product": "Stable Diffusion _ Stability",
+"variants": [
+"symbol-black",
+"symbol-brand-black(旧)",
+"symbol-brand-color(旧)",
+"symbol-brand-white(旧)",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "stability ai stable diffusion _ stability 绘图 diffusion 稳定"
+},
+{
+"id": "Suno/Suno",
+"vendor": "Suno",
+"product": "Suno",
+"variants": [
+"appicon",
+"appicon-trans",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-dark-app",
+"tile-light",
+"tile-light-app",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "suno suno 音乐 suno"
+},
+{
+"id": "TII/TII",
+"vendor": "TII",
+"product": "TII",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "tii tii "
+},
+{
+"id": "Tabbit/Tabbit",
+"vendor": "Tabbit",
+"product": "Tabbit",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "tabbit tabbit "
+},
+{
+"id": "Tripo/Tripo",
+"vendor": "Tripo",
+"product": "Tripo",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "tripo tripo "
+},
+{
+"id": "Udio/Udio",
+"vendor": "Udio",
+"product": "Udio",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "udio udio 音乐 udio"
+},
+{
+"id": "Vercel/V0",
+"vendor": "Vercel",
+"product": "V0",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "vercel v0 "
+},
+{
+"id": "Viggle/Viggle",
+"vendor": "Viggle",
+"product": "Viggle",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "viggle viggle "
+},
+{
+"id": "Xinference/Xinference",
+"vendor": "Xinference",
+"product": "Xinference",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "xinference xinference "
+},
+{
+"id": "Zencoder/Zencoder",
+"vendor": "Zencoder",
+"product": "Zencoder",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "zencoder zencoder "
+},
+{
+"id": "vLLM/VLLM",
+"vendor": "vLLM",
+"product": "VLLM",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "vllm vllm 推理引擎"
+},
+{
+"id": "xAI/Cursor",
+"vendor": "xAI",
+"product": "Cursor",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "xai cursor 马斯克 musk grok"
+},
+{
+"id": "xAI/Grok",
+"vendor": "xAI",
+"product": "Grok",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "xai grok 马斯克 musk grok"
+},
+{
+"id": "xAI/Grok Bot",
+"vendor": "xAI",
+"product": "Grok Bot",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "xai grok bot 马斯克 musk grok"
+},
+{
+"id": "xAI/XAI",
+"vendor": "xAI",
+"product": "XAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "xai xai 马斯克 musk grok"
+},
+{
+"id": "上海AI实验室/书生·浦语",
+"vendor": "上海AI实验室",
+"product": "书生·浦语",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "上海ai实验室 书生·浦语 书生 浦语 internlm 上海"
+},
+{
+"id": "华为/CodeArts Agent",
+"vendor": "华为",
+"product": "CodeArts Agent",
+"variants": [
+"appicon"
+],
+"kw": "华为 codearts agent 盘古 pangu 鸿蒙"
+},
+{
+"id": "华为/华为 CodeArts Agent",
+"vendor": "华为",
+"product": "华为 CodeArts Agent",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "华为 华为 codearts agent 盘古 pangu 鸿蒙"
+},
+{
+"id": "华为/盘古 Pangu",
+"vendor": "华为",
+"product": "盘古 Pangu",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "华为 盘古 pangu 盘古 pangu 鸿蒙"
+},
+{
+"id": "商汤/商汤日日新",
+"vendor": "商汤",
+"product": "商汤日日新",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "商汤 商汤日日新 日日新 sensetime"
+},
+{
+"id": "字节跳动/Seedance",
+"vendor": "字节跳动",
+"product": "Seedance",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "字节跳动 seedance 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/Trae",
+"vendor": "字节跳动",
+"product": "Trae",
+"variants": [
+"appicon"
+],
+"kw": "字节跳动 trae 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/Trae CN",
+"vendor": "字节跳动",
+"product": "Trae CN",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "字节跳动 trae cn 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/即梦 AI",
+"vendor": "字节跳动",
+"product": "即梦 AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "字节跳动 即梦 ai 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/扣子 Coze",
+"vendor": "字节跳动",
+"product": "扣子 Coze",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "字节跳动 扣子 coze 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/猫箱",
+"vendor": "字节跳动",
+"product": "猫箱",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "字节跳动 猫箱 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/豆包",
+"vendor": "字节跳动",
+"product": "豆包",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "字节跳动 豆包 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/豆包 MarsCode",
+"vendor": "字节跳动",
+"product": "豆包 MarsCode",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "字节跳动 豆包 marscode 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/豆包图标集",
+"vendor": "字节跳动",
+"product": "豆包图标集",
+"variants": [
+"appicon",
+"doubao-model-wordmark",
+"doubao-tri-black",
+"doubao-tri-color",
+"doubao-tri-tile-dark",
+"doubao-tri-tile-light",
+"doubao-tri-trans-black",
+"doubao-tri-trans-color",
+"doubao-tri-white",
+"doubao-word-wordmark",
+"doubao-word-wordmark-bw"
+],
+"kw": "字节跳动 豆包图标集 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/豆包工作",
+"vendor": "字节跳动",
+"product": "豆包工作",
+"variants": [
+"appicon"
+],
+"kw": "字节跳动 豆包工作 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "字节跳动/豆包输入法",
+"vendor": "字节跳动",
+"product": "豆包输入法",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "字节跳动 豆包输入法 字节 抖音 豆包 即梦 coze 扣子 trae"
+},
+{
+"id": "小米/Xiaomi MiMo",
+"vendor": "小米",
+"product": "Xiaomi MiMo",
+"variants": [
+"appicon"
+],
+"kw": "小米 xiaomi mimo mimo 小米"
+},
+{
+"id": "小米/小米 MiMo",
+"vendor": "小米",
+"product": "小米 MiMo",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "小米 小米 mimo mimo 小米"
+},
+{
+"id": "快手/CodeFlicker",
+"vendor": "快手",
+"product": "CodeFlicker",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "快手 codeflicker 可灵 kling 快手"
+},
+{
+"id": "快手/可灵 AI",
+"vendor": "快手",
+"product": "可灵 AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "快手 可灵 ai 可灵 kling 快手"
+},
+{
+"id": "快手/快手 KwaiPilot",
+"vendor": "快手",
+"product": "快手 KwaiPilot",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "快手 快手 kwaipilot 可灵 kling 快手"
+},
+{
+"id": "昆仑万维/天工 AI",
+"vendor": "昆仑万维",
+"product": "天工 AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "昆仑万维 天工 ai 天工 skywork"
+},
+{
+"id": "昆仑万维/昆仑万维",
+"vendor": "昆仑万维",
+"product": "昆仑万维",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "昆仑万维 昆仑万维 天工 skywork"
+},
+{
+"id": "星流/星流",
+"vendor": "星流",
+"product": "星流",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "星流 星流 "
+},
+{
+"id": "智源 BAAI/智源 BAAI",
+"vendor": "智源 BAAI",
+"product": "智源 BAAI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智源 baai 智源 baai 智源 baaai"
+},
+{
+"id": "智谱 AI/AutoClaw",
+"vendor": "智谱 AI",
+"product": "AutoClaw",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "智谱 ai autoclaw 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/AutoGLM",
+"vendor": "智谱 AI",
+"product": "AutoGLM",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "智谱 ai autoglm 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/ChatGLM",
+"vendor": "智谱 AI",
+"product": "ChatGLM",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai chatglm 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/CodeGeeX",
+"vendor": "智谱 AI",
+"product": "CodeGeeX",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai codegeex 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/CogVideoX",
+"vendor": "智谱 AI",
+"product": "CogVideoX",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai cogvideox 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/CogView",
+"vendor": "智谱 AI",
+"product": "CogView",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai cogview 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/GLM-V",
+"vendor": "智谱 AI",
+"product": "GLM-V",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai glm-v 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/Z.ai",
+"vendor": "智谱 AI",
+"product": "Z.ai",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai z.ai 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/ZCode",
+"vendor": "智谱 AI",
+"product": "ZCode",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "智谱 ai zcode 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/智谱 AI",
+"vendor": "智谱 AI",
+"product": "智谱 AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai 智谱 ai 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "智谱 AI/智谱清言",
+"vendor": "智谱 AI",
+"product": "智谱清言",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "智谱 ai 智谱清言 智谱 zhipu glm chatglm 清言"
+},
+{
+"id": "月之暗面/Kimi",
+"vendor": "月之暗面",
+"product": "Kimi",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "月之暗面 kimi moonshot kimi 月暗"
+},
+{
+"id": "月之暗面/Moonshot AI",
+"vendor": "月之暗面",
+"product": "Moonshot AI",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "月之暗面 moonshot ai moonshot kimi 月暗"
+},
+{
+"id": "生数科技/Vidu",
+"vendor": "生数科技",
+"product": "Vidu",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "生数科技 vidu vidu 生数"
+},
+{
+"id": "百川智能/百川智能",
+"vendor": "百川智能",
+"product": "百川智能",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "百川智能 百川智能 百川 baichuan"
+},
+{
+"id": "百度/Comate",
+"vendor": "百度",
+"product": "Comate",
+"variants": [
+"appicon"
+],
+"kw": "百度 comate 百度 文心 ernie"
+},
+{
+"id": "百度/文心一言",
+"vendor": "百度",
+"product": "文心一言",
+"variants": [
+"symbol-black",
+"symbol-brand-black(旧)",
+"symbol-brand-color(旧)",
+"symbol-brand-white(旧)",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-cn-black(旧)",
+"wordmark-cn-white(旧)",
+"wordmark-color"
+],
+"kw": "百度 文心一言 百度 文心 ernie"
+},
+{
+"id": "百度/百度 Comate",
+"vendor": "百度",
+"product": "百度 Comate",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "百度 百度 comate 百度 文心 ernie"
+},
+{
+"id": "科大讯飞/讯飞星火",
+"vendor": "科大讯飞",
+"product": "讯飞星火",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "科大讯飞 讯飞星火 讯飞 星火 iflytek"
+},
+{
+"id": "秘塔/秘塔 AI 搜索",
+"vendor": "秘塔",
+"product": "秘塔 AI 搜索",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "秘塔 秘塔 ai 搜索 metaso 秘塔 搜索"
+},
+{
+"id": "美团/CatPaw",
+"vendor": "美团",
+"product": "CatPaw",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "美团 catpaw 龙猫 longcat"
+},
+{
+"id": "美团/美团 LongCat",
+"vendor": "美团",
+"product": "美团 LongCat",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "美团 美团 longcat 龙猫 longcat"
+},
+{
+"id": "腾讯/CodeBuddy",
+"vendor": "腾讯",
+"product": "CodeBuddy",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "腾讯 codebuddy 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/CodeBuddy CN",
+"vendor": "腾讯",
+"product": "CodeBuddy CN",
+"variants": [
+"appicon"
+],
+"kw": "腾讯 codebuddy cn 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/Ima",
+"vendor": "腾讯",
+"product": "Ima",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "腾讯 ima 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/Marvis",
+"vendor": "腾讯",
+"product": "Marvis",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "腾讯 marvis 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/WorkBuddy",
+"vendor": "腾讯",
+"product": "WorkBuddy",
+"variants": [
+"appicon"
+],
+"kw": "腾讯 workbuddy 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/WorkBuddy AI",
+"vendor": "腾讯",
+"product": "WorkBuddy AI",
+"variants": [
+"appicon",
+"appicon-trans",
+"tile-dark-app",
+"tile-light-app"
+],
+"kw": "腾讯 workbuddy ai 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/ima",
+"vendor": "腾讯",
+"product": "ima",
+"variants": [
+"appicon"
+],
+"kw": "腾讯 ima 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/腾讯元宝",
+"vendor": "腾讯",
+"product": "腾讯元宝",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "腾讯 腾讯元宝 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "腾讯/腾讯混元",
+"vendor": "腾讯",
+"product": "腾讯混元",
+"variants": [
+"symbol-black",
+"symbol-brand-black(旧)",
+"symbol-brand-color(旧)",
+"symbol-brand-white(旧)",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-cn-black(旧)",
+"wordmark-cn-white(旧)",
+"wordmark-color"
+],
+"kw": "腾讯 腾讯混元 腾讯 混元 hunyuan 元宝"
+},
+{
+"id": "阶跃星辰/阶跃星辰",
+"vendor": "阶跃星辰",
+"product": "阶跃星辰",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "阶跃星辰 阶跃星辰 阶跃 step"
+},
+{
+"id": "阿里通义/Kolors",
+"vendor": "阿里通义",
+"product": "Kolors",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "阿里通义 kolors 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/Qoder",
+"vendor": "阿里通义",
+"product": "Qoder",
+"variants": [
+"appicon",
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "阿里通义 qoder 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/Qwen",
+"vendor": "阿里通义",
+"product": "Qwen",
+"variants": [
+"appicon"
+],
+"kw": "阿里通义 qwen 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/Wan",
+"vendor": "阿里通义",
+"product": "Wan",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "阿里通义 wan 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/千问",
+"vendor": "阿里通义",
+"product": "千问",
+"variants": [
+"appicon"
+],
+"kw": "阿里通义 千问 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/千问办公",
+"vendor": "阿里通义",
+"product": "千问办公",
+"variants": [
+"appicon"
+],
+"kw": "阿里通义 千问办公 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "阿里通义/通义千问",
+"vendor": "阿里通义",
+"product": "通义千问",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "阿里通义 通义千问 阿里 通义 千问 qwen 马云"
+},
+{
+"id": "零一万物/零一万物",
+"vendor": "零一万物",
+"product": "零一万物",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light",
+"wordmark-black",
+"wordmark-color"
+],
+"kw": "零一万物 零一万物 零一 01.ai"
+},
+{
+"id": "面壁智能/MiniCPM",
+"vendor": "面壁智能",
+"product": "MiniCPM",
+"variants": [
+"symbol-black",
+"symbol-color",
+"symbol-trans-black",
+"symbol-trans-color",
+"symbol-white",
+"tile-dark",
+"tile-light"
+],
+"kw": "面壁智能 minicpm 面壁 minicpm"
+}
+]
+}

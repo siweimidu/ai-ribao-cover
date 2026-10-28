@@ -1,0 +1,167 @@
+[
+ {
+  "name": "01-swiss-hero",
+  "style": "swiss",
+  "layout": "hero",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "Codex 再次重置\n日期又变了",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "OpenAI/OpenAI#symbol-color"
+  }
+ },
+ {
+  "name": "02-broadsheet-hero",
+  "style": "broadsheet",
+  "layout": "hero",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "百度开源\nUnlimited OCR 2",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "字节跳动/豆包#symbol-black"
+  }
+ },
+ {
+  "name": "03-bauhaus-poster",
+  "style": "bauhaus",
+  "layout": "poster",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "Claude 走进\n新药研发",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "Anthropic/Claude#symbol-color"
+  }
+ },
+ {
+  "name": "04-constructivism-split",
+  "style": "constructivism",
+  "layout": "split",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "千亿融资\n与价格战",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "阿里通义/Qwen#symbol-color"
+  }
+ },
+ {
+  "name": "05-noir-feature",
+  "style": "noir",
+  "layout": "feature",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "DeepInfer\n开源",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "DeepSeek/DeepSeek#symbol-white"
+  }
+ },
+ {
+  "name": "06-matrix-hero",
+  "style": "matrix",
+  "layout": "hero",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "Kimi K3.1\n全网预热",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "月之暗面/Kimi#symbol-color"
+  }
+ },
+ {
+  "name": "07-beigeRed-hero",
+  "style": "beigeRed",
+  "layout": "hero",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "龙王杀疯\n493 tok/s",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "智谱 AI/智谱 AI#symbol-color"
+  }
+ },
+ {
+  "name": "08-cardlight-feature",
+  "style": "cardlight",
+  "layout": "feature",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "Gemini 4\n遭质疑",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "Google/Gemini#symbol-color"
+  }
+ },
+ {
+  "name": "09-paperdoodle-hero",
+  "style": "paperdoodle",
+  "layout": "hero",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "V5 要来了\n鲸鱼兄弟们",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "MiniMax/MiniMax#symbol-color"
+  }
+ },
+ {
+  "name": "10-data-poster",
+  "style": "data",
+  "layout": "poster",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "Grok 4.7\n六维基准测试",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "xAI/Grok#symbol-black"
+  }
+ },
+ {
+  "name": "11-pastel-split",
+  "style": "pastel",
+  "layout": "split",
+  "content": {
+   "series": "白鸦 · AI 日报",
+   "kicker": "2026.10.28 · 第 561 期 · 22 条",
+   "date": "2026.10.28",
+   "title": "额度异常\n补偿到账",
+   "sub": "智谱补 3 张卡冲刺 3.5 万亿参数，[[Codex 第 23 天重置]]",
+   "foot": "AI 前沿速览 · 每日 18:00 更新 · 参考 22 条",
+   "badge": "561",
+   "icon": "Anthropic/Claude#symbol-color"
+  }
+ }
+]

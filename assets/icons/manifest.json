@@ -1,0 +1,2076 @@
+{
+  "format": "dsh-cover-studio-icons",
+  "version": 3,
+  "exportedAt": "2026-10-28T08:41:01.392Z",
+  "byVendor": {
+    "字节跳动": {
+      "豆包输入法": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "扣子 Coze": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "豆包": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "即梦 AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "猫箱": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "Seedance": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "豆包 MarsCode": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Trae CN": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "豆包图标集": [
+        "appicon",
+        "doubao-tri-color",
+        "doubao-tri-trans-color",
+        "doubao-tri-black",
+        "doubao-tri-trans-black",
+        "doubao-tri-white",
+        "doubao-word-wordmark",
+        "doubao-word-wordmark-bw",
+        "doubao-model-wordmark",
+        "doubao-tri-tile-light",
+        "doubao-tri-tile-dark"
+      ],
+      "豆包工作": [
+        "appicon"
+      ],
+      "Trae": [
+        "appicon"
+      ]
+    },
+    "秘塔": {
+      "秘塔 AI 搜索": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "MiniMax": {
+      "星野": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "海螺 AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "MiniMax": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "MiniMax Design": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ]
+    },
+    "Adobe": {
+      "Adobe Firefly": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Agnes Code": {
+      "Agnes Code": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Ai2": {
+      "Ai2": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "AI21 Labs": {
+      "AI21 Labs": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "symbol-brand-black(旧)",
+        "symbol-brand-color-dark(旧)",
+        "symbol-brand-color(旧)",
+        "symbol-brand-white(旧)"
+      ]
+    },
+    "Aleph Alpha": {
+      "Aleph Alpha": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Amp": {
+      "Amp": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Anthropic": {
+      "Anthropic": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Claude": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "Claude Code": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Google": {
+      "Google Antigravity": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Google DeepMind": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Gemini": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Gemini CLI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Gemma": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Imagen": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "NotebookLM": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Antigravity": [
+        "appicon"
+      ]
+    },
+    "AssemblyAI": {
+      "AssemblyAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "AtomCode": {
+      "AtomCode": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "智谱 AI": {
+      "AutoClaw": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "AutoGLM": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "ChatGLM": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "CodeGeeX": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "CogVideoX": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "CogView": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "GLM-V": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "智谱清言": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Z.ai": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "ZCode": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "智谱 AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "智源 BAAI": {
+      "智源 BAAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "百川智能": {
+      "百川智能": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Black Forest": {
+      "Black Forest Labs": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "FLUX": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Bria AI": {
+      "Bria AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "美团": {
+      "CatPaw": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "美团 LongCat": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Civitai": {
+      "Civitai": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Cline": {
+      "Cline": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Roo Code": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Clipdrop": {
+      "Clipdrop": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "华为": {
+      "华为 CodeArts Agent": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "盘古 Pangu": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "CodeArts Agent": [
+        "appicon"
+      ]
+    },
+    "腾讯": {
+      "CodeBuddy": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "腾讯混元": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "symbol-brand-black(旧)",
+        "symbol-brand-color(旧)",
+        "symbol-brand-white(旧)",
+        "wordmark-cn-black(旧)",
+        "wordmark-cn-white(旧)"
+      ],
+      "Ima": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "Marvis": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "WorkBuddy AI": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "腾讯元宝": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "ima": [
+        "appicon"
+      ],
+      "WorkBuddy": [
+        "appicon"
+      ],
+      "CodeBuddy CN": [
+        "appicon"
+      ]
+    },
+    "快手": {
+      "CodeFlicker": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "可灵 AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "快手 KwaiPilot": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "OpenAI": {
+      "Codex": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "DALL·E": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Gpt-oss": [
+        "symbol-color",
+        "symbol-trans-color",
+        "tile-light",
+        "tile-dark"
+      ],
+      "OpenAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Sora": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "ChatGPT": [
+        "appicon"
+      ]
+    },
+    "Cohere": {
+      "Cohere": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "百度": {
+      "百度 Comate": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "文心一言": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "symbol-brand-black(旧)",
+        "symbol-brand-color(旧)",
+        "symbol-brand-white(旧)",
+        "wordmark-cn-black(旧)",
+        "wordmark-cn-white(旧)"
+      ],
+      "Comate": [
+        "appicon"
+      ]
+    },
+    "ComfyUI": {
+      "ComfyUI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "CommandCode": {
+      "CommandCode": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Microsoft": {
+      "Microsoft Copilot": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "GitHub Copilot": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Microsoft Phi": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "CopilotKit": {
+      "CopilotKit": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Coqui": {
+      "Coqui": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "CrewAI": {
+      "CrewAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "xAI": {
+      "Cursor": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "Grok": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "Grok Bot": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "XAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Decart": {
+      "Decart": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "DeepSeek": {
+      "DeepSeek": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "DeepSeek Harness": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ]
+    },
+    "Cognition": {
+      "Devin": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "Windsurf": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Dify": {
+      "Dify": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "ElevenLabs": {
+      "ElevenLabs": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "FastGPT": {
+      "FastGPT": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Fish Audio": {
+      "Fish Audio": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Codebuff": {
+      "Freebuff": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Genspark": {
+      "Genspark": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Goose": {
+      "Goose": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Haiper": {
+      "Haiper": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Hedra": {
+      "Hedra": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Hermes": {
+      "Hermes": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ]
+    },
+    "Ideogram": {
+      "Ideogram": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Inflection": {
+      "Inflection AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "上海AI实验室": {
+      "书生·浦语": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Junie": {
+      "Junie": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Kilo Code": {
+      "Kilo Code": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "月之暗面": {
+      "Kimi": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "Moonshot AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Kiro": {
+      "Kiro": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "阿里通义": {
+      "Kolors": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Qoder": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ],
+      "通义千问": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Wan": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "千问办公": [
+        "appicon"
+      ],
+      "Qwen": [
+        "appicon"
+      ],
+      "千问": [
+        "appicon"
+      ]
+    },
+    "Krea": {
+      "Krea": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "LangChain": {
+      "LangChain": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "LangGraph": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "LangSmith": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Langfuse": {
+      "Langfuse": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Meta": {
+      "Meta Llama": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "llama-symbol-black",
+        "llama-symbol-brand-black",
+        "llama-symbol-brand-color-dark",
+        "llama-symbol-brand-color",
+        "llama-symbol-brand-white",
+        "llama-symbol-color",
+        "llama-symbol-white",
+        "llama-tile-dark",
+        "llama-tile-light",
+        "llama-wordmark-black",
+        "llama-wordmark-white"
+      ],
+      "Meta AI": [
+        "symbol-black",
+        "symbol-color",
+        "symbol-white",
+        "tile-dark",
+        "tile-light",
+        "wordmark-black",
+        "wordmark-white"
+      ]
+    },
+    "LlamaIndex": {
+      "LlamaIndex": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "LobsterAI": {
+      "LobsterAI": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Loomy": {
+      "Loomy": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Lovable": {
+      "Lovable": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Luma AI": {
+      "Luma AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Manus": {
+      "Manus": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Monica": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "appicon",
+        "appicon-trans",
+        "tile-light",
+        "tile-dark",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Mastra": {
+      "Mastra": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Meshy": {
+      "Meshy": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "MetaGPT": {
+      "MetaGPT": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Midjourney": {
+      "Midjourney": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "面壁智能": {
+      "MiniCPM": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Mistral AI": {
+      "Mistral AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "360 智脑": {
+      "纳米AI": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ],
+      "纳米 P 视频": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "NVIDIA": {
+      "NVIDIA Nemotron": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "NovelAI": {
+      "NovelAI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Ollama": {
+      "Ollama": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "OpenCode": {
+      "OpenCode": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "appicon"
+      ]
+    },
+    "All Hands": {
+      "OpenHands": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "OpenSquilla": {
+      "OpenSquilla": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Pada": {
+      "Pada": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Perplexity": {
+      "Perplexity": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "appicon",
+        "appicon-trans",
+        "tile-light",
+        "tile-dark",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Pika": {
+      "Pika": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "PixVerse": {
+      "PixVerse": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Quora": {
+      "Poe": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "appicon",
+        "appicon-trans",
+        "tile-light",
+        "tile-dark",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Pydantic AI": {
+      "Pydantic AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Recraft": {
+      "Recraft": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "RedClaw": {
+      "RedClaw": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Replit": {
+      "Replit": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Runway": {
+      "Runway": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Stability AI": {
+      "SDXL": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Stable Diffusion _ Stability": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark",
+        "symbol-brand-black(旧)",
+        "symbol-brand-color(旧)",
+        "symbol-brand-white(旧)"
+      ]
+    },
+    "商汤": {
+      "商汤日日新": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "昆仑万维": {
+      "昆仑万维": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "天工 AI": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "科大讯飞": {
+      "讯飞星火": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "阶跃星辰": {
+      "阶跃星辰": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Suno": {
+      "Suno": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "appicon",
+        "appicon-trans",
+        "tile-light",
+        "tile-dark",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "Tabbit": {
+      "Tabbit": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "TII": {
+      "TII": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Tripo": {
+      "Tripo": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Udio": {
+      "Udio": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Vercel": {
+      "V0": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "生数科技": {
+      "Vidu": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Viggle": {
+      "Viggle": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "vLLM": {
+      "VLLM": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "小米": {
+      "小米 MiMo": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ],
+      "Xiaomi MiMo": [
+        "appicon"
+      ]
+    },
+    "Xinference": {
+      "Xinference": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "星流": {
+      "星流": [
+        "appicon",
+        "appicon-trans",
+        "tile-light-app",
+        "tile-dark-app"
+      ]
+    },
+    "零一万物": {
+      "零一万物": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "Zencoder": {
+      "Zencoder": [
+        "symbol-color",
+        "symbol-black",
+        "symbol-white",
+        "symbol-trans-color",
+        "symbol-trans-black",
+        "wordmark-color",
+        "wordmark-black",
+        "tile-light",
+        "tile-dark"
+      ]
+    },
+    "FreeLLMAPI": {
+      "FreeLLMAPI": [
+        "appicon"
+      ]
+    },
+    "CSDN": {
+      "InsCode": [
+        "appicon"
+      ]
+    },
+    "OmniRoute": {
+      "OmniRoute": [
+        "appicon"
+      ]
+    },
+    "CC Switch": {
+      "CC Switch": [
+        "appicon"
+      ]
+    },
+    "Cherry Studio": {
+      "Cherry Studio": [
+        "appicon"
+      ]
+    },
+    "DuMate": {
+      "DuMate": [
+        "appicon"
+      ]
+    }
+  }
+}

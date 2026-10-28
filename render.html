@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>render</title>
+<link rel="stylesheet" href="/assets/css/cover.css">
+<style>html,body{margin:0;padding:0;background:#fff}#stage{display:block}</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="/assets/js/model.js"></script>
+<script src="/assets/js/presets.js"></script>
+<script src="/assets/js/render.js"></script>
+<script>
+(async function () {
+  var q = new URLSearchParams(location.search);
+  var src = q.get('doc');
+  var doc = null;
+  if (src) {
+    var r = await fetch(src, { cache: 'no-store' });
+    doc = await r.json();
+  } else if (window.__DOC__) {
+    doc = window.__DOC__;
+  }
+  if (!doc) { document.body.textContent = 'no doc'; return; }
+  var host = document.getElementById('stage');
+  document.body.style.width = doc.w + 'px';
+  document.body.style.height = doc.h + 'px';
+  CV.render(doc, host, { edit: false });
+  await CV.ready(host);
+  await new Promise(function (res) { requestAnimationFrame(function () { requestAnimationFrame(res); }); });
+  window.__ready = true;
+  window.__size = { w: doc.w, h: doc.h };
+})().catch(function (e) { window.__error = String(e && e.stack || e); });
+</script>
+</body>
+</html>
