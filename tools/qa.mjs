@@ -46,7 +46,7 @@ const ANALYZE = function (styleId, layoutId) {
   });
   var probs = [];
   boxes.forEach(function (b) {
-    if (b.type === 'shape' || b.type === 'raw') return;
+    if (b.type === 'shape' || b.type === 'raw' || b.type === 'image') return;
     if (b.op < 0.35) return;
     if (b.x < -1 || b.y < -1 || b.x + b.w > W + 1 || b.y + b.h > H + 1) {
       probs.push('OUT:' + b.role + '(' + Math.round(b.x) + ',' + Math.round(b.y) + ' ' + Math.round(b.w) + 'x' + Math.round(b.h) + ')');
