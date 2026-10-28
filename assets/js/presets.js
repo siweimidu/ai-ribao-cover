@@ -53,10 +53,200 @@
       add(CV.I('icon', c.icon, { x: 848, y: 200, w: 240, h: 240 }));
     }
   };
+
+  /* ============================ 原生竖版骨架（母版 900x1200） ============================ */
+  var TW = 900, TH = 1200, TM = 56;
+
+  function tallStack(t, c, add) {
+    add(CV.T('kicker', c.kicker, { x: TM, y: 46, w: 528, size: 15, font: 'mono', ls: .16, upper: true, color: t.ink2 }));
+    add(CV.I('icon', c.icon, { x: TW / 2 - 130, y: 104, w: 260, h: 260 }));
+    add(CV.T('series', c.series, { x: TM, y: 400, w: 700, size: 26, font: 'heavy', weight: 900, color: t.ink }));
+    add(CV.S('rule', 'bar', { x: TM, y: 446, w: 76, h: 6, color: t.accent }));
+    add(CV.T('title', c.title, { x: TM, y: 484, w: TW - TM * 2, size: 96, font: 'heavy', weight: 900, lh: 1.03, ls: -.015, color: t.ink, fit: true, maxH: 420 }));
+    add(CV.T('sub', c.sub, { x: TM, y: 940, w: TW - TM * 2, size: 22, font: 'bold', lh: 1.62, color: t.ink2 }));
+    add(CV.S('footline', 'line', { x: TM, y: 1104, w: 300, h: 1, color: t.ink, opacity: .16 }));
+    add(CV.T('foot', c.foot, { x: TM, y: 1122, w: 620, size: 13, font: 'mono', ls: .04, color: t.ink2 }));
+    add(CV.T('date', c.date, { x: TW - TM - 220, y: 46, w: 220, size: 15, font: 'mono', align: 'right', ls: .1, color: t.ink2 }));
+  }
+
+  function tallSheet(t, c, add) {
+    add(CV.S('band', 'rect', { x: 0, y: 0, w: TW, h: 124, color: t.ink }));
+    add(CV.T('series', c.series, { x: TM, y: 44, w: 528, size: 24, font: 'heavy', weight: 900, color: t.bandInk || t.bgSolid || '#fff' }));
+    add(CV.T('date', c.date, { x: TW - TM - 220, y: 50, w: 220, size: 14, font: 'mono', align: 'right', ls: .1, color: t.bandInk || t.bgSolid || '#fff' }));
+    add(CV.T('kicker', c.kicker, { x: TM, y: 158, w: 700, size: 14, font: 'mono', ls: .16, upper: true, color: t.ink2 }));
+    add(CV.T('title', c.title, { x: TM, y: 198, w: TW - TM * 2, size: 92, font: 'heavy', weight: 900, lh: 1.02, ls: -.015, color: t.ink, fit: true, maxH: 330 }));
+    add(CV.S('midline', 'bar', { x: TM, y: 560, w: 120, h: 4, color: t.accent }));
+    add(CV.I('icon', c.icon, { x: TW / 2 - 170, y: 604, w: 340, h: 340 }));
+    add(CV.T('sub', c.sub, { x: TM, y: 990, w: TW - TM * 2, size: 21, font: 'bold', lh: 1.6, color: t.ink2 }));
+    add(CV.T('foot', c.foot, { x: TM, y: 1132, w: 620, size: 12, font: 'mono', ls: .05, color: t.ink2 }));
+  }
+
+  /* 竖版专属装饰：每种风格保留自己的识别符号（母版 900x1200） */
+  var TALLDECOR = {
+    swiss: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'circle', { x: 210, y: 40, w: 480, h: 480, color: t.accent, opacity: .055 }));
+      x.add(CV.S('t2', 'bar', { x: TW - 66, y: 300, w: 4, h: 150, color: t.accent, opacity: .9 }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 1104, w: 320, h: 1, color: t.ink, opacity: .12 }));
+    },
+    broadsheet: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: 18, y: 18, w: TW - 36, h: TH - 36, color: 'transparent', bw: 3, bc: t.ink, opacity: .92 }));
+      x.add(CV.S('t2', 'rect', { x: 27, y: 27, w: TW - 54, h: TH - 54, color: 'transparent', bw: 1, bc: t.ink, opacity: .5 }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 466, w: 300, h: 2, color: t.ink, opacity: .45 }));
+      x.add(CV.S('t4', 'bar', { x: TM, y: 34, w: 150, h: 30, color: t.accent }));
+    },
+    matrix: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'round', { x: TW / 2 - 168, y: 78, w: 336, h: 336, color: t.card, radius: 44, shadow: '0 26px 60px -30px rgba(22,32,46,.36)' }));
+      x.add(CV.S('t2', 'circle', { x: -120, y: 900, w: 420, h: 420, color: '#ffffff', opacity: .55 }));
+      for (var i = 0; i < 3; i++) x.add(CV.S('d' + i, 'circle', { x: TW / 2 - 42 + i * 34, y: 440 + (i % 2) * 12, w: 9, h: 9, color: t.accent, opacity: .45 }));
+    },
+    paperdoodle: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: 0, y: 0, w: 14, h: TH, color: t.yellow }));
+      x.add(CV.S('t2', 'bar', { x: TM + 6, y: 700, w: 260, h: 13, color: t.yellow, rot: -1.2, radius: 8, opacity: .92 }));
+      x.add(CV.S('t3', 'circle', { x: TW - 130, y: 1010, w: 56, h: 56, color: t.blue, opacity: .9 }));
+      x.add(CV.S('t4', 'ring', { x: TW - 140, y: 120, w: 64, h: 64, color: 'transparent', bw: 6, bc: t.yellow, opacity: .9 }));
+    },
+    cardlight: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'round', { x: 30, y: 372, w: TW - 60, h: 640, color: t.card, radius: 30, shadow: '0 30px 70px -34px rgba(15,17,21,.28)' }));
+      x.add(CV.S('t2', 'round', { x: TM, y: 402, w: 156, h: 30, color: t.pill, radius: 99 }));
+    },
+    beigeRed: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'star4', { x: TW - 300, y: 60, w: 250, h: 250, color: t.grad, opacity: .95 }));
+      x.add(CV.S('t2', 'rect', { x: TM, y: 34, w: 124, h: 30, color: t.accent }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 1148, w: 96, h: 6, color: t.ink }));
+    },
+    noir: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'ring', { x: TW / 2 - 200, y: 30, w: 400, h: 400, color: 'transparent', bw: 1.5, bc: 'rgba(243,245,249,.24)' }));
+      x.add(CV.S('t2', 'ring', { x: TW / 2 - 150, y: 80, w: 300, h: 300, color: 'transparent', bw: 1, bc: 'rgba(243,245,249,.16)' }));
+      x.add(CV.S('t3', 'circle', { x: TW / 2 + 76, y: 200, w: 44, h: 44, color: t.accent, opacity: .95, shadow: '0 0 60px 18px rgba(255,59,48,.45)' }));
+      x.add(CV.S('t4', 'bar', { x: TM, y: 464, w: 300, h: 1, color: t.ink, opacity: .2 }));
+    },
+    data: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: TW / 2 - 178, y: 70, w: 356, h: 356, color: 'transparent', bw: 3, bc: t.ink, opacity: .92 }));
+      x.add(CV.S('t2', 'bar', { x: TM, y: 1104, w: 150, h: 4, color: t.accent }));
+      x.add(CV.T('tn', (x.c.badge || ''), { x: TW - 260, y: 1040, w: 200, size: 92, font: 'impact', color: t.accent, align: 'right' }));
+    },
+    pastel: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'circle', { x: -150, y: -120, w: 440, h: 440, color: '#ffffff', opacity: .62 }));
+      x.add(CV.S('t2', 'round', { x: TW / 2 - 190, y: 62, w: 380, h: 380, color: t.card, radius: 32, opacity: .96, bw: 1, bc: 'rgba(42,32,40,.07)' }));
+      x.add(CV.S('t3', 'circle', { x: TW - 220, y: 940, w: 340, h: 340, color: '#ffe4ee', opacity: .7 }));
+    },
+    constructivism: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: -120, y: 830, w: 1140, h: 86, color: t.accent, rot: -11 }));
+      x.add(CV.S('t2', 'rect', { x: -120, y: 740, w: 1140, h: 7, color: t.ink, rot: -11, opacity: .9 }));
+      x.add(CV.S('t3', 'ring', { x: TW / 2 - 128, y: 40, w: 256, h: 256, color: 'transparent', bw: 16, bc: t.ink, opacity: .9 }));
+      x.add(CV.S('t4', 'rect', { x: TW - 8, y: 0, w: 8, h: TH, color: t.ink, opacity: .8 }));
+      x.add(CV.S('t5', 'wedge', { x: 0, y: 980, w: 220, h: 220, color: t.ink, opacity: .06 }));
+    },
+    bauhaus: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'circle', { x: TW - 210, y: 54, w: 150, h: 150, color: t.red }));
+      x.add(CV.S('t2', 'rect', { x: TW - 250, y: 950, w: 140, h: 140, color: t.blue, rot: 10 }));
+      x.add(CV.S('t3', 'tri', { x: 90, y: 960, w: 140, h: 122, color: t.yellow }));
+      x.add(CV.S('t4', 'rect', { x: 0, y: TH - 70, w: TW, h: 70, color: t.ink }));
+      x.add(CV.S('t5', 'rect', { x: 0, y: TH - 70, w: 120, h: 70, color: t.red }));
+      x.add(CV.S('t6', 'rect', { x: 120, y: TH - 70, w: 120, h: 70, color: t.yellow }));
+      x.add(CV.S('t7', 'rect', { x: 240, y: TH - 70, w: 120, h: 70, color: t.blue }));
+    },
+    zine: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: 0, y: 806, w: TW, h: 46, color: 'linear-gradient(to bottom,rgba(74,56,30,.28),rgba(74,56,30,0))' }));
+      x.add(CV.R('t2', tearFlat(), { x: 0, y: 818, w: TW, h: 64 }));
+      x.add(CV.S('t3', 'blob', { x: -60, y: 120, w: 520, h: 340, color: t.accent, opacity: .05, rot: -4 }));
+      if (x.layout !== 'sheet') x.add(CV.T('t4', (x.c.spray || '不相上下?'), { x: TW - 250, y: 150, w: 230, size: 34, font: 'hand', color: t.accent, rot: -7, opacity: .95 }));
+    },
+    sticker: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'circle', { x: TW - 90, y: 80, w: 22, h: 22, color: t.blue, opacity: .8 }));
+      x.add(CV.S('t2', 'circle', { x: 40, y: 1050, w: 34, h: 34, color: t.accent, opacity: .9 }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 1114, w: 120, h: 6, color: t.accent }));
+    },
+    candy: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: 0, y: 0, w: 14, h: TH, color: t.accent, opacity: .9 }));
+      x.add(CV.S('t2', 'bar', { x: TM + 10, y: 700, w: 280, h: 14, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
+      x.add(CV.S('t3', 'blob', { x: TW - 260, y: 900, w: 320, h: 260, color: t.accent, opacity: .06, rot: 8 }));
+    },
+    newspaper: function (x) {
+      var t = x.t;
+      x.add(CV.S('t2', 'bar', { x: TM, y: 388, w: TW - TM * 2, h: 3, color: t.ink }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 394, w: TW - TM * 2, h: 1, color: t.ink, opacity: .65 }));
+      x.add(CV.S('t4', 'bar', { x: TM, y: 1094, w: TW - TM * 2, h: 1, color: t.ink, opacity: .45 }));
+    },
+    editorial: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: TW / 2 - 190, y: 64, w: 380, h: 380, color: 'transparent', bw: 2, bc: t.ink }));
+      x.add(CV.S('t2', 'bar', { x: TM, y: 40, w: TW - TM * 2, h: 2, color: t.ink }));
+      x.add(CV.S('t3', 'bar', { x: TM, y: 1160, w: TW - TM * 2, h: 2, color: t.ink }));
+      x.add(CV.T('t4', 'No.561 / SPEC SHEET', { x: TM, y: 1046, w: 400, size: 10.5, font: 'mono', ls: .3, color: t.ink2 }));
+      x.add(CV.S('t5', 'bar', { x: TM, y: 1028, w: 92, h: 4, color: t.accent }));
+    },
+    glitch: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: TW / 2 - 160, y: 60, w: 320, h: 320, color: 'transparent', bw: 1.5, bc: 'rgba(238,242,248,.3)' }));
+      x.add(CV.S('t2', 'rect', { x: TW / 2 - 160, y: 60, w: 26, h: 26, color: t.accent }));
+      x.add(CV.S('t3', 'rect', { x: TW / 2 + 134, y: 354, w: 26, h: 26, color: t.cyan }));
+      for (var i = 0; i < 3; i++) x.add(CV.S('h' + i, 'rect', { x: TW - 40 - i * 6, y: 440 + i * 12, w: 10, h: 80, color: t.cyan, rot: -18, opacity: .55 - i * .13 }));
+    },
+    golden: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'rect', { x: TW / 2 - 150, y: 70, w: 170, h: 170, color: t.gold, opacity: .95 }));
+      x.add(CV.S('t2', 'rect', { x: TW / 2 - 116, y: 104, w: 170, h: 170, color: '#9fc0e8', opacity: .9 }));
+      x.add(CV.S('t3', 'rect', { x: TM, y: 34, w: 142, h: 30, color: t.accent }));
+      x.add(CV.S('t4', 'bar', { x: 48, y: 92, w: TW - 96, h: 2, color: t.ink, opacity: .5 }));
+      x.add(CV.S('t5', 'bar', { x: 48, y: 1150, w: TW - 96, h: 2, color: t.ink, opacity: .5 }));
+    },
+    ribbon: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'round', { x: TW / 2 - 190, y: 96, w: 380, h: 108, color: 'linear-gradient(135deg,#3b82f6 0%,#a855f7 100%)', radius: 30, rot: -18, opacity: .96 }));
+      x.add(CV.S('t2', 'round', { x: TW / 2 - 190, y: 226, w: 380, h: 108, color: 'linear-gradient(135deg,#a855f7 0%,#ec4899 100%)', radius: 30, rot: 18, opacity: .96 }));
+      x.add(CV.S('t3', 'star4', { x: TW - 220, y: 900, w: 170, h: 170, color: 'linear-gradient(135deg,#22d3ee 0%,#3b82f6 100%)', opacity: .92 }));
+      x.add(CV.S('t4', 'round', { x: TM, y: 36, w: 148, h: 28, color: '#2f7d4f', radius: 99 }));
+    },
+    serifgrid: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'circle', { x: -160, y: -140, w: 460, h: 460, color: '#ffffff', opacity: .5 }));
+      x.add(CV.S('mc0', 'circle', { x: TW / 2 - 172, y: 88, w: 344, h: 344, color: '#ffffff', opacity: .9, bw: 1, bc: 'rgba(27,34,48,.07)' }));
+      x.add(CV.S('mc1', 'circle', { x: TW - 150, y: 1000, w: 110, h: 110, color: '#ffffff', opacity: .8 }));
+      x.add(CV.S('mc2', 'circle', { x: 60, y: 1020, w: 76, h: 76, color: '#ffffff', opacity: .7 }));
+    },
+    flat: function (x) {
+      var t = x.t;
+      x.add(CV.S('t1', 'bar', { x: TM, y: 1114, w: 120, h: 7, color: t.accent }));
+      x.add(CV.S('t2', 'circle', { x: TW - 120, y: 960, w: 48, h: 48, color: t.accent, opacity: .16 }));
+    }
+  };
+
+  /* 竖版通用装饰：只用 token，不假设横向位置 */
+  function tallDecor(p, x) {
+    var t = x.t;
+    x.add(CV.S('td1', 'circle', { x: -140, y: -120, w: 420, h: 420, color: t.accent, opacity: .05 }));
+    x.add(CV.S('td2', 'bar', { x: TM, y: 1180, w: 44, h: 4, color: t.ink, opacity: .28 }));
+    if (TALLDECOR[p.id]) TALLDECOR[p.id](x);
+  }
+
+  LAYOUTS.stack = tallStack;
+  LAYOUTS.sheet = tallSheet;
+
   CV.LAYOUTS = [
-    { id: 'hero', name: '主视觉' }, { id: 'poster', name: '通栏大标' },
-    { id: 'split', name: '分栏头条' }, { id: 'feature', name: '图标巨化' }
+    { id: 'hero', master: 'wide', name: '主视觉', tall: false },
+    { id: 'poster', master: 'wide', name: '通栏大标', tall: false },
+    { id: 'split', master: 'wide', name: '分栏头条', tall: false },
+    { id: 'feature', master: 'wide', name: '图标巨化', tall: false },
+    { id: 'stack', master: 'tall', name: '竖版堆叠', tall: true },
+    { id: 'sheet', master: 'tall', name: '竖版色带', tall: true }
   ];
+  /* 横竖版式的等价替换表：横版 <-> 竖版 */
+  CV.ALT = { hero: 'stack', poster: 'sheet', split: 'sheet', feature: 'stack', stack: 'hero', sheet: 'poster' };
 
   /* ============================ 风格 ============================ */
   CV.STYLES = [
@@ -629,6 +819,17 @@
     }
   ];
 
+  /* 横向撕纸：用于竖版 zine */
+  function tearFlat() {
+    var w = TW > 0 ? TW : 900, h = 64, n = 26, s = 9, d = 'M0,0';
+    function rnd() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+    for (var i = 1; i <= n; i++) d += ' L' + (w * i / n).toFixed(1) + ',' + (h * 0.45 + (rnd() * 2 - 1) * 15).toFixed(1);
+    d += ' L' + w + ',' + h + ' L0,' + h + ' Z';
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '">'
+      + '<path d="' + d + '" fill="#faf5e8"/>'
+      + '<path d="' + d + '" fill="none" stroke="rgba(74,60,38,.28)" stroke-width="2.2"/></svg>';
+  }
+
   /* 手绘感雷达：顶点带抖动 */
   function radarHand() {
     var cx = 105, cy = 105, r = 88, n = 6, s = 5;
@@ -749,14 +950,27 @@
     return CV.STYLES[0];
   };
 
+  CV.layoutById = function (id) {
+    for (var i = 0; i < CV.LAYOUTS.length; i++) if (CV.LAYOUTS[i].id === id) return CV.LAYOUTS[i];
+    return CV.LAYOUTS[0];
+  };
+
   CV.compose = function (styleId, layoutId, content, ratio) {
     var p = CV.styleById(styleId);
     var RT = CV.ratioOf ? CV.ratioOf(ratio) : { id: "land", w: W, h: H };
+    var LO = CV.layoutById(layoutId);
+    var portrait = RT.h > RT.w;
+    if (!!LO.tall !== portrait) {
+      var alt = CV.layoutById(CV.ALT[LO.id] || (portrait ? 'stack' : 'hero'));
+      if (alt) { LO = alt; layoutId = alt.id; }
+    }
+    var MAST = (CV.MASTERS && CV.MASTERS[LO.master]) || { w: W, h: H };
     var t = p.t;
     var c = CV.assign(CV.defaultContent(), content || {});
     var L = [];
     var add = function (o) { L.push(o); return o; };
     var lay = LAYOUTS[layoutId] ? layoutId : 'hero';
+
     LAYOUTS[lay](t, c, add);
     merge(find(L, 'title'), p.title);
     merge(find(L, 'icon'), p.icon);
@@ -767,11 +981,12 @@
     var under = [];
     var addU = function (o) { under.push(o); return o; };
     var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p };
-    if (p.decor) p.decor(ctx);
+    if (LO.tall) tallDecor(p, ctx);
+    else if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
     return {
-      v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, style: p.id, layout: lay,
+      v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: p.bg, fx: (p.fx || []).slice(), dark: !!p.dark,
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
