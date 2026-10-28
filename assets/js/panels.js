@@ -74,6 +74,12 @@
   function colorRow(value, onpick) {
     var wrap = el('div');
     var sw = el('div', 'sw-row');
+    var curBtn = el('button', 'sw-btn on');
+    curBtn.type = 'button';
+    curBtn.style.background = value;
+    curBtn.title = '当前 ' + value;
+    curBtn.addEventListener('click', function () { onpick(value); });
+    sw.appendChild(curBtn);
     var t = (App.doc.tokens || {});
     var pal = [];
     ['ink', 'ink2', 'accent', 'bgSolid', 'card', 'gold', 'yellow', 'blue', 'red', 'grad', 'violet', 'steel'].forEach(function (k) {
@@ -84,7 +90,7 @@
       var b = el('button', 'sw-btn' + (c.toLowerCase() === String(value).toLowerCase() ? ' on' : ''));
       b.type = 'button'; b.style.background = c; b.title = c;
       b.addEventListener('click', function () {
-        $$('.sw-btn', sw).forEach(function (x) { x.classList.remove('on'); });
+        $$$('.sw-btn', sw).forEach(function (x) { x.classList.remove('on'); });
         b.classList.add('on');
         onpick(c);
       });
@@ -97,11 +103,21 @@
     ci.type = 'color';
     ci.value = /^#[0-9a-f]{6}$/i.test(String(value)) ? value : '#000000';
     var hx = document.createElement('input');
-    hx.className = 'hex'; hx.value = value;
-    ci.addEventListener('input', function () { hx.value = ci.value; onpick(ci.value); });
-    hx.addEventListener('change', function () {
+    hx.className = 'hex';
+    hx.value = value;
+    function setColor(v) {
+      ci.value = /^#[0-9a-f]{6}$/i.test(v) ? v : ci.value;
+      hx.value = v;
+      curBtn.style.background = v;
+      $$('.sw-btn', sw).forEach(function (x) { x.classList.remove('on'); });
+      curBtn.classList.add('on');
+      onpick(v);
+    }
+    ci.addEventListener('input', function () { setColor(ci.value); });
+    ci.addEventListener('change', function () { setColor(ci.value); });
+    hx.addEventListener('input', function () {
       var v = hx.value.trim();
-      if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) onpick(v);
+      if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) setColor(v);
     });
     cf.appendChild(ci); cf.appendChild(hx);
     wrap.appendChild(cf);
@@ -455,7 +471,11 @@
       p.appendChild(mk);
       return;
     }
-    var patch = function (o) { App.updateSel(o); };
+    var patch = function (o) {
+      App.suppress = true;
+      App.updateSel(o);
+      App.suppress = false;
+    };
     var live = function (o) {
       for (var k in o) l[k] = o[k];
       var e = App.map[l.id];
@@ -891,6 +911,16 @@
       if (e.target.files[0]) App.importJson(e.target.files[0]);
       e.target.value = '';
     });
+    var rsel = $('#ratioSelect');
+    if (rsel && window.CV && CV.RATIOS) {
+      CV.RATIOS.forEach(function (r) {
+        var op = document.createElement('option');
+        op.value = r.id;
+        op.textContent = r.name + ' ' + r.w + '×' + r.h;
+        rsel.appendChild(op);
+      });
+      rsel.addEventListener('change', function () { App.setRatio(rsel.value); });
+    }
     $('#btnAi').addEventListener('click', openAiModal);
     $('#btnFit').addEventListener('click', function () { App.fitZoom(); App.drawSel(); });
     $$('#scaleSeg button').forEach(function (b) {
@@ -923,6 +953,8 @@
     syncStyles(); syncHist();
     var sz = $('#sizeLabel');
     if (sz) sz.textContent = App.doc.w + ' × ' + App.doc.h;
+    var rsel2 = $('#ratioSelect');
+    if (rsel2 && App.doc.ratio) rsel2.value = App.doc.ratio;
   }
 
   window.Panels = {
