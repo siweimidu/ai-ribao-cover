@@ -283,3 +283,10 @@ textarea.input{height:auto;min-height:64px;padding:8px 10px;line-height:1.5;resi
 .icpop-i span{font-size:8px;color:var(--muted-foreground);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .icpop-a{display:flex;gap:6px;margin-top:9px}
 .icpop-a .btn{flex:1;justify-content:center}
+
+/* ---------- 图标拖拽幽灵 ---------- */
+.icdrag{position:fixed;left:0;top:0;width:72px;height:72px;z-index:9999;pointer-events:none;
+        background:#fff;border:1px solid var(--border);border-radius:12px;display:grid;place-items:center;
+        box-shadow:0 18px 40px -14px rgba(14,17,21,.45),0 0 0 3px rgba(0,101,253,.18);
+        transition:transform .04s linear}
+.icdrag img{max-width:82%;max-height:82%;object-fit:contain}
