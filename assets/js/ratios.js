@@ -4,6 +4,10 @@
 (function () {
   var CV = (window.CV = window.CV || {});
   CV.MASTER = { w: 1160, h: 720 };
+  CV.MASTERS = {
+    wide: { w: 1160, h: 720 },
+    tall: { w: 900, h: 1200 }
+  };
 
   CV.RATIOS = [
     { id: 'square',   name: '方形 1:1',        family: '1:1',   w: 1080, h: 1080 },
@@ -32,7 +36,7 @@
   };
 
   CV.metrics = function (doc) {
-    var M = CV.MASTER;
+    var M = (doc && doc.master) || CV.MASTER;
     var W = (doc && doc.w) || M.w;
     var H = (doc && doc.h) || M.h;
     var k = W / M.w;
