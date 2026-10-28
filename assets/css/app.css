@@ -2,12 +2,13 @@
    AI 日报封面工作室 — 应用外壳
    设计语言：Doubao Design Library（冷调、极简、以描边代替阴影、紧凑密度）
    ========================================================================== */
-@font-face{font-family:'CV-Heavy';src:url('/font/MiSans-Heavy.ttf') format('truetype');font-weight:900;font-display:block}
-@font-face{font-family:'CV-Bold';src:url('/font/MiSans-Bold.ttf') format('truetype');font-weight:700;font-display:block}
-@font-face{font-family:'CV-Bahn';src:url('/font/bahnschrift.ttf') format('truetype');font-weight:100 900;font-display:block}
-@font-face{font-family:'CV-Impact';src:url('/font/impact.ttf') format('truetype');font-display:block}
-@font-face{font-family:'CV-AriBlack';src:url('/font/ariblk.ttf') format('truetype');font-display:block}
-@font-face{font-family:'CV-Puhui';src:url('/font/Alibaba-PuHuiTi-Bold.otf') format('opentype');font-weight:700;font-display:block}
+@font-face{font-family:'CV-Heavy';src:url('../../font/MiSans-Heavy.ttf') format('truetype');font-weight:900;font-display:block}
+@font-face{font-family:'CV-Bold';src:url('../../font/MiSans-Bold.ttf') format('truetype');font-weight:700;font-display:block}
+@font-face{font-family:'CV-Bahn';src:url('../../font/bahnschrift.ttf') format('truetype');font-weight:100 900;font-display:block}
+@font-face{font-family:'CV-Impact';src:url('../../font/impact.ttf') format('truetype');font-display:block}
+@font-face{font-family:'CV-AriBlack';src:url('../../font/ariblk.ttf') format('truetype');font-display:block}
+@font-face{font-family:'CV-Hand';src:url('../../font/STXINGKA.TTF') format('truetype');font-display:swap}
+@font-face{font-family:'CV-Puhui';src:url('../../font/Alibaba-PuHuiTi-Bold.otf') format('opentype');font-weight:700;font-display:block}
 
 :root{
   /* ---- Doubao semantic ---- */
@@ -18,7 +19,7 @@
   --accent:#e5e9ff; --accent-foreground:#00266b;
   --destructive:#ef4444; --border:#e7eaef; --input:#e7eaef; --ring:#557fff;
   --sidebar:#eff1f4; --sidebar-accent:#d4daff;
-  --font-sans:"MiSans","Stack Sans Text",ui-sans-serif,system-ui,"Segoe UI","Microsoft YaHei",sans-serif;
+  --font-sans:"MiSans","Noto Sans SC","Stack Sans Text",ui-sans-serif,system-ui,"Segoe UI","Microsoft YaHei",sans-serif;
   --font-mono:"Bahnschrift",ui-monospace,"JetBrains Mono",Consolas,monospace;
   --radius:19.2px; --radius-sm:10px; --radius-xs:7px;
   --spacing:3.84px;
