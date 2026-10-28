@@ -341,6 +341,12 @@
         x.add(CV.S('rule1', 'bar', { x: 56, y: 618, w: 118, h: 8, color: t.accent }));
         x.add(CV.S('rule2', 'bar', { x: 56, y: 632, w: 62, h: 4, color: t.ink, opacity: .5 }));
         x.add(CV.S('rule3', 'bar', { x: 56, y: 646, w: 26, h: 3, color: t.accent, opacity: .8 }));
+        x.add(CV.T('spray', (x.c.spray || '不相上下?'), {
+          x: lay === 'poster' ? 110 : 296, y: lay === 'poster' ? 116 : 592, w: 280,
+          size: lay === 'poster' ? 40 : 38, font: 'hand', weight: 400,
+          color: t.accent, rot: -7, opacity: .95
+        }));
+        x.add(CV.R('radar6', radarHand(), { x: lay === 'poster' ? 900 : 596, y: lay === 'poster' ? 470 : 470, w: 176, h: 176, opacity: .75 }));
       }
     },
     /* 13 —— 黑鸦：贴纸描边 --------------------------------- */
@@ -379,8 +385,136 @@
         x.add(CV.S('edge', 'rect', { x: 0, y: 0, w: 14, h: H, color: t.accent, opacity: .9 }));
         x.add(CV.S('ul', 'bar', { x: 74, y: 470, w: 300, h: 14, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
       }
+    },
+
+    /* 15 —— 真报纸头版 ------------------------------------ */
+    {
+      id: 'newspaper', name: '真报纸', sub: '灵感港 · 报头 / 多栏 / 密排',
+      t: { ink: '#1e1a16', ink2: '#6f6558', accent: '#b3261e', bgSolid: '#efe7d6' },
+      bg: 'radial-gradient(120% 100% at 30% 0%,#f8f2e4 0%,#efe7d6 48%,#e3d8c1 100%)',
+      fx: ['paper', 'wrinkle', 'grain', 'vignette'], dark: false,
+      title: { font: 'serif', size: 96, lh: 1.04, ls: .01, color: '#1e1a16' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('r1', 'bar', { x: 48, y: 96, w: W - 96, h: 3, color: t.ink }));
+        x.add(CV.S('r2', 'bar', { x: 48, y: 102, w: W - 96, h: 1, color: t.ink, opacity: .65 }));
+        x.add(CV.S('tag', 'rect', { x: 48, y: 30, w: 132, h: 30, color: t.accent }));
+        x.add(CV.S('r3', 'bar', { x: 48, y: 424, w: W - 96, h: 1, color: t.ink, opacity: .5 }));
+        x.add(CV.T('mast', 'AI   日   报', {
+          x: 196, y: 16, w: 620, size: 42, font: 'serif', weight: 700, ls: .14,
+          color: t.ink, align: 'left'
+        }));
+        x.add(CV.T('issue', '第 561 期 · 2026.10.28', {
+          x: 830, y: 40, w: 282, size: 13, font: 'mono', ls: .1, color: t.ink2, align: 'right'
+        }));
+        var body = (x.c.sub || '') + '　' + (x.c.foot || '') + '　' + (x.c.kicker || '') + '　' +
+          '每日精选 AI 前沿动态，覆盖模型发布、产品更新、算力与资本动向，为创作者提供可直接使用的选题与判读。　' +
+          (x.c.sub || '') + '　' + (x.c.foot || '') + '　' + (x.c.kicker || '') + '　' +
+          '本期共收录 22 条资讯，全部经人工核对来源，标注可信度与影响面，便于二次创作时引用。';
+        x.add(CV.T('body', body, {
+          x: 48, y: 442, w: W - 96, size: 12.5, font: 'serif', weight: 400, lh: 1.82,
+          ls: .015, color: '#3a332b', cols: 3, gap: 30, rule: 'rgba(30,26,22,.28)', maxH: 206
+        }));
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 48, y: 128, w: 900, size: 92, align: 'left' });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 48, y: 72, w: 400, size: 12, color: t.ink2, ls: .1 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 48, y: 32, w: 150, size: 13, font: 'mono', color: '#fdf6e8', ls: .06, align: 'center' });
+        var d = find(L, 'date');
+        if (d) merge(d, { opacity: 0 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 48, y: 340, w: 780, size: 17, lh: 1.6, color: '#4a4238' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 48, y: 656, w: 620, size: 11, color: t.ink2, ls: .1 });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 940, y: 128, w: 172, h: 172 });
+      }
+    },
+    /* 16 —— 技术编辑部 ------------------------------------ */
+    {
+      id: 'editorial', name: '技术编辑部', sub: '小小小名 · 规格表与细密标注',
+      t: { ink: '#0b0b0c', ink2: '#77787c', accent: '#e2231a', bgSolid: '#fbfbfa' },
+      bg: 'linear-gradient(180deg,#ffffff 0%,#fbfbfa 62%,#f1f1ef 100%)',
+      fx: ['grain'], dark: false,
+      title: { font: 'black', size: 92, lh: .98, ls: -.03, color: '#0b0b0c' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('top', 'bar', { x: 56, y: 40, w: 1048, h: 2, color: t.ink }));
+        x.add(CV.S('bot', 'bar', { x: 56, y: 664, w: 1048, h: 2, color: t.ink }));
+        x.add(CV.S('box', 'rect', { x: 700, y: 96, w: 404, h: 404, color: 'transparent', bw: 2, bc: t.ink }));
+        x.add(CV.T('nolabel', 'No.561 / SPEC SHEET', {
+          x: 56, y: 50, w: 420, size: 10.5, font: 'mono', ls: .34, color: t.ink2
+        }));
+        x.add(CV.T('seq', '01 — 06', {
+          x: 960, y: 50, w: 144, size: 10.5, font: 'mono', ls: .3, color: t.ink2, align: 'right'
+        }));
+        var rows = [
+          ['MODEL', 'AI 日报'],
+          ['PERIOD', x.c.date || '2026.10.28'],
+          ['ENTRIES', '22 条'],
+          ['LATENCY', '5 min 54 s']
+        ];
+        rows.forEach(function (r, i) {
+          x.add(CV.T('sk' + i, r[0], { x: 700, y: 512 + i * 34, w: 110, size: 10, font: 'mono', ls: .22, color: t.ink2 }));
+          x.add(CV.T('sv' + i, r[1], { x: 812, y: 508 + i * 34, w: 292, size: 15, font: 'bold', weight: 700, ls: .02, color: t.ink }));
+          if (i) x.add(CV.S('sl' + i, 'bar', { x: 700, y: 508 + i * 34, w: 404, h: 1, color: t.ink, opacity: .12 }));
+        });
+        x.add(CV.T('mark', 'AI · DAILY · BRIEF', {
+          x: 56, y: 606, w: 480, size: 10.5, font: 'mono', ls: .32, color: t.ink2
+        }));
+        x.add(CV.S('acc', 'bar', { x: 56, y: 588, w: 92, h: 4, color: t.accent }));
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 744, y: 140, w: 316, h: 316 });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 56, y: 172, w: 616, size: 88 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 56, y: 110, w: 480, size: 11, ls: .2, color: t.ink2 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 56, y: 74, w: 520, size: 17, ls: .04, color: t.ink });
+        var d = find(L, 'date');
+        if (d) merge(d, { opacity: 0 });
+        var r = find(L, 'rule');
+        if (r) merge(r, { x: 56, y: 148, w: 64, h: 5 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 56, y: 512, w: 600, size: 17, lh: 1.62, color: '#3d3e42' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 56, y: 634, w: 600, size: 10.5, ls: .16, color: t.ink2 });
+      }
     }
   ];
+
+  /* 手绘感雷达：顶点带抖动 */
+  function radarHand() {
+    var cx = 105, cy = 105, r = 88, n = 6, s = 5;
+    function rnd() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+    var vals = [.72, .95, .6, .82, .68, .9], pts = [], grid = [];
+    for (var i = 0; i < n; i++) {
+      var a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      var rr = r * vals[i] * (1 + (rnd() - .5) * .06);
+      pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]);
+    }
+    for (var g = 1; g <= 3; g++) {
+      var gp = [];
+      for (var j = 0; j < n; j++) {
+        var ag = -Math.PI / 2 + (j * 2 * Math.PI) / n;
+        gp.push((cx + Math.cos(ag) * r * g / 3).toFixed(1) + ',' + (cy + Math.sin(ag) * r * g / 3).toFixed(1));
+      }
+      grid.push('<polygon points="' + gp.join(' ') + '" fill="none" stroke="#141210" stroke-opacity="' + (.1 + g * .05) + '" stroke-width="1"/>');
+    }
+    var d = '';
+    for (var k = 0; k < n; k++) {
+      var ak = -Math.PI / 2 + (k * 2 * Math.PI) / n;
+      d += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + Math.cos(ak) * r).toFixed(1) + '" y2="' + (cy + Math.sin(ak) * r).toFixed(1) + '" stroke="#141210" stroke-opacity=".24" stroke-width="1"/>';
+    }
+    var pd = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+    for (var m = 1; m < n; m++) pd += ' L' + pts[m][0].toFixed(1) + ',' + pts[m][1].toFixed(1);
+    pd += ' Z';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 210" width="100%" height="100%">'
+      + grid.join('') + d
+      + '<path d="' + pd + '" fill="#c8102e" fill-opacity=".16" stroke="#c8102e" stroke-width="2.4" stroke-linejoin="round"/>'
+      + '</svg>';
+  }
 
   /* 撕纸边：确定性锯齿 + 白色纸芯 + 暗边 */
   function tearRaw(w) {
