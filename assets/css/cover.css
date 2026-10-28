@@ -8,11 +8,11 @@
 .cv *{box-sizing:border-box}
 .cv-bg{position:absolute;inset:0;z-index:0}
 .cv-fx{position:absolute;inset:0;pointer-events:none}
-.cv-fx.grain{background-image:url(/assets/tex/grain.png);background-size:256px 256px;
+.cv-fx.grain{background-image:url(../tex/grain.png);background-size:256px 256px;
              mix-blend-mode:multiply;opacity:.13;z-index:800}
-.cv-fx.paper{background-image:url(/assets/tex/paper.png);background-size:256px 256px;
+.cv-fx.paper{background-image:url(../tex/paper.png);background-size:256px 256px;
              mix-blend-mode:multiply;opacity:.16;z-index:801}
-.cv-fx.wrinkle{background-image:url(/assets/tex/wrinkle.png);background-size:512px 512px;
+.cv-fx.wrinkle{background-image:url(../tex/wrinkle.png);background-size:512px 512px;
                mix-blend-mode:multiply;opacity:.2;z-index:802}
 .cv-fx.vignette{background:radial-gradient(125% 105% at 50% 42%,transparent 52%,rgba(38,28,14,.16) 100%);z-index:803}
 .cv-fx.scan{mix-blend-mode:overlay;opacity:.5;z-index:804;
@@ -65,4 +65,6 @@
 .ff-bahn{font-family:"CV-Bahn","Bahnschrift",system-ui,sans-serif}
 .ff-impact{font-family:"CV-Impact","Impact","Haettenschweiler",sans-serif}
 .ff-black{font-family:"CV-AriBlack","Arial Black","MiSans",sans-serif}
+.ff-hand{font-family:"CV-Hand","华文行楷","STXingkai",cursive}
+.ff-serif{font-family:"STZhongsong","华文中宋","Noto Serif SC","Noto Serif SC",serif}
 .ff-mono{font-family:var(--font-mono,"Bahnschrift",monospace)}
