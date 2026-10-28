@@ -61,10 +61,22 @@
     if (ic) c.icon = ic.icon;
     return c;
   };
+  App.setRatio = function (id) {
+    var RT = CV.ratioOf(id);
+    var c = App.content();
+    var doc = CV.compose(App.doc.style, App.doc.layout, c, RT.id);
+    doc.id = App.doc.id;
+    App.doc = doc;
+    App.sel = null;
+    App.pushHist();
+    App.apply();
+    saveLocal();
+    App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
+  };
   App.recompose = function (opts) {
     opts = opts || {};
     var content = opts.content || App.content();
-    var doc = CV.compose(opts.style || App.doc.style, opts.layout || App.doc.layout, content);
+    var doc = CV.compose(opts.style || App.doc.style, opts.layout || App.doc.layout, content, opts.ratio || App.doc.ratio);
     doc.id = App.doc.id;
     App.doc = doc; App.sel = null;
     App.pushHist(); App.apply(); saveLocal();
@@ -501,7 +513,8 @@
   /* ---------------- 启动 ---------------- */
   App.boot = function () {
     var doc = App.loadLocal();
-    if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent());
+    if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent(), 'land');
+    if (!doc.ratio) doc.ratio = 'land';
     App.doc = doc;
     App.hist = [JSON.stringify(doc)];
     App.hi = 0;
