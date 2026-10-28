@@ -228,13 +228,16 @@
     p.appendChild(note);
   }
 
-  /* ---------- 图标库（按公司分组 · 全变体 · 左键拖拽 · 右键弹窗） ---------- */
-  var GROUPS = [];
-
-  var V_ORDER = ['symbol-color', 'symbol-black', 'symbol-white', 'symbol-trans-color', 'symbol-trans-black',
-    'appicon', 'appicon-trans', 'tile-light', 'tile-dark', 'tile-light-app', 'tile-dark-app',
-    'wordmark-color', 'wordmark-black', 'wordmark-white'];
-  function vRank(v) { var i = V_ORDER.indexOf(v); return i < 0 ? 90 : i; }
+  /* ---------- 图标库：每个模型一个代表图标，右键看全部变体 ---------- */
+  var GROUPS = [];      // 展平后的模型列表
+  var BY_VENDOR = {};   // 厂商 -> 模型数组
+  var V_ORDER = ['symbol-color', 'symbol-black', 'appicon', 'symbol-trans-color', 'tile-light', 'symbol-white', 'tile-dark', 'appicon-trans'];
+  function repVariant(list) {
+    for (var i = 0; i < V_ORDER.length; i++) if (list.indexOf(V_ORDER[i]) > -1) return V_ORDER[i];
+    return list[0];
+  }
+  function variantURL(id, v, dark) { return CV.iconSrc(id + '#' + v, dark); }
+  function tileBg(v) { return /white/.test(v) ? '#151517' : '#ffffff'; }
 
   function buildIconPane() {
     var p = $('#paneIcons');
@@ -243,21 +246,28 @@
     sc.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
     var si = input('', function (v) { renderIcons(v); });
     si.id = 'iconSearchInput';
-    si.placeholder = '搜品牌：kimi / claude / 智谱 / 豆包';
+    si.placeholder = '搜索模型…';
     sc.appendChild(si);
     p.appendChild(sc);
+    var row = el('div', 'icacts');
+    var b1 = el('button', 'btn sm', '导入图标');
+    var b2 = el('button', 'btn sm', '导出图标');
+    [b1, b2].forEach(function (b) {
+      b.type = 'button';
+      b.addEventListener('click', function () { App.toast('图标库固定使用 assets/icons，如需增改请直接替换文件', 'ok'); });
+      row.appendChild(b);
+    });
+    p.appendChild(row);
     var bar = el('div', 'icbar');
     var cnt = el('span', 'iccount', '');
     cnt.id = 'iconCount';
     bar.appendChild(cnt);
-    bar.appendChild(el('span', 'ichint', '左键拖入画布 · 右键看全部变体'));
+    bar.appendChild(el('span', 'ichint', '左键拖入画布 · 右键看变体'));
     p.appendChild(bar);
     var list = el('div', 'iclist');
     list.id = 'iconList';
     p.appendChild(list);
   }
-
-  function variantURL(id, v, dark) { return CV.iconSrc(id + '#' + v, dark); }
 
   function renderIcons(q) {
     var host = $('#iconList');
@@ -273,80 +283,81 @@
     }
     if (!hits.length) { host.appendChild(el('p', 'empty', '没有匹配的品牌')); return; }
     var frag = document.createDocumentFragment();
-    hits.slice(0, 80).forEach(function (g) { frag.appendChild(groupRow(g)); });
+    hits.slice(0, 400).forEach(function (g) {
+      var v = repVariant(g.variants);
+      var tile = el('div', 'ictile');
+      tile.title = g.vendor + ' / ' + g.product + '（' + g.variants.length + ' 个变体）';
+      var img = document.createElement('img');
+      img.src = variantURL(g.id, v, App.doc.dark);
+      img.alt = g.product;
+      img.draggable = false;
+      tile.appendChild(img);
+      if (g.variants.length > 1) tile.appendChild(el('span', 'ibadge', String(g.variants.length)));
+      tile.addEventListener('pointerdown', function (e) { startIconDrag(e, g.id + '#' + v); });
+      tile.addEventListener('click', function () {
+        if (App.__skipClick) { App.__skipClick = false; return; }
+        placeIcon(g.id + '#' + v, 'main');
+      });
+      tile.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        openVendorPopover(g, e.clientX, e.clientY);
+      });
+      frag.appendChild(tile);
+    });
     host.appendChild(frag);
   }
 
-  function groupRow(g) {
-    var box = el('div', 'icg');
-    var head = el('div', 'icg-h');
-    head.appendChild(el('span', 'icg-n', g.product));
-    head.appendChild(el('span', 'icg-s', g.variants.length + ' 变体'));
-    head.appendChild(el('span', 'icg-v', g.vendor));
-    box.appendChild(head);
-    var row = el('div', 'icg-b');
-    g.variants.forEach(function (v) {
-      var ref = g.id + '#' + v;
-      var t = el('div', 'ictile');
-      t.title = g.vendor + ' / ' + g.product + ' · ' + v + ' — 拖入画布，或右键查看';
-      var img = document.createElement('img');
-      img.src = variantURL(g.id, v, App.doc.dark);
-      img.alt = v;
-      img.draggable = false;
-      t.appendChild(img);
-      t.appendChild(el('span', 'itl', v.replace(/^(symbol|tile|wordmark|appicon)-?/, '').replace(/-(app)$/, '') || 'logo'));
-      t.addEventListener('pointerdown', function (e) { startIconDrag(e, ref); });
-      t.addEventListener('click', function () {
-        if (App.__skipClick) { App.__skipClick = false; return; }
-        placeIcon(ref, 'main');
-      });
-      t.addEventListener('contextmenu', function (e) { e.preventDefault(); openVariants(g, e.clientX, e.clientY, v); });
-      row.appendChild(t);
-    });
-    box.appendChild(row);
-    return box;
-  }
-
+  /* ---------- 右键：该厂商全部模型 + 全部变体 ---------- */
   var pop = null;
   function closePop() { if (pop) { pop.remove(); pop = null; } }
-  function openVariants(g, x, y, cur) {
+  function openVendorPopover(model, x, y) {
     closePop();
+    var models = BY_VENDOR[model.vendor] || [model];
+    var total = 0;
+    models.forEach(function (m) { total += m.variants.length; });
     pop = el('div', 'icpop');
-    var head = el('div', 'icpop-h');
-    head.innerHTML = '<b>' + CV.esc(g.product) + '</b><span>' + CV.esc(g.vendor) + ' · ' + g.variants.length + ' 个变体</span>';
+    var head = el('div', 'icp-h');
+    var htxt = el('div', 'icp-ht');
+    htxt.innerHTML = '<b>' + CV.esc(model.vendor) + '</b><span>' + models.length + ' 个模型 · ' + total + ' 个图标</span>';
+    var xBtn = el('button', 'icp-x', '关闭');
+    xBtn.type = 'button';
+    xBtn.addEventListener('click', closePop);
+    head.appendChild(htxt);
+    head.appendChild(xBtn);
     pop.appendChild(head);
-    var grid = el('div', 'icpop-g');
-    g.variants.forEach(function (v) {
-      var b = el('button', 'icpop-i' + (v === cur ? ' on' : ''));
-      b.type = 'button';
-      b.title = v;
-      var im = document.createElement('img');
-      im.src = variantURL(g.id, v, App.doc.dark);
-      b.appendChild(im);
-      b.appendChild(el('span', null, v));
-      b.addEventListener('pointerdown', function (e) { startIconDrag(e, g.id + '#' + v, true); });
-      b.addEventListener('click', function () {
-        if (App.__skipClick) { App.__skipClick = false; return; }
-        placeIcon(g.id + '#' + v, 'main');
-        closePop();
+    var body = el('div', 'icp-b');
+    models.forEach(function (m) {
+      var sec = el('div', 'icp-sec');
+      var t = el('div', 'icp-t');
+      t.innerHTML = CV.esc(m.product) + '<i>' + m.variants.length + '</i>';
+      sec.appendChild(t);
+      var grid = el('div', 'icp-g');
+      m.variants.forEach(function (v) {
+        var ref = m.id + '#' + v;
+        var b = el('button', 'icp-i');
+        b.type = 'button';
+        b.title = m.product + ' · ' + v;
+        b.style.background = tileBg(v);
+        var im = document.createElement('img');
+        im.src = variantURL(m.id, v, App.doc.dark);
+        im.draggable = false;
+        b.appendChild(im);
+        b.addEventListener('pointerdown', function (e) { startIconDrag(e, ref, true); });
+        b.addEventListener('click', function () {
+          if (App.__skipClick) { App.__skipClick = false; return; }
+          placeIcon(ref, 'main');
+          closePop();
+        });
+        grid.appendChild(b);
       });
-      grid.appendChild(b);
+      sec.appendChild(grid);
+      body.appendChild(sec);
     });
-    pop.appendChild(grid);
-    var acts = el('div', 'icpop-a');
-    var key = cur || g.variants[0];
-    var a1 = el('button', 'btn sm', '设为主视觉');
-    a1.type = 'button';
-    a1.addEventListener('click', function () { placeIcon(g.id + '#' + key, 'main'); closePop(); });
-    var a2 = el('button', 'btn sm', '插入为新图层');
-    a2.type = 'button';
-    a2.addEventListener('click', function () { placeIcon(g.id + '#' + key, 'layer'); closePop(); });
-    acts.appendChild(a1); acts.appendChild(a2);
-    pop.appendChild(acts);
+    pop.appendChild(body);
     document.body.appendChild(pop);
-    var w = pop.offsetWidth || 340, h = pop.offsetHeight || 260;
-    pop.style.left = Math.max(8, Math.min(x, window.innerWidth - w - 12)) + 'px';
-    pop.style.top = Math.max(8, Math.min(y, window.innerHeight - h - 12)) + 'px';
+    var w = pop.offsetWidth || 460, h = pop.offsetHeight || 420;
+    pop.style.left = Math.max(10, Math.min(x, window.innerWidth - w - 14)) + 'px';
+    pop.style.top = Math.max(10, Math.min(y, window.innerHeight - h - 14)) + 'px';
     setTimeout(function () { document.addEventListener('pointerdown', onDoc, true); }, 0);
     function onDoc(ev) {
       if (pop && !pop.contains(ev.target)) {
@@ -356,7 +367,7 @@
     }
   }
 
-  /* ---------- 指针拖拽：不依赖 HTML5 drag，指针事件全程接管 ---------- */
+  /* ---------- 指针拖拽：不依赖 HTML5 drag ---------- */
   var ghostEl = null;
   function docPoint(cx, cy) {
     var cv = document.querySelector('#cover .cv');
@@ -364,11 +375,11 @@
     var r = cv.getBoundingClientRect();
     if (cx < r.left || cx > r.right || cy < r.top || cy > r.bottom) return null;
     var z = (window.App && App.zoom) || 1;
-    return { x: (cx - r.left) / z, y: (cy - r.top) / z, w: r.width / z };
+    return { x: (cx - r.left) / z, y: (cy - r.top) / z };
   }
   function startIconDrag(ev, ref, fromPop) {
     if (ev.button !== 0) return;
-    var sx = ev.clientX, sy = ev.clientY, moved = false, placed = false;
+    var sx = ev.clientX, sy = ev.clientY, moved = false;
     function move(e) {
       if (!moved) {
         if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) return;
@@ -394,7 +405,6 @@
       if (!moved) return;
       var dp = docPoint(e.clientX, e.clientY);
       if (!dp) return;
-      placed = true;
       App.__skipClick = true;
       var size = 240;
       App.addLayer(CV.I('icon', ref, {
@@ -894,11 +904,10 @@
     fetch('assets/icons.json').then(function (r) { return r.json(); }).then(function (j) {
       ICONS = j.items || [];
       GROUPS = ICONS.map(function (it) {
-        return {
-          id: it.id, vendor: it.vendor, product: it.product, kw: it.kw,
-          variants: it.variants.slice().sort(function (a, b) { return vRank(a) - vRank(b); })
-        };
+        return { id: it.id, vendor: it.vendor, product: it.product, kw: it.kw, variants: it.variants.slice() };
       });
+      BY_VENDOR = {};
+      GROUPS.forEach(function (m) { (BY_VENDOR[m.vendor] = BY_VENDOR[m.vendor] || []).push(m); });
       renderIcons($('#iconSearchInput') ? $('#iconSearchInput').value : '');
     }).catch(function () { App.toast('图标索引加载失败', 'err'); });
   }
