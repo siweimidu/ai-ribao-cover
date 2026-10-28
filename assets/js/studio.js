@@ -63,20 +63,20 @@
   };
   App.setRatio = function (id) {
     var RT = CV.ratioOf(id);
-    var c = App.content();
-    var doc = CV.compose(App.doc.style, App.doc.layout, c, RT.id);
-    doc.id = App.doc.id;
-    App.doc = doc;
-    App.sel = null;
-    App.pushHist();
+    App.doc.w = RT.w;
+    App.doc.h = RT.h;
+    App.doc.ratio = RT.id;
     App.apply();
+    App.commit();
     saveLocal();
     App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
   };
   App.recompose = function (opts) {
     opts = opts || {};
     var content = opts.content || App.content();
+    var keep = App.doc.layers.filter(function (l) { return l.type === 'image' && l.role === 'bg'; });
     var doc = CV.compose(opts.style || App.doc.style, opts.layout || App.doc.layout, content, opts.ratio || App.doc.ratio);
+    if (keep.length) doc.layers = keep.concat(doc.layers);
     doc.id = App.doc.id;
     App.doc = doc; App.sel = null;
     App.pushHist(); App.apply(); saveLocal();
@@ -628,6 +628,61 @@
     if (i > 0) { App.doc.layers.splice(i, 1); App.doc.layers.unshift(l); }
     App.apply(); App.commit();
     App.toast('已设为背景图', 'ok');
+  };
+  function toDataUrl(url) {
+    return fetch(url).then(function (r) { return r.blob(); }).then(function (b) {
+      return new Promise(function (res, rej) {
+        var fr = new FileReader();
+        fr.onload = function () { res(fr.result); };
+        fr.onerror = rej;
+        fr.readAsDataURL(b);
+      });
+    });
+  }
+  App.exportHtml = function () {
+    App.toast('正在打包 HTML…', 'wait');
+    var steps = [fetch('assets/css/cover.css').then(function (r) { return r.text(); })];
+    Promise.all(steps).then(function (arr) {
+      var css = arr[0];
+      var texNames = ['grain', 'paper', 'wrinkle', 'dot', 'stripe'];
+      return Promise.all(texNames.map(function (n) {
+        return toDataUrl('assets/tex/' + n + '.png').then(function (d) { return { n: n, d: d }; }).catch(function () { return null; });
+      })).then(function (tex) {
+        tex.forEach(function (t) {
+          if (!t) return;
+          css = css.split('../tex/' + t.n + '.png').join(t.d);
+        });
+        return css;
+      });
+    }).then(function (css) {
+      var host = document.querySelector('#cover .cv');
+      var clone = host.cloneNode(true);
+      var imgs = [].slice.call(clone.querySelectorAll('img'));
+      return Promise.all(imgs.map(function (im) {
+        var src = im.getAttribute('src') || '';
+        if (!src || src.indexOf('data:') === 0) return null;
+        var abs = src.charAt(0) === '/' ? src.slice(1) : src;
+        return toDataUrl(abs).then(function (d) { im.setAttribute('src', d); }).catch(function () { });
+      })).then(function () { return css; });
+    }).then(function (css) {
+      var host = document.querySelector('#cover .cv');
+      var clone = host.cloneNode(true);
+      clone.classList.remove('cv-edit');
+      var html = '<!doctype html>\n<html lang="zh-CN">\n<head>\n<meta charset="utf-8">\n' +
+        '<meta name="viewport" content="width=device-width,initial-scale=1">\n' +
+        '<title>' + CV.esc(App.slug()) + '</title>\n' +
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Archivo+Black&display=swap">\n' +
+        '<style>\n*{margin:0;padding:0;box-sizing:border-box}\nhtml,body{background:#e9edf3;min-height:100%;display:grid;place-items:center;padding:24px}\n' +
+        css + '\n</style>\n</head>\n<body>\n' + clone.outerHTML + '\n</body>\n</html>\n';
+      App.__lastHtml = html;
+      var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = App.slug() + '.html';
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
+      App.toast('已导出 HTML（含内联图片/纹理，双击即开）', 'ok');
+    }).catch(function (e) { App.toast('导出失败：' + e.message, 'err'); });
   };
   App.exportJson = function () {
     var blob = new Blob([JSON.stringify(App.doc, null, 2)], { type: 'application/json' });
