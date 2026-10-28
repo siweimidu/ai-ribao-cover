@@ -77,7 +77,7 @@
 
   CV.emptyDoc = function () {
     return {
-      v: CV.VERSION, w: CV.W, h: CV.H, style: 'swiss', layout: 'hero',
+      v: CV.VERSION, w: CV.W, h: CV.H, ratio: 'land', style: 'swiss', layout: 'hero',
       bg: '#ffffff', fx: [], dark: false, tokens: {},
       rgb: 20, layers: []
     };
