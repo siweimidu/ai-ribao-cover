@@ -29,7 +29,7 @@
 .cv-text.upper{text-transform:uppercase}
 .cv-text.italic{font-style:italic}
 .cv-text .hl{color:var(--hl,#e2231a)}
-.cv-icon{object-fit:contain;-webkit-user-drag:none;user-select:none;pointer-events:none}
+.cv-icon{object-fit:contain;-webkit-user-drag:none;user-select:none;pointer-events:auto}
 .cv-shape{position:absolute}
 
 /* shape geometry */

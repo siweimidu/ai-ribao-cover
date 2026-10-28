@@ -295,8 +295,88 @@
         var fl = find(L, 'footline');
         if (fl) merge(fl, { opacity: 0 });
       }
+    },
+
+    /* 12 —— 荡殇永魔：撕纸拼贴 ----------------------------- */
+    {
+      id: 'zine', name: '撕纸拼贴', sub: '荡殇永魔 · 撕口与粗黑对照',
+      t: { ink: '#141210', ink2: '#6d6459', accent: '#c8102e', blue: '#1c5fd0', bgSolid: '#efe8d9' },
+      bg: 'radial-gradient(128% 108% at 16% 2%,#f8f1e2 0%,#eee6d5 48%,#dfd4be 100%)',
+      fx: ['paper', 'wrinkle', 'grain', 'vignette'], dark: false,
+      title: { font: 'black', size: 96, lh: 0.94, ls: -.028, color: '#141210' },
+      decor: function (x) {
+        var t = x.t, L = x.L, lay = x.layout;
+        var tx = lay === 'poster' ? 0 : lay === 'feature' ? 730 : lay === 'split' ? 600 : 540;
+        if (tx) {
+          x.add(CV.S('sheet', 'rect', { x: tx + 82, y: 0, w: W - tx - 82, h: H, color: 'rgba(255,250,236,.55)' }));
+          x.add(CV.S('shade', 'rect', { x: tx - 96, y: 0, w: 98, h: H, color: 'linear-gradient(to right,rgba(74,56,30,0),rgba(74,56,30,.30))' }));
+          x.add(CV.R('tear', tearRaw(82), { x: tx, y: 0, w: 82, h: H }));
+          x.add(CV.S('blot', 'blob', { x: 30, y: 130, w: 560, h: 330, color: t.accent, opacity: .055, rot: -3 }));
+        }
+        var ti = find(L, 'title');
+        if (ti && lay !== 'poster') merge(ti, { x: 52, w: tx ? tx - 40 : 620, size: lay === 'feature' ? 86 : 98, maxH: 340 });
+        if (ti && lay === 'poster') merge(ti, { size: 104 });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, lay === 'feature' ? { x: 838, y: 210, w: 250, h: 250 } : { x: tx ? tx + 96 : 712, y: 132, w: 372, h: 372 });
+        x.add(CV.S('rule1', 'bar', { x: 56, y: 618, w: 118, h: 8, color: t.accent }));
+        x.add(CV.S('rule2', 'bar', { x: 56, y: 632, w: 62, h: 4, color: t.ink, opacity: .5 }));
+        x.add(CV.S('rule3', 'bar', { x: 56, y: 646, w: 26, h: 3, color: t.accent, opacity: .8 }));
+      }
+    },
+    /* 13 —— 黑鸦：贴纸描边 --------------------------------- */
+    {
+      id: 'sticker', name: '贴纸描边', sub: '黑鸦 · 巨号白描边红字',
+      t: { ink: '#17130f', ink2: '#8a7a5f', accent: '#d8232a', blue: '#2f7bd6', bgSolid: '#f8eed6' },
+      bg: 'linear-gradient(180deg,#fcf5e2 0%,#f7ebd0 58%,#efdfbe 100%)',
+      fx: ['paper', 'grain'], dark: false,
+      title: { font: 'black', size: 118, lh: 1.0, ls: -.02, color: '#d8232a', stroke: 10, strokeColor: '#fffdf6' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 746, y: 210, w: 330, h: 330 });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 56, w: 640, size: 112 });
+        x.add(CV.S('dot1', 'circle', { x: 1104, y: 120, w: 18, h: 18, color: t.blue, opacity: .8 }));
+        x.add(CV.S('dot2', 'circle', { x: 1064, y: 596, w: 30, h: 30, color: t.accent, opacity: .9 }));
+      }
+    },
+    /* 14 —— 渐近自由：糖果立体字 --------------------------- */
+    {
+      id: 'candy', name: '糖果立体字', sub: '渐近自由 · 渐变描边厚投影',
+      t: { ink: '#20170f', ink2: '#7c6a52', accent: '#c0392b', yellow: '#f6c945', bgSolid: '#e9dcc6' },
+      bg: 'radial-gradient(125% 105% at 24% 2%,#f3e8d3 0%,#e9dcc6 50%,#dccdb2 100%)',
+      fx: ['paper', 'wrinkle', 'grain'], dark: false,
+      title: {
+        font: 'heavy', size: 104, lh: 1.0, ls: -.02, color: '#f7d34a',
+        grad: 'linear-gradient(178deg,#fff5bf 0%,#f7d34a 44%,#ffffff 74%,#fdf0c2 100%)',
+        stroke: 11, strokeColor: '#1b1410', shadow: 'candy'
+      },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 62, w: 700 });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 768, y: 196, w: 316, h: 316 });
+        x.add(CV.S('edge', 'rect', { x: 0, y: 0, w: 14, h: H, color: t.accent, opacity: .9 }));
+        x.add(CV.S('ul', 'bar', { x: 74, y: 470, w: 300, h: 14, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
+      }
     }
   ];
+
+  /* 撕纸边：确定性锯齿 + 白色纸芯 + 暗边 */
+  function tearRaw(w) {
+    var n = 24, s = 17, d = 'M0,0';
+    function rnd() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+    for (var i = 1; i <= n; i++) {
+      var y = (H * i) / n;
+      d += ' L' + (w + (rnd() * 2 - 1) * 11).toFixed(1) + ',' + y.toFixed(1);
+    }
+    d += ' L0,' + H + ' Z';
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + H + '" viewBox="0 0 ' + w + ' ' + H + '">'
+      + '<path d="' + d + '" fill="#faf5e8"/>'
+      + '<path d="' + d + '" fill="none" stroke="rgba(74,60,38,.3)" stroke-width="2.4"/>'
+      + '</svg>';
+  }
 
   /* 雷达图（高对比数据风） */
   function radar(vals) {
@@ -324,6 +404,45 @@
       + '</svg>';
   }
 
+  /* 版式纠偏：装饰层是按 hero 设计的，换到通栏/巨化时统一收敛，避免穿模 */
+  function layoutFix(p, lay, L, U) {
+    var f = function (role) { return find(L, role); };
+    var u = function (role) { return find(U, role); };
+    var ic = f('icon');
+    var po = lay === 'poster';
+    /* --- 通栏大标：一切靠边，中间留白给标题 --- */
+    if (po) {
+      ['kicker', 'series'].forEach(function (r) {
+        var l = f(r);
+        if (l && l.x < 260 && l.w > 440) l.w = 420;
+      });
+      if (p.id === 'matrix' || p.id === 'pastel' || p.id === 'cardlight') {
+        var cd = u('card');
+        if (cd) merge(cd, { x: W / 2 - 104, y: 10, w: 208, h: 172, radius: 34 });
+        if (ic) merge(ic, { x: W / 2 - 54, y: 36, w: 108, h: 108 });
+      } else if (p.id === 'beigeRed' || p.id === 'noir' || p.id === 'zine' || p.id === 'magazine') {
+        if (ic) merge(ic, { x: W / 2 - 74, y: 18, w: 148, h: 148 });
+      } else if (p.id === 'data') {
+        var sb = f('sub'); if (sb) merge(sb, { w: 600 });
+      } else if (p.id === 'constructivism') {
+        var tt = f('title'); if (tt) merge(tt, { y: 236, w: 900, x: 130 });
+        var nm = find(U, 'num'); if (nm) U.splice(U.indexOf(nm), 1);
+      }
+      var bn = u('bignum') || f('bignum'); if (bn) merge(bn, { y: 512, x: 880, w: 200 });
+    }
+    /* --- 图标巨化：底部数字抬离信息条 --- */
+    if (lay === 'feature') {
+      var bn2 = u('bignum') || f('bignum'); if (bn2) merge(bn2, { y: 516 });
+      var nm2 = find(U, 'num'); if (nm2) merge(nm2, { y: 470, x: 760 });
+    }
+    /* --- 分栏头条：左侧标题列收窄，右侧图形不越界 --- */
+    if (lay === 'split') {
+      var bn3 = u('bignum') || f('bignum'); if (bn3) merge(bn3, { y: 508 });
+      var nm3 = find(U, 'num'); if (nm3) merge(nm3, { y: 470 });
+    }
+    return { L: L, U: U };
+  }
+
   /* ============================ 组装 ============================ */
   CV.styleById = function (id) {
     for (var i = 0; i < CV.STYLES.length; i++) if (CV.STYLES[i].id === id) return CV.STYLES[i];
@@ -349,6 +468,7 @@
     var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p };
     if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
+    layoutFix(p, lay, L, under);
     return {
       v: CV.VERSION, w: W, h: H, style: p.id, layout: lay,
       bg: p.bg, fx: (p.fx || []).slice(), dark: !!p.dark,

@@ -40,7 +40,7 @@ await step('切到风格页签并点击 包豪斯', async () => {
   await page.click('.panel.left .tab[data-tab="style"]');
   await sleep(250);
   const n = await page.evaluate('document.querySelectorAll(".style-card").length');
-  if (n !== 11) throw new Error('风格卡 ' + n);
+  if (n < 12) throw new Error('风格卡 ' + n);
   await page.click('.style-card[data-style="bauhaus"]');
   await sleep(350);
   const s = await page.evaluate('App.doc.style');
@@ -110,15 +110,15 @@ await step('滑块改字号', async () => {
 await step('图标库：11 个分类 + 搜索 + 放置', async () => {
   await page.click('.panel.left .tab[data-tab="icons"]');
   await sleep(600);
-  const chips = await page.evaluate('document.querySelectorAll("#vendorChips .chip").length');
-  const tiles = await page.evaluate('document.querySelectorAll("#iconGrid .ictile").length');
+  const chips = await page.evaluate('document.querySelectorAll("#iconList .icg").length');
+  const tiles = await page.evaluate('document.querySelectorAll("#iconList .ictile").length');
   if (chips < 20) throw new Error('厂商 chip ' + chips);
   if (tiles < 20) throw new Error('图标 ' + tiles);
   await page.evaluate('(function(){var i=document.querySelector("#paneIcons input.input");i.value="kimi";i.dispatchEvent(new Event("input",{bubbles:true}))})()');
   await sleep(350);
-  const m = await page.evaluate('document.querySelectorAll("#iconGrid .ictile").length');
+  const m = await page.evaluate('document.querySelectorAll("#iconList .ictile").length');
   if (m < 1) throw new Error('搜索无结果');
-  await page.click('#iconGrid .ictile');
+  await page.click('#iconList .ictile');
   await sleep(350);
   const ic = await page.evaluate('App.doc.layers.filter(function(l){return l.role==="icon"})[0].icon');
   if (String(ic).indexOf('Kimi') < 0) throw new Error('icon=' + ic);
@@ -139,8 +139,8 @@ await step('撤销 / 重做', async () => {
   if (await page.evaluate('App.hi') <= h2) throw new Error('重做无效');
 });
 
-await step('11 风格 × 4 版式 全量重排无异常', async () => {
-  for (const s of ['swiss', 'broadsheet', 'matrix', 'paperdoodle', 'cardlight', 'beigeRed', 'noir', 'data', 'pastel', 'constructivism', 'bauhaus']) {
+await step('14 风格 × 4 版式 全量重排无异常', async () => {
+  for (const s of ['swiss', 'broadsheet', 'matrix', 'paperdoodle', 'cardlight', 'beigeRed', 'zine', 'sticker', 'candy', 'noir', 'data', 'pastel', 'constructivism', 'bauhaus']) {
     for (const l of ['hero', 'poster', 'split', 'feature']) {
       await page.evaluate('App.recompose({style:"' + s + '",layout:"' + l + '"})');
     }

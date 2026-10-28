@@ -228,95 +228,155 @@
     p.appendChild(note);
   }
 
-  /* ---------- 图标库 ---------- */
+  /* ---------- 图标库（按公司分组 · 全变体 · 左键拖拽 · 右键弹窗） ---------- */
+  var GROUPS = [];
+
+  var V_ORDER = ['symbol-color', 'symbol-black', 'symbol-white', 'symbol-trans-color', 'symbol-trans-black',
+    'appicon', 'appicon-trans', 'tile-light', 'tile-dark', 'tile-light-app', 'tile-dark-app',
+    'wordmark-color', 'wordmark-black', 'wordmark-white'];
+  function vRank(v) { var i = V_ORDER.indexOf(v); return i < 0 ? 90 : i; }
+
   function buildIconPane() {
     var p = $('#paneIcons');
     p.innerHTML = '';
     var sc = el('div', 'icsearch');
     sc.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
     var si = input('', function (v) { renderIcons(v); });
-    si.placeholder = '搜品牌：kimi / claude / 智谱 / 豆包…';
-    si.classList.add('input');
+    si.id = 'iconSearchInput';
+    si.placeholder = '搜品牌：kimi / claude / 智谱 / 豆包';
     sc.appendChild(si);
     p.appendChild(sc);
-    var chips = el('div', 'vendors');
-    chips.id = 'vendorChips';
-    p.appendChild(chips);
-    var grid = el('div', 'icgrid');
-    grid.id = 'iconGrid';
-    p.appendChild(grid);
-    p.appendChild(group('', el('p', 'empty', '提示：图标可**直接拖进画布**，也可单击放到画布中心。')));
+    var bar = el('div', 'icbar');
+    var cnt = el('span', 'iccount', '');
+    cnt.id = 'iconCount';
+    bar.appendChild(cnt);
+    bar.appendChild(el('span', 'ichint', '左键拖入画布 · 右键看全部变体'));
+    p.appendChild(bar);
+    var list = el('div', 'iclist');
+    list.id = 'iconList';
+    p.appendChild(list);
   }
 
-  function vendorOf(id) { return id.split('/')[0]; }
-
-  function bestVariant(list, dark) {
-    var order = dark ? ['symbol-white', 'symbol-trans-color', 'symbol-color', 'appicon', 'tile-light', 'tile-dark']
-      : ['symbol-color', 'appicon', 'symbol-black', 'symbol-trans-color', 'tile-light', 'symbol-white'];
-    for (var i = 0; i < order.length; i++) if (list.indexOf(order[i]) > -1) return order[i];
-    return list[0] || 'symbol-color';
-  }
+  function variantURL(id, v, dark) { return CV.iconSrc(id + '#' + v, dark); }
 
   function renderIcons(q) {
-    var grid = $('#iconGrid');
-    if (!grid) return;
-    grid.innerHTML = '';
+    var host = $('#iconList');
+    if (!host) return;
+    host.innerHTML = '';
     var kw = (q || '').toLowerCase().trim();
-    var list = ICONS.filter(function (it) {
-      if (curVendor !== '全部' && it.vendor !== curVendor) return false;
-      if (!kw) return true;
-      return it.kw.indexOf(kw) > -1;
-    }).slice(0, 200);
-    if (!list.length) { grid.appendChild(el('p', 'empty', '没有匹配的品牌')); return; }
-    list.forEach(function (it) {
-      var v = bestVariant(it.variants, App.doc.dark);
-      var tile = el('div', 'ictile');
-      tile.draggable = true;
-      tile.title = it.vendor + ' / ' + it.product;
+    var hits = GROUPS.filter(function (g) { return !kw || g.kw.indexOf(kw) > -1; });
+    var cnt = $('#iconCount');
+    if (cnt) {
+      var n = 0;
+      hits.forEach(function (g) { n += g.variants.length; });
+      cnt.textContent = hits.length + ' 个模型 · ' + n + ' 个图标';
+    }
+    if (!hits.length) { host.appendChild(el('p', 'empty', '没有匹配的品牌')); return; }
+    var frag = document.createDocumentFragment();
+    hits.slice(0, 80).forEach(function (g) { frag.appendChild(groupRow(g)); });
+    host.appendChild(frag);
+  }
+
+  function groupRow(g) {
+    var box = el('div', 'icg');
+    var head = el('div', 'icg-h');
+    head.appendChild(el('span', 'icg-n', g.product));
+    head.appendChild(el('span', 'icg-s', g.variants.length + ' 变体'));
+    head.appendChild(el('span', 'icg-v', g.vendor));
+    box.appendChild(head);
+    var row = el('div', 'icg-b');
+    g.variants.forEach(function (v) {
+      var t = el('div', 'ictile');
+      t.draggable = true;
+      t.title = g.vendor + ' / ' + g.product + ' · ' + v + ' — 拖入画布，或右键查看';
       var img = document.createElement('img');
-      img.src = CV.iconSrc(it.id + '#' + v, App.doc.dark);
-      img.alt = it.product;
-      tile.appendChild(img);
-      var lb = el('div', 'lb', it.product);
-      tile.appendChild(lb);
-      tile.addEventListener('dragstart', function (e) {
+      img.src = variantURL(g.id, v, App.doc.dark);
+      img.alt = v;
+      img.draggable = false;
+      t.appendChild(img);
+      t.appendChild(el('span', 'itl', v.replace(/^(symbol|tile|wordmark|appicon)-?/, '').replace(/-(app)$/, '') || 'logo'));
+      t.addEventListener('dragstart', function (e) {
         App.gdragging = true;
-        e.dataTransfer.setData('text/cv-icon', it.id + '#' + v);
+        e.dataTransfer.setData('text/cv-icon', g.id + '#' + v);
         e.dataTransfer.effectAllowed = 'copy';
       });
-      tile.addEventListener('dragend', function () { App.gdragging = false; });
-      tile.addEventListener('click', function () { placeIcon(it.id + '#' + v); });
-      grid.appendChild(tile);
+      t.addEventListener('dragend', function () { App.gdragging = false; });
+      t.addEventListener('click', function () { placeIcon(g.id + '#' + v, 'main'); });
+      t.addEventListener('contextmenu', function (e) { e.preventDefault(); openVariants(g, e.clientX, e.clientY, v); });
+      row.appendChild(t);
     });
+    box.appendChild(row);
+    return box;
   }
 
-  function placeIcon(ref) {
+  var pop = null;
+  function closePop() { if (pop) { pop.remove(); pop = null; } }
+  function openVariants(g, x, y, cur) {
+    closePop();
+    pop = el('div', 'icpop');
+    var head = el('div', 'icpop-h');
+    head.innerHTML = '<b>' + CV.esc(g.product) + '</b><span>' + CV.esc(g.vendor) + ' · ' + g.variants.length + ' 个变体</span>';
+    pop.appendChild(head);
+    var grid = el('div', 'icpop-g');
+    g.variants.forEach(function (v) {
+      var b = el('button', 'icpop-i' + (v === cur ? ' on' : ''));
+      b.type = 'button';
+      b.title = v;
+      var im = document.createElement('img');
+      im.src = variantURL(g.id, v, App.doc.dark);
+      b.appendChild(im);
+      b.appendChild(el('span', null, v));
+      b.draggable = true;
+      b.addEventListener('dragstart', function (e) {
+        App.gdragging = true;
+        e.dataTransfer.setData('text/cv-icon', g.id + '#' + v);
+        e.dataTransfer.effectAllowed = 'copy';
+      });
+      b.addEventListener('click', function () { placeIcon(g.id + '#' + v, 'main'); closePop(); });
+      grid.appendChild(b);
+    });
+    pop.appendChild(grid);
+    var acts = el('div', 'icpop-a');
+    var key = cur || g.variants[0];
+    var a1 = el('button', 'btn sm', '设为主视觉');
+    a1.type = 'button';
+    a1.addEventListener('click', function () { placeIcon(g.id + '#' + key, 'main'); closePop(); });
+    var a2 = el('button', 'btn sm', '插入为新图层');
+    a2.type = 'button';
+    a2.addEventListener('click', function () { placeIcon(g.id + '#' + key, 'layer'); closePop(); });
+    acts.appendChild(a1); acts.appendChild(a2);
+    pop.appendChild(acts);
+    document.body.appendChild(pop);
+    var w = pop.offsetWidth || 340, h = pop.offsetHeight || 260;
+    pop.style.left = Math.max(8, Math.min(x, window.innerWidth - w - 12)) + 'px';
+    pop.style.top = Math.max(8, Math.min(y, window.innerHeight - h - 12)) + 'px';
+    setTimeout(function () { document.addEventListener('pointerdown', onDoc, true); }, 0);
+    function onDoc(ev) {
+      if (pop && !pop.contains(ev.target)) {
+        closePop();
+        document.removeEventListener('pointerdown', onDoc, true);
+      }
+    }
+  }
+
+  function placeIcon(ref, mode) {
+    if (mode === 'layer') {
+      App.addLayer(CV.I('icon', ref, { x: 720, y: 220, w: 260, h: 260 }), true);
+      App.toast('已插入图层：' + CV.iconLabel(ref), 'ok');
+      return;
+    }
     var l = null;
     App.doc.layers.forEach(function (x) { if (x.type === 'icon' && x.role === 'icon' && !l) l = x; });
-    if (l) { l.icon = ref; if (!App.doc.content) App.doc.content = {}; App.doc.content.icon = ref; }
-    else App.doc.layers.push(CV.I('icon', ref, { x: 700, y: 180, w: 320, h: 320 }));
-    App.apply(); App.commit();
-    App.toast('主视觉图标：' + CV.iconLabel(ref), 'ok');
-  }
-
-  function renderVendors() {
-    var box = $('#vendorChips');
-    if (!box) return;
-    box.innerHTML = '';
-    var vs = ['全部'];
-    var seen = {};
-    ICONS.forEach(function (it) { if (!seen[it.vendor]) { seen[it.vendor] = 1; vs.push(it.vendor); } });
-    vs.forEach(function (v) {
-      var c = el('button', 'chip' + (v === curVendor ? ' on' : ''), v);
-      c.type = 'button';
-      c.addEventListener('click', function () {
-        curVendor = v;
-        $$('.chip', box).forEach(function (x) { x.classList.remove('on'); });
-        c.classList.add('on');
-        renderIcons($('#iconSearchInput') ? $('#iconSearchInput').value : '');
-      });
-      box.appendChild(c);
-    });
+    if (l) {
+      l.icon = ref;
+      if (!App.doc.content) App.doc.content = {};
+      App.doc.content.icon = ref;
+    } else {
+      App.doc.layers.push(CV.I('icon', ref, { x: 720, y: 180, w: 320, h: 320 }));
+    }
+    App.apply();
+    App.commit();
+    App.toast('主视觉：' + CV.iconLabel(ref), 'ok');
   }
 
   /* ---------- 检查器 ---------- */
@@ -523,7 +583,7 @@
     var scope = right ? '.panel.right' : '.panel.left';
     $$(scope + ' .tab').forEach(function (t) { t.classList.toggle('on', t.dataset.tab === name); });
     $$(scope + ' .pane').forEach(function (p) { p.classList.toggle('on', p.id === 'pane' + name.charAt(0).toUpperCase() + name.slice(1)); });
-    if (!right && name === 'icons') renderIcons($('#iconGrid') ? '' : '');
+    if (!right && name === 'icons') renderIcons($('#iconSearchInput') ? $('#iconSearchInput').value : '');
   }
 
   /* ---------- AI 生成 ---------- */
@@ -782,8 +842,13 @@
 
     fetch('/assets/icons.json').then(function (r) { return r.json(); }).then(function (j) {
       ICONS = j.items || [];
-      renderVendors();
-      renderIcons('');
+      GROUPS = ICONS.map(function (it) {
+        return {
+          id: it.id, vendor: it.vendor, product: it.product, kw: it.kw,
+          variants: it.variants.slice().sort(function (a, b) { return vRank(a) - vRank(b); })
+        };
+      });
+      renderIcons($('#iconSearchInput') ? $('#iconSearchInput').value : '');
     }).catch(function () { App.toast('图标索引加载失败', 'err'); });
   }
 

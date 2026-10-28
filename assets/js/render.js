@@ -11,6 +11,8 @@
     if (name === 'hard-accent') return '5px 5px 0 #d61f16';
     if (name === 'drop') return '0 8px 22px rgba(14,17,21,.26)';
     if (name === 'lift') return '0 18px 40px -18px rgba(14,17,21,.45)';
+    if (name === 'candy') return '7px 9px 0 #b8342a';
+    if (name === 'ink') return '6px 8px 0 rgba(20,17,14,.85)';
     return name.indexOf('px') > -1 || name.indexOf('rgb') > -1 ? name : '';
   };
 
@@ -28,9 +30,30 @@
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.maxHeight = l.maxH ? l.maxH + 'px' : '';
-    el.style.webkitTextStroke = l.stroke ? l.stroke + 'px ' + (l.strokeColor || '#fff') : '';
-    el.style.paintOrder = l.stroke ? 'stroke fill' : '';
-    el.style.textShadow = CV.shadowCss(l.shadow);
+    var sh = [];
+    if (l.stroke > 0) {
+      var rr = l.stroke, sc = l.strokeColor || '#ffffff';
+      for (var ai = 0; ai < 16; ai++) {
+        var ths = (ai * Math.PI) / 8;
+        sh.push((Math.cos(ths) * rr).toFixed(1) + 'px ' + (Math.sin(ths) * rr).toFixed(1) + 'px 0 ' + sc);
+      }
+    }
+    var base = CV.shadowCss(l.shadow);
+    if (base) sh.push(base);
+    el.style.webkitTextStroke = '';
+    el.style.paintOrder = '';
+    el.style.textShadow = sh.join(', ');
+    if (l.grad) {
+      el.style.backgroundImage = l.grad;
+      el.style.webkitBackgroundClip = 'text';
+      el.style.backgroundClip = 'text';
+      el.style.webkitTextFillColor = 'transparent';
+    } else {
+      el.style.backgroundImage = '';
+      el.style.webkitBackgroundClip = '';
+      el.style.backgroundClip = '';
+      el.style.webkitTextFillColor = '';
+    }
   }
 
   function applyIcon(el, l, doc) {
