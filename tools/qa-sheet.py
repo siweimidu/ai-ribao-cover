@@ -5,7 +5,7 @@ QA = r"D:\Code\封面\ai-ribao-cover\out\qa"
 OUT = os.path.join(QA, "sheets")
 os.makedirs(OUT, exist_ok=True)
 styles = ["swiss","broadsheet","matrix","paperdoodle","cardlight","beigeRed",
-          "zine","sticker","candy","noir","data","pastel","constructivism","bauhaus"]
+          "zine","sticker","candy","noir","data","pastel","constructivism","bauhaus","newspaper","editorial"]
 layouts = ["hero","poster","split","feature"]
 pairs = [(s,l) for l in layouts for s in styles]
 CW, CH = 548, 340
