@@ -606,8 +606,9 @@
     return CV.STYLES[0];
   };
 
-  CV.compose = function (styleId, layoutId, content) {
+  CV.compose = function (styleId, layoutId, content, ratio) {
     var p = CV.styleById(styleId);
+    var RT = CV.ratioOf ? CV.ratioOf(ratio) : { id: "land", w: W, h: H };
     var t = p.t;
     var c = CV.assign(CV.defaultContent(), content || {});
     var L = [];
@@ -627,7 +628,7 @@
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
     return {
-      v: CV.VERSION, w: W, h: H, style: p.id, layout: lay,
+      v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, style: p.id, layout: lay,
       bg: p.bg, fx: (p.fx || []).slice(), dark: !!p.dark,
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
