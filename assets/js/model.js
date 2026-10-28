@@ -43,6 +43,13 @@
       color: '#000000', opacity: 1, rot: 0, radius: 0, bw: 0, bc: '#000000', hidden: false
     }, o);
   };
+  CV.IMG = function (role, src, o) {
+    return CV.assign({
+      id: CV.uid('m'), type: 'image', role: role || 'bg', src: src || '',
+      x: 0, y: 0, w: CV.W, h: CV.H, fit: 'cover', opacity: 1, radius: 0, rot: 0,
+      blur: 0, gray: 0, dim: 0, dimColor: '#0e1115', shadow: '', hidden: false
+    }, o);
+  };
   CV.R = function (role, html, o) {
     return CV.assign({ id: CV.uid('r'), type: 'raw', role: role, html: html || '', x: 0, y: 0, w: 200, h: 200, opacity: 1, rot: 0, hidden: false }, o);
   };
