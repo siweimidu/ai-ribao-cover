@@ -1,0 +1,18 @@
+import { pathToFileURL } from 'node:url';
+import { createServer } from './server.mjs';
+const HELPER = 'C:/Users/35238/.agents/skills/ai-daily-video/scripts/chrome.mjs';
+const server = createServer();
+await new Promise(r => server.listen(0, '127.0.0.1', r));
+const base = 'http://127.0.0.1:' + server.address().port;
+const mod = await import(pathToFileURL(HELPER).href);
+const browser = await mod.launch();
+const page = await browser.newPage();
+page.on('pageerror', e => console.log('PAGEERROR:', e.message, '\nSTACK:', (e.stack || '').split('\n').slice(0, 6).join('\n')));
+page.on('console', m => { if (m.type() === 'error') console.log('CONSOLE:', m.text()); });
+await page.goto(base + '/', { waitUntil: 'load' });
+await new Promise(r => setTimeout(r, 2500));
+const info = await page.evaluate(function () { return JSON.stringify({ app: typeof App, cv: typeof CV, hasDoc: !!(window.App && App.doc), layers: window.App && App.doc ? App.doc.layers.length : -1, layouts: window.CV && window.CV.LAYOUTS ? CV.LAYOUTS.length : -1 }); });
+console.log('STATE:', info);
+await browser.close();
+server.close();
+process.exit(0);
