@@ -22,12 +22,15 @@
         <div class="brand-sub">COVER STUDIO · 11 STYLES</div>
       </div>
     </div>
+    <button class="btn icon" id="btnTheme" title="深浅色切换">◐</button>
     <div class="vsep"></div>
     <button class="btn icon" id="btnUndo" title="撤销 (Ctrl+Z)">↺</button>
     <button class="btn icon" id="btnRedo" title="重做 (Ctrl+Shift+Z)">↻</button>
     <div class="spacer"></div>
     <button class="btn" id="btnAi">✦ AI 一键生成</button>
+    <button class="btn" id="btnImg">插入图片</button>
     <button class="btn" id="btnImport">导入 JSON</button>
+    <input type="file" id="imgInput" accept="image/*" class="hidden">
     <button class="btn" id="btnJson">保存 JSON</button>
     <button class="btn primary" id="btnPng">出图 PNG <span class="kbd">Ctrl+S</span></button>
     <input type="file" id="fileInput" accept=".json,application/json" class="hidden">
@@ -38,10 +41,12 @@
       <button class="tab on" data-tab="content">内容</button>
       <button class="tab" data-tab="style">风格</button>
       <button class="tab" data-tab="icons">图标</button>
+      <button class="tab" data-tab="text">文字</button>
     </div>
     <div class="pane on" id="paneContent"></div>
     <div class="pane" id="paneStyle"></div>
     <div class="pane" id="paneIcons"></div>
+    <div class="pane" id="paneText"></div>
   </aside>
 
   <main class="stage-wrap">
@@ -67,9 +72,11 @@
       <button class="tab on" data-tab="props">属性</button>
       <button class="tab" data-tab="layers">图层</button>
       <button class="tab" data-tab="shot">出图</button>
+      <button class="tab" data-tab="canvas">画布</button>
     </div>
     <div class="pane on" id="paneProps"></div>
     <div class="pane" id="paneLayers"></div>
+    <div class="pane" id="paneCanvas"></div>
     <div class="pane" id="paneShot">
       <div class="group">
         <div class="group-h"><span class="group-t">导出倍率</span></div>
