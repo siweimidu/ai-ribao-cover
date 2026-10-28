@@ -774,7 +774,7 @@
         });
         var copy = el('button', 'btn', '复制提示词');
         copy.addEventListener('click', function () {
-          fetch('/api/prompt').then(function (r) { return r.text(); }).then(function (t) {
+          fetch('api/prompt').then(function (r) { return r.text(); }).then(function (t) {
             t = t.replace('{{BRIEF}}', ta2.value || '').replace('{{STYLE}}', st2.value || '');
             navigator.clipboard.writeText(t).then(function () { App.toast('提示词已复制，可粘贴到任意对话模型', 'ok'); });
           });
@@ -840,7 +840,7 @@
       });
     });
 
-    fetch('/assets/icons.json').then(function (r) { return r.json(); }).then(function (j) {
+    fetch('assets/icons.json').then(function (r) { return r.json(); }).then(function (j) {
       ICONS = j.items || [];
       GROUPS = ICONS.map(function (it) {
         return {
