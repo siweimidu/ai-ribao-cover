@@ -573,7 +573,7 @@
         var ic = find(L, 'icon');
         if (ic) merge(ic, { x: 768, y: 196, w: 316, h: 316 });
         x.add(CV.S('edge', 'rect', { x: 0, y: 0, w: 14, h: H, color: t.accent, opacity: .9 }));
-        x.add(CV.S('ul', 'bar', { x: 74, y: 470, w: 300, h: 14, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
+        x.add(CV.S('ul', 'bar', { x: 74, y: 434, w: 288, h: 12, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
       }
     },
 
@@ -688,11 +688,13 @@
         if (ti) {
           x.add(CV.T('g1', ti.text, {
             x: ti.x - 6, y: ti.y - 2, w: ti.w, size: ti.size, font: ti.font, weight: ti.weight,
-            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(34,211,238,.5)', opacity: .3
+            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(34,211,238,.55)', opacity: .3,
+            fit: ti.fit, maxH: ti.maxH
           }));
           x.add(CV.T('g2', ti.text, {
             x: ti.x + 6, y: ti.y + 2, w: ti.w, size: ti.size, font: ti.font, weight: ti.weight,
-            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(255,45,85,.5)', opacity: .3
+            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(255,45,85,.55)', opacity: .3,
+            fit: ti.fit, maxH: ti.maxH
           }));
           if (x.layout !== 'poster') merge(ti, { x: 64, y: 158, w: 640, size: 90 });
         }
@@ -726,7 +728,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: 52, y: 196, w: 720, size: 96 });
         var k = find(L, 'kicker');
-        if (k) merge(k, { x: 48, y: 40, w: 300, size: 12, color: '#fff', ls: .05, upper: false });
+        if (k) merge(k, { x: 50, y: 41, w: 138, size: 10.5, color: '#fff', ls: .02, upper: false, align: 'center' });
         var s = find(L, 'series');
         if (s) merge(s, { x: 208, y: 74, w: 500, size: 15, font: 'mono', ls: .18, upper: true, color: t.ink2 });
         var d = find(L, 'date');
@@ -781,6 +783,7 @@
         for (var i = 0; i < 9; i++) {
           var cx = 728 + (i % 3) * 118, cy = 148 + Math.floor(i / 3) * 118;
           x.add(CV.S('mc' + i, 'circle', { x: cx, y: cy, w: 100, h: 100, color: '#ffffff', opacity: .96, bw: 1, bc: 'rgba(27,34,48,.07)' }));
+          if (i === 4) continue;
           x.add(CV.I('mi' + i, MAT[i], { x: cx + 24, y: cy + 24, w: 52, h: 52, opacity: .92 }));
         }
         var ti = find(L, 'title');
@@ -790,7 +793,7 @@
         var s = find(L, 'series');
         if (s) merge(s, { x: 64, y: 96, w: 520, size: 20, font: 'mono', ls: .12, upper: true, color: t.accent });
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { opacity: 0 });
+        if (ic) merge(ic, { x: 850, y: 270, w: 56, h: 56, opacity: 1 });
         var f = find(L, 'foot');
         if (f) merge(f, { x: 64, y: 662, w: 600, size: 12, ls: .06 });
       }
