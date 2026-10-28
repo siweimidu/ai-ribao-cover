@@ -1174,6 +1174,8 @@
     $('#btnRedo').addEventListener('click', function () { App.redo(); });
     $('#btnPng').addEventListener('click', function () { App.exportPng(2); });
     $('#btnJson').addEventListener('click', function () { App.exportJson(); });
+    var bh = $('#btnHtml');
+    if (bh) bh.addEventListener('click', function () { App.exportHtml(); });
     $('#btnImport').addEventListener('click', function () { $('#fileInput').click(); });
     $('#fileInput').addEventListener('change', function (e) {
       if (e.target.files[0]) App.importJson(e.target.files[0]);
