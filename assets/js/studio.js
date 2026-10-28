@@ -401,11 +401,14 @@
     if (App.locked) return;
     App.locked = true;
     App.toast('正在出图…', 'wait');
-    fetch('/api/render', {
+    fetch('api/render', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ doc: App.doc, name: App.slug(), scale: scale })
-    }).then(function (r) { return r.json(); }).then(function (j) {
+    }).then(function (r) {
+      if (r.status === 404 || (r.headers.get('content-type') || '').indexOf('json') < 0) throw new Error('no-render-api');
+      return r.json();
+    }).then(function (j) {
       App.locked = false;
       if (j.ok) {
         App.toast('已出图 ' + j.name, 'ok', j.size);
@@ -415,7 +418,12 @@
       }
     }).catch(function (err) {
       App.locked = false;
-      App.toast('出图失败：' + err.message, 'err');
+      if (err.message === 'no-render-api') {
+        App.toast('静态托管模式：已改为导出 JSON（本地跑工具可出图）', 'ok');
+        App.exportJson();
+      } else {
+        App.toast('出图失败：' + err.message, 'err');
+      }
     });
   };
   App.exportJson = function () {
