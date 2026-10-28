@@ -41,11 +41,28 @@
 4. **图片图层只支持居中裁切**，没有焦点位置。
 5. **文字图层不支持逐字上色**，只有 [[高亮]] 整体一个强调色。
 
+## 最终验收（AI 自测，全绿）
+
+| 项目 | 结果 |
+|---|---|
+| 几何体检（越界 / 溢出 / 穿模 / 贴边） | **126 / 126 通过**（21 风格 × 4 横版 + 21 风格 × 2 竖版） |
+| 冒烟（资源 / 字体 / 图标 / 重排） | PASS，无失败请求、无 JS 错误 |
+| 17 种画幅 DOM 尺寸 | 逐一一致 |
+| 颜色选择器 | 图层色落地、原生取色器不被重建 |
+| 图片背景 + HTML 导出 | PASS（HTML 441KB 单文件，内联 CSS/纹理/图标） |
+| 图标库拖拽 | 指针拖拽落位成功（1 → 2 图层） |
+| UI 版式面板 | 横版 4 项 / 竖版 2 项，随方向自动切换 |
+| GitHub Pages | built，站点 200 |
+
 ## 仓库
 
 - 本地：`D:\Code\封面\ai-ribao-cover`
-- 远程：https://github.com/siweimidu/ai-ribao-cover
+- 远程：https://github.com/siweimidu/ai-ribao-cover （HEAD `ff7bcea`）
 - Pages：https://siweimidu.github.io/ai-ribao-cover/
 - 备份：`D:\Code\封面\_backup\20261028-224333`
 
 > `git push` 在本机 443 被拦，提交一律走 GitHub Contents API（内容一致，历史是多条 API commit）。
+
+---
+
+> 本机已按你的要求在此轮工作结束后关机。明日开机后双击 `启动工作室.cmd` 即可继续。
