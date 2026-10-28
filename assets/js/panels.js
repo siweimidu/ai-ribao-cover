@@ -220,7 +220,8 @@
     p.appendChild(group('风格预设 · 11 套', grid));
 
     var lays = el('div', 'layouts');
-    CV.LAYOUTS.forEach(function (l) {
+    var portraitNow = App.doc.h > App.doc.w;
+    CV.LAYOUTS.filter(function (l) { return !!l.tall === portraitNow; }).forEach(function (l) {
       var b = el('button', 'lay');
       var bars = l.id === 'hero' ? [[0, 0, 60, 34], [60, 8, 38, 18]]
         : l.id === 'poster' ? [[16, 30, 68, 14], [30, 48, 40, 8]]
@@ -235,6 +236,14 @@
       b.title = l.name;
       b.dataset.layout = l.id;
       b.addEventListener('click', function () { App.recompose({ layout: l.id }); });
+      b.addEventListener('click', function () {
+        var LO = CV.layoutById(l.id);
+        var portrait = App.doc.h > App.doc.w;
+        var opts = { layout: l.id };
+        if (LO && LO.tall && !portrait) opts.ratio = 'xhs';
+        if (LO && !LO.tall && portrait) opts.ratio = 'land';
+        App.recompose(opts);
+      });
       lays.appendChild(b);
     });
     p.appendChild(group('版式', lays));
