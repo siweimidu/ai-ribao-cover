@@ -63,12 +63,19 @@
   };
   App.setRatio = function (id) {
     var RT = CV.ratioOf(id);
-    App.doc.w = RT.w;
-    App.doc.h = RT.h;
-    App.doc.ratio = RT.id;
-    App.apply();
-    App.commit();
-    saveLocal();
+    var wasP = App.doc.h > App.doc.w;
+    var nowP = RT.h > RT.w;
+    if (wasP !== nowP) {
+      var next = CV.ALT[App.doc.layout] || (nowP ? 'stack' : 'hero');
+      App.recompose({ ratio: RT.id, layout: next });
+    } else {
+      App.doc.w = RT.w;
+      App.doc.h = RT.h;
+      App.doc.ratio = RT.id;
+      App.apply();
+      App.commit();
+      saveLocal();
+    }
     App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
   };
   App.recompose = function (opts) {
