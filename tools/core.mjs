@@ -69,8 +69,13 @@ export function findFont(name) {
 let browserPromise = null;
 async function getBrowser() {
   if (!browserPromise) {
-    const mod = await import(pathToFileURL(CHROME_HELPER).href);
-    browserPromise = mod.launch();
+    try {
+      const mod = await import(pathToFileURL(CHROME_HELPER).href);
+      browserPromise = mod.launch();
+    } catch (e) {
+      const p = await import('puppeteer');
+      browserPromise = p.default.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+    }
   }
   return browserPromise;
 }
