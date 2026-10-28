@@ -57,7 +57,7 @@
   CV.iconSrc = function (s, dark) {
     var p = CV.iconParts(s), v = p.variant;
     if (!v) v = dark ? 'symbol-white' : 'symbol-color';
-    return '/assets/icons/' + p.id.split('/').map(encodeURIComponent).join('/') + '/' + encodeURIComponent(v) + '.png';
+    return 'assets/icons/' + p.id.split('/').map(encodeURIComponent).join('/') + '/' + encodeURIComponent(v) + '.png';
   };
   CV.iconLabel = function (s) { return CV.iconParts(s).id.split('/').pop() || '未选择'; };
 
