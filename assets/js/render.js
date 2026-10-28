@@ -43,6 +43,16 @@
     el.style.webkitTextStroke = '';
     el.style.paintOrder = '';
     el.style.textShadow = sh.join(', ');
+    if (l.cols > 1) {
+      el.style.columnCount = l.cols;
+      el.style.columnGap = (l.gap || 24) + 'px';
+      el.style.columnRule = l.rule ? '1px solid ' + l.rule : '';
+      el.style.textAlign = 'justify';
+    } else {
+      el.style.columnCount = '';
+      el.style.columnGap = '';
+      el.style.columnRule = '';
+    }
     if (l.grad) {
       el.style.backgroundImage = l.grad;
       el.style.webkitBackgroundClip = 'text';
@@ -79,7 +89,7 @@
         var i = parseInt(el.dataset.try || '0', 10) + 1;
         el.dataset.try = String(i);
         if (i < chain.length) {
-          el.setAttribute('src', '/assets/icons/' + p.id.split('/').map(encodeURIComponent).join('/') + '/' + chain[i] + '.png');
+          el.setAttribute('src', 'assets/icons/' + p.id.split('/').map(encodeURIComponent).join('/') + '/' + chain[i] + '.png');
         } else {
           el.style.visibility = 'hidden';
         }
