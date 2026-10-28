@@ -117,6 +117,38 @@
     if (l.shape === 'line') { el.style.height = (l.h || 1) + 'px'; el.style.background = l.color; }
   }
 
+  function applyImage(el, l, doc) {
+    var M = CV.metrics(doc);
+    el.className = 'cv-el cv-image';
+    var full = l.w >= 1000 && (l.h || 0) >= 700;
+    el.style.left = (full ? 0 : M.x(l.x)) + 'px';
+    el.style.top = (full ? 0 : M.y(l.y)) + 'px';
+    el.style.width = (full ? M.W : M.w(l.w)) + 'px';
+    el.style.height = (full ? M.H : M.h(l.h)) + 'px';
+    el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
+    el.style.borderRadius = l.radius ? M.k * l.radius + 'px' : '';
+    el.style.boxShadow = CV.shadowCss(l.shadow);
+    var img = el.querySelector('img');
+    var ov = el.querySelector('.ov');
+    if (!img) {
+      img = document.createElement('img');
+      el.appendChild(img);
+      ov = document.createElement('div');
+      ov.className = 'ov';
+      el.appendChild(ov);
+    }
+    if (img.getAttribute('src') !== l.src) img.setAttribute('src', l.src || '');
+    img.style.objectFit = l.fit === 'contain' ? 'contain' : 'cover';
+    var f = [];
+    if (l.blur) f.push('blur(' + (M.k * l.blur).toFixed(1) + 'px)');
+    if (l.gray) f.push('grayscale(' + l.gray + ')');
+    el.style.filter = f.join(' ');
+    ov = el.querySelector('.ov');
+    ov.style.background = l.dimColor || '#0e1115';
+    ov.style.opacity = l.dim || 0;
+  }
+
   function applyRaw(el, l, doc) {
     var M = CV.metrics(doc);
     el.className = 'cv-el';
@@ -129,7 +161,8 @@
 
   CV.applyLayer = function (el, l, doc) {
     doc = doc || CV.__doc || {};
-    if (l.type === 'text') applyText(el, l, doc);
+    if (l.type === 'image') applyImage(el, l, doc);
+    else if (l.type === 'text') applyText(el, l, doc);
     else if (l.type === 'icon') applyIcon(el, l, doc);
     else if (l.type === 'shape') applyShape(el, l, doc);
     else applyRaw(el, l, doc);
@@ -138,7 +171,16 @@
 
   CV.makeEl = function (l, doc, edit) {
     var el;
-    if (l.type === 'text') {
+    if (l.type === 'image') {
+      el = document.createElement('div');
+      var im = document.createElement('img');
+      im.draggable = false;
+      im.alt = '';
+      el.appendChild(im);
+      var ov = document.createElement('div');
+      ov.className = 'ov';
+      el.appendChild(ov);
+    } else if (l.type === 'text') {
       el = document.createElement('div');
       el.innerHTML = CV.rich(l.text);
       if (edit) { el.spellcheck = false; el.setAttribute('data-editable', 'text'); }
@@ -218,11 +260,19 @@
       root.appendChild(el);
     });
 
+    var paperOn = !doc.paper || doc.paper.on !== false;
+    var po = doc.paper ? doc.paper.opacity : 80;
+    var pn = doc.paper ? doc.paper.noise : 60;
+    var ps = doc.paper ? doc.paper.scale : 260;
     fx.forEach(function (n) {
       if (FX_BACK[n]) return;
+      if (!paperOn && (n === 'paper' || n === 'grain' || n === 'wrinkle')) return;
       var d = document.createElement('div');
       d.className = 'cv-fx ' + n;
       if (n === 'dotgrid') d.style.color = (doc.tokens && doc.tokens.ink) || '#000';
+      if (n === 'paper') { d.style.opacity = (po / 80 * 0.34).toFixed(3); d.style.backgroundSize = ps + 'px ' + ps + 'px'; }
+      if (n === 'wrinkle') { d.style.backgroundSize = (ps * 1.9) + 'px ' + (ps * 1.9) + 'px'; }
+      if (n === 'grain') { d.style.opacity = (pn / 60 * 0.15).toFixed(3); d.style.backgroundSize = Math.round(ps * 0.55) + 'px ' + Math.round(ps * 0.55) + 'px'; }
       root.appendChild(d);
     });
 
