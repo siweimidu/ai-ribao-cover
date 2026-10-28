@@ -286,8 +286,8 @@
     box.appendChild(head);
     var row = el('div', 'icg-b');
     g.variants.forEach(function (v) {
+      var ref = g.id + '#' + v;
       var t = el('div', 'ictile');
-      t.draggable = true;
       t.title = g.vendor + ' / ' + g.product + ' · ' + v + ' — 拖入画布，或右键查看';
       var img = document.createElement('img');
       img.src = variantURL(g.id, v, App.doc.dark);
@@ -295,13 +295,11 @@
       img.draggable = false;
       t.appendChild(img);
       t.appendChild(el('span', 'itl', v.replace(/^(symbol|tile|wordmark|appicon)-?/, '').replace(/-(app)$/, '') || 'logo'));
-      t.addEventListener('dragstart', function (e) {
-        App.gdragging = true;
-        e.dataTransfer.setData('text/cv-icon', g.id + '#' + v);
-        e.dataTransfer.effectAllowed = 'copy';
+      t.addEventListener('pointerdown', function (e) { startIconDrag(e, ref); });
+      t.addEventListener('click', function () {
+        if (App.__skipClick) { App.__skipClick = false; return; }
+        placeIcon(ref, 'main');
       });
-      t.addEventListener('dragend', function () { App.gdragging = false; });
-      t.addEventListener('click', function () { placeIcon(g.id + '#' + v, 'main'); });
       t.addEventListener('contextmenu', function (e) { e.preventDefault(); openVariants(g, e.clientX, e.clientY, v); });
       row.appendChild(t);
     });
@@ -326,13 +324,12 @@
       im.src = variantURL(g.id, v, App.doc.dark);
       b.appendChild(im);
       b.appendChild(el('span', null, v));
-      b.draggable = true;
-      b.addEventListener('dragstart', function (e) {
-        App.gdragging = true;
-        e.dataTransfer.setData('text/cv-icon', g.id + '#' + v);
-        e.dataTransfer.effectAllowed = 'copy';
+      b.addEventListener('pointerdown', function (e) { startIconDrag(e, g.id + '#' + v, true); });
+      b.addEventListener('click', function () {
+        if (App.__skipClick) { App.__skipClick = false; return; }
+        placeIcon(g.id + '#' + v, 'main');
+        closePop();
       });
-      b.addEventListener('click', function () { placeIcon(g.id + '#' + v, 'main'); closePop(); });
       grid.appendChild(b);
     });
     pop.appendChild(grid);
@@ -357,6 +354,60 @@
         document.removeEventListener('pointerdown', onDoc, true);
       }
     }
+  }
+
+  /* ---------- 指针拖拽：不依赖 HTML5 drag，指针事件全程接管 ---------- */
+  var ghostEl = null;
+  function docPoint(cx, cy) {
+    var cv = document.querySelector('#cover .cv');
+    if (!cv) return null;
+    var r = cv.getBoundingClientRect();
+    if (cx < r.left || cx > r.right || cy < r.top || cy > r.bottom) return null;
+    var z = (window.App && App.zoom) || 1;
+    return { x: (cx - r.left) / z, y: (cy - r.top) / z, w: r.width / z };
+  }
+  function startIconDrag(ev, ref, fromPop) {
+    if (ev.button !== 0) return;
+    var sx = ev.clientX, sy = ev.clientY, moved = false, placed = false;
+    function move(e) {
+      if (!moved) {
+        if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) return;
+        moved = true;
+        ghostEl = el('div', 'icdrag');
+        var im = document.createElement('img');
+        im.src = CV.iconSrc(ref, App.doc.dark);
+        ghostEl.appendChild(im);
+        document.body.appendChild(ghostEl);
+      }
+      ghostEl.style.transform = 'translate(' + (e.clientX - 36) + 'px,' + (e.clientY - 36) + 'px)';
+      var dp = docPoint(e.clientX, e.clientY);
+      var drop = document.querySelector('.cv-drop');
+      if (drop) drop.classList.toggle('on', !!dp);
+    }
+    function up(e) {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      if (ghostEl) { ghostEl.remove(); ghostEl = null; }
+      var drop = document.querySelector('.cv-drop');
+      if (drop) drop.classList.remove('on');
+      if (!moved) return;
+      var dp = docPoint(e.clientX, e.clientY);
+      if (!dp) return;
+      placed = true;
+      App.__skipClick = true;
+      var size = 240;
+      App.addLayer(CV.I('icon', ref, {
+        x: Math.round(dp.x - size / 2), y: Math.round(dp.y - size / 2), w: size, h: size
+      }), true);
+      App.commit();
+      App.toast('已放入 ' + CV.iconLabel(ref), 'ok');
+      if (fromPop) closePop();
+      setTimeout(function () { App.__skipClick = false; }, 60);
+    }
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
   }
 
   function placeIcon(ref, mode) {
