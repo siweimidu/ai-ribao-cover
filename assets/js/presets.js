@@ -17,7 +17,7 @@
       add(CV.T('series', c.series, { x: M, y: 70, w: 640, size: 28, font: 'heavy', weight: 900, color: t.ink, ls: -.01 }));
       add(CV.S('rule', 'bar', { x: M, y: 120, w: 76, h: 5, color: t.accent }));
       add(CV.T('title', c.title, { x: M, y: 146, w: 604, size: 92, font: 'heavy', weight: 900, lh: 1.02, ls: -.015, color: t.ink, fit: true, maxH: 300 }));
-      add(CV.T('sub', c.sub, { x: M, y: 476, w: 520, size: 23, font: 'bold', weight: 700, lh: 1.62, color: t.ink2 }));
+      add(CV.T('sub', c.sub, { x: M, y: 430, w: 540, size: 23, font: 'bold', weight: 700, lh: 1.62, color: t.ink2 }));
       add(CV.S('footline', 'line', { x: M, y: 636, w: 340, h: 1, color: t.ink, opacity: .14 }));
       add(CV.T('foot', c.foot, { x: M, y: 654, w: 620, size: 13, font: 'mono', weight: 700, ls: .04, color: t.ink2 }));
       add(CV.T('date', c.date, { x: 848, y: 44, w: 248, size: 15, font: 'mono', align: 'right', ls: .1, color: t.ink2 }));
@@ -68,7 +68,7 @@
       title: { font: 'heavy', size: 92 },
       decor: function (x) {
         var t = x.t;
-        x.add(CV.S('d1', 'bar', { x: 1088, y: 146, w: 4, h: 132, color: t.accent, opacity: .9 }));
+        if (x.layout !== 'poster') x.add(CV.S('d1', 'bar', { x: 1088, y: 210, w: 4, h: 116, color: t.accent, opacity: .9 }));
         x.add(CV.S('d2', 'circle', { x: 672, y: 124, w: 468, h: 468, color: t.accent, opacity: .055 }));
         x.add(CV.S('d3', 'bar', { x: 64, y: 636, w: 1032, h: 1, color: t.ink, opacity: .1 }));
       }
@@ -77,14 +77,19 @@
     {
       id: 'broadsheet', name: '报刊头版', sub: '灵感港 · 纸张与衬线标题',
       t: { ink: '#241f1b', ink2: '#7a6a56', accent: '#c0392b', gold: '#bd9145', bgSolid: '#e9dfcd', card: '#f2e9d8' },
-      bg: 'radial-gradient(130% 105% at 12% 0%,#f3ebda 0%,#e9dfcd 46%,#dbcfb8 100%)',
+      bg: 'radial-gradient(130% 105% at 12% 0%,#fbf5e7 0%,#f2e9d6 46%,#e6dbc4 100%)',
       fx: ['paper', 'wrinkle', 'grain', 'vignette'], dark: false,
       title: { font: 'heavy', size: 86, lh: 1.06 },
       kicker: { font: 'mono', color: '#7a6a56' },
       decor: function (x) {
         var t = x.t, L = x.L;
+        if (x.layout === 'split') return;
         x.add(CV.S('f1', 'rect', { x: 20, y: 20, w: W - 40, h: H - 40, color: 'transparent', bw: 3, bc: t.ink, opacity: .92 }));
         x.add(CV.S('f2', 'rect', { x: 29, y: 29, w: W - 58, h: H - 58, color: 'transparent', bw: 1, bc: t.ink, opacity: .5 }));
+        if (x.layout === 'poster') {
+          x.add(CV.S('r0', 'bar', { x: W / 2 - 30, y: 206, w: 60, h: 5, color: t.accent }));
+          return;
+        }
         x.add(CV.S('tag', 'rect', { x: M - 2, y: 34, w: 158, h: 34, color: t.accent }));
         var d = find(L, 'date');
         if (d) merge(d, { x: M - 2, y: 43, w: 158, align: 'center', size: 14, color: '#fdf6e8', ls: .04 });
@@ -109,11 +114,20 @@
       decor: function (x) {
         var t = x.t, L = x.L;
         x.add(CV.S('halo', 'circle', { x: 820, y: -170, w: 560, h: 560, color: '#ffffff', opacity: .55 }));
-        x.add(CV.S('card', 'round', { x: 712, y: 132, w: 396, h: 396, color: t.card, radius: 46, opacity: 1, shadow: '0 26px 60px -30px rgba(22,32,46,.36)' }));
-        var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 764, y: 184, w: 292, h: 292 });
-        for (var i = 0; i < 4; i++)
-          x.add(CV.S('dot' + i, 'circle', { x: 690 + i * 34, y: 560 + (i % 2) * 26, w: 10, h: 10, color: t.accent, opacity: .38 }));
+        var po = x.layout === 'poster';
+        if (!po) {
+          x.add(CV.S('card', 'round', { x: 716, y: 128, w: 380, h: 300, color: t.card, radius: 40, opacity: 1, shadow: '0 26px 60px -30px rgba(22,32,46,.36)' }));
+          var ic = find(L, 'icon');
+          if (ic) merge(ic, { x: 806, y: 158, w: 200, h: 200 });
+          var MAT = ['OpenAI/OpenAI#symbol-color', 'Anthropic/Claude#symbol-color', 'Google/Gemini#symbol-color',
+            'xAI/Grok#symbol-color', 'DeepSeek/DeepSeek#symbol-color', '月之暗面/Kimi#symbol-color',
+            '智谱 AI/智谱 AI#symbol-color', 'MiniMax/MiniMax#symbol-color'];
+          for (var mi = 0; mi < 8; mi++) {
+            var mx = 726 + (mi % 4) * 88, my = 468 + Math.floor(mi / 4) * 88;
+            x.add(CV.S('mc' + mi, 'circle', { x: mx, y: my, w: 72, h: 72, color: '#ffffff', opacity: .92, bw: 1, bc: 'rgba(22,32,46,.08)' }));
+            x.add(CV.I('mi' + mi, MAT[mi], { x: mx + 14, y: my + 14, w: 44, h: 44, opacity: .88 }));
+          }
+        }
         x.add(CV.S('line1', 'line', { x: M, y: 120, w: 620, h: 1, color: t.ink, opacity: .12 }));
       }
     },
@@ -128,7 +142,7 @@
       decor: function (x) {
         var t = x.t, L = x.L;
         x.add(CV.S('edge', 'rect', { x: 0, y: 0, w: 16, h: H, color: t.yellow }));
-        x.add(CV.S('ul', 'bar', { x: 70, y: 406, w: 268, h: 13, color: t.yellow, rot: -1.2, radius: 8, opacity: .92 }));
+        x.add(CV.S('ul', 'bar', { x: 70, y: 372, w: 292, h: 13, color: t.yellow, rot: -1.1, radius: 8, opacity: .92 }));
         x.add(CV.S('c1', 'circle', { x: 1026, y: 560, w: 60, h: 60, color: t.blue, opacity: .92 }));
         x.add(CV.S('c2', 'circle', { x: 942, y: 618, w: 24, h: 24, color: t.accent }));
         x.add(CV.S('c3', 'ring', { x: 700, y: 44, w: 66, h: 66, color: 'transparent', bw: 6, bc: t.yellow, opacity: .9 }));
@@ -218,9 +232,12 @@
           x.add(CV.S('hard', 'rect', { x: 366, y: 96, w: 428, h: 428, color: 'transparent', bw: 2, bc: t.ink, opacity: .16 }));
           x.add(CV.R('radar', radar([.82, .95, .62, .74, .9, .56]), { x: 396, y: 126, w: 368, h: 368, opacity: .28 }));
         } else {
-          x.add(CV.S('hard', 'rect', { x: 712, y: 128, w: 392, h: 392, color: 'transparent', bw: 3, bc: t.ink, opacity: .9 }));
-          x.add(CV.R('radar', radar([.82, .95, .62, .74, .9, .56]), { x: 736, y: 152, w: 344, h: 344 }));
+          x.add(CV.S('fill', 'rect', { x: 712, y: 128, w: 392, h: 392, color: '#ffffff' }));
+          x.add(CV.S('hard', 'rect', { x: 712, y: 128, w: 392, h: 392, color: 'transparent', bw: 3, bc: t.ink, opacity: .92 }));
+          x.add(CV.R('radar', radar([.82, .95, .62, .74, .9, .56]), { x: 730, y: 146, w: 356, h: 356, opacity: .2 }));
         }
+        var ic0 = find(L, 'icon');
+        if (ic0) merge(ic0, po ? { x: W / 2 - 54, y: 18, w: 108, h: 108 } : { x: 796, y: 212, w: 224, h: 224 });
         x.add(CV.S('b1', 'rect', { x: M, y: 612, w: 150, h: 4, color: t.accent }));
         x.add(CV.T('bignum', (x.c.badge || '22') + '', { x: 900, y: 566, w: 200, size: 92, font: 'impact', color: t.accent, align: 'right', rot: 0 }));
       }
@@ -241,7 +258,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, { w: 580, size: 82 });
         var sb = find(L, 'sub');
-        if (sb) merge(sb, { w: 520 });
+        if (sb) merge(sb, { w: x.layout === 'poster' ? 780 : 520 });
       }
     },
     /* 10 —— 构成主义 ----------------------------------- */
@@ -254,10 +271,10 @@
       decor: function (x) {
         var t = x.t, L = x.L;
         var po = x.layout === 'poster';
-        x.add(CV.S('b1', 'rect', { x: 766, y: po ? 470 : 436, w: 690, h: 88, color: t.accent, rot: -13 }));
-        x.add(CV.S('b2', 'rect', { x: 766, y: po ? 372 : 340, w: 690, h: 6, color: t.ink, rot: -13, opacity: .85 }));
-        x.add(CV.S('b3', 'rect', { x: 766, y: po ? 574 : 542, w: 690, h: 3, color: t.ink, rot: -13, opacity: .5 }));
-        x.add(CV.S('ring', 'ring', { x: 800, y: po ? 64 : 44, w: 264, h: 264, color: 'transparent', bw: 17, bc: t.ink, opacity: .92 }));
+        x.add(CV.S('b1', 'rect', { x: po ? 880 : 766, y: po ? 486 : 436, w: po ? 560 : 690, h: 88, color: t.accent, rot: -13 }));
+        x.add(CV.S('b2', 'rect', { x: po ? 880 : 766, y: po ? 388 : 340, w: po ? 560 : 690, h: 6, color: t.ink, rot: -13, opacity: .85 }));
+        x.add(CV.S('b3', 'rect', { x: po ? 880 : 766, y: po ? 590 : 542, w: po ? 560 : 690, h: 3, color: t.ink, rot: -13, opacity: .5 }));
+        x.add(CV.S('ring', 'ring', { x: po ? 848 : 760, y: po ? 132 : 96, w: 236, h: 236, color: 'transparent', bw: 16, bc: t.ink, opacity: .92 }));
         x.add(CV.S('wedge', 'wedge', { x: 0, y: 0, w: 230, h: 230, color: t.ink, opacity: .07 }));
         x.add(CV.S('bar', 'rect', { x: 1044, y: 0, w: 7, h: H, color: t.ink, opacity: .8 }));
         x.add(CV.T('num', (x.c.badge || ''), { x: 700, y: po ? 596 : 570, w: 320, size: 104, font: 'impact', color: t.ink, align: 'center', rot: -6, opacity: .92 }));
@@ -288,9 +305,12 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, po ? { y: 246, w: 860, x: 150, size: 104 } : { y: 158, w: 604 });
         var f = find(L, 'foot');
-        if (f) merge(f, { y: 662, color: '#f6f2e9' });
+        if (f) merge(f, { y: 662, x: 424, w: 520, color: '#f6f2e9' });
         if (po || x.layout === 'feature') {
-          ['series', 'date'].forEach(function (r) { var q = find(L, r); if (q) merge(q, { color: '#f6f2e9' }); });
+          var sq = find(L, 'series');
+          if (sq) merge(sq, { x: 424, w: 452, align: 'left', color: '#f6f2e9' });
+          var dq = find(L, 'date');
+          if (dq) merge(dq, { color: '#f6f2e9' });
         }
         var fl = find(L, 'footline');
         if (fl) merge(fl, { opacity: 0 });
@@ -327,9 +347,9 @@
     {
       id: 'sticker', name: '贴纸描边', sub: '黑鸦 · 巨号白描边红字',
       t: { ink: '#17130f', ink2: '#8a7a5f', accent: '#d8232a', blue: '#2f7bd6', bgSolid: '#f8eed6' },
-      bg: 'linear-gradient(180deg,#fcf5e2 0%,#f7ebd0 58%,#efdfbe 100%)',
+      bg: 'linear-gradient(180deg,#f4e2bb 0%,#efd9a8 58%,#e6cb90 100%)',
       fx: ['paper', 'grain'], dark: false,
-      title: { font: 'black', size: 118, lh: 1.0, ls: -.02, color: '#d8232a', stroke: 10, strokeColor: '#fffdf6' },
+      title: { font: 'black', size: 118, lh: 1.0, ls: -.02, color: '#d8232a', stroke: 14, strokeColor: '#ffffff', shadow: 'drop' },
       decor: function (x) {
         var t = x.t, L = x.L;
         var ic = find(L, 'icon');
@@ -347,9 +367,8 @@
       bg: 'radial-gradient(125% 105% at 24% 2%,#f3e8d3 0%,#e9dcc6 50%,#dccdb2 100%)',
       fx: ['paper', 'wrinkle', 'grain'], dark: false,
       title: {
-        font: 'heavy', size: 104, lh: 1.0, ls: -.02, color: '#f7d34a',
-        grad: 'linear-gradient(178deg,#fff5bf 0%,#f7d34a 44%,#ffffff 74%,#fdf0c2 100%)',
-        stroke: 11, strokeColor: '#1b1410', shadow: 'candy'
+        font: 'heavy', size: 104, lh: 1.0, ls: -.02, color: '#f8d24a',
+        stroke: 9, strokeColor: '#1b1410', shadow: 'candy'
       },
       decor: function (x) {
         var t = x.t, L = x.L;
