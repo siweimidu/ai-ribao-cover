@@ -504,7 +504,7 @@
             x: ti.x + 6, y: ti.y + 2, w: ti.w, size: ti.size, font: ti.font, weight: ti.weight,
             lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(255,45,85,.5)', opacity: .3
           }));
-          merge(ti, { x: 64, y: 158, w: 640, size: 90 });
+          if (x.layout !== 'poster') merge(ti, { x: 64, y: 158, w: 640, size: 90 });
         }
         for (var i = 0; i < 3; i++) {
           x.add(CV.S('h' + i, 'rect', { x: 1046 - i * 7, y: 118 + i * 12, w: 12, h: 92, color: t.cyan, rot: -18, opacity: .55 - i * .13 }));
@@ -513,7 +513,7 @@
         x.add(CV.S('cor1', 'rect', { x: 700, y: 108, w: 26, h: 26, color: t.accent }));
         x.add(CV.S('cor2', 'rect', { x: 1078, y: 486, w: 26, h: 26, color: t.cyan }));
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 752, y: 160, w: 300, h: 300 });
+        if (ic) merge(ic, x.layout === 'poster' ? { x: W / 2 - 54, y: 26, w: 108, h: 108 } : { x: 752, y: 160, w: 300, h: 300 });
       }
     },
     /* 18 —— 金色斜体 ---------------------------------------- */
@@ -538,7 +538,7 @@
         var k = find(L, 'kicker');
         if (k) merge(k, { x: 48, y: 40, w: 300, size: 12, color: '#fff', ls: .05, upper: false });
         var s = find(L, 'series');
-        if (s) merge(s, { x: 200, y: 40, w: 520, size: 17, font: 'mono', ls: .18, upper: true, color: t.ink2 });
+        if (s) merge(s, { x: 208, y: 74, w: 500, size: 15, font: 'mono', ls: .18, upper: true, color: t.ink2 });
         var d = find(L, 'date');
         if (d) merge(d, { x: 848, y: 42, w: 248, size: 13, color: t.ink2 });
         var r = find(L, 'rule');
@@ -566,7 +566,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: 56, y: 152, w: 640, size: 104 });
         var k = find(L, 'kicker');
-        if (k) merge(k, { x: 62, y: 42, w: 200, size: 12, color: '#f4fbf6', ls: .04, upper: false });
+        if (k && x.layout !== 'split') merge(k, { x: 62, y: 42, w: 200, size: 12, color: '#f4fbf6', ls: .04, upper: false });
         var ic = find(L, 'icon');
         if (ic) merge(ic, { x: 612, y: 330, w: 190, h: 190 });
         var sb = find(L, 'sub');
@@ -616,9 +616,9 @@
         var t = x.t, L = x.L;
         x.add(CV.S('r1', 'bar', { x: 56, y: 618, w: 112, h: 7, color: t.accent }));
         var ti = find(L, 'title');
-        if (ti) merge(ti, { x: 52, y: 150, w: 700, size: 136, maxH: 380 });
+        if (ti) merge(ti, x.layout === 'poster' ? { size: 128 } : { x: 52, y: 150, w: 700, size: 136, maxH: 380 });
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 792, y: 196, w: 300, h: 300 });
+        if (ic) merge(ic, x.layout === 'poster' ? { x: W / 2 - 54, y: 26, w: 108, h: 108 } : { x: 792, y: 196, w: 300, h: 300 });
         var sb = find(L, 'sub');
         if (sb) merge(sb, { x: 56, y: 486, w: 560, size: 21 });
         var s = find(L, 'series');
