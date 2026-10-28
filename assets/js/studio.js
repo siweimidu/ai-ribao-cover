@@ -127,41 +127,69 @@
     if (zp) zp.textContent = Math.round(z * 100) + '%';
   };
 
-  App.select = function (id) {
-    App.sel = id;
+  App.multi = [];
+  App.selSet = function () {
+    var ids = App.multi.length ? App.multi : (App.sel ? [App.sel] : []);
+    var out = [];
+    ids.forEach(function (id) { var l = App.getLayer(id); if (l) out.push(l); });
+    return out;
+  };
+  App.select = function (id, additive) {
+    if (!id) { App.sel = null; App.multi = []; }
+    else if (additive) {
+      var i = App.multi.indexOf(id);
+      if (i > -1) App.multi.splice(i, 1);
+      else App.multi.push(id);
+      if (!App.multi.length) App.multi = [id];
+      App.sel = App.multi[App.multi.length - 1];
+    } else {
+      App.multi = [id];
+      App.sel = id;
+    }
     drawSel();
     if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
   };
   App.deselect = function () { App.select(null); };
+  App.selectAll = function () {
+    App.multi = App.doc.layers.filter(function (l) { return !l.hidden; }).map(function (l) { return l.id; });
+    App.sel = App.multi[App.multi.length - 1] || null;
+    drawSel();
+    if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
+  };
 
   function drawSel() {
     var host = $('#selLayer');
     if (!host) return;
     host.innerHTML = '';
-    var l = App.selLayer();
-    if (!l) return;
-    var el = App.map[l.id];
-    if (!el) return;
-    var box = document.createElement('div');
-    box.className = 'sel';
-    box.style.left = el.offsetLeft + 'px';
-    box.style.top = el.offsetTop + 'px';
-    box.style.width = el.offsetWidth + 'px';
-    box.style.height = el.offsetHeight + 'px';
-    if (l.rot) box.style.transform = 'rotate(' + l.rot + 'deg)';
-    var tag = document.createElement('div');
-    tag.className = 'tag';
-    tag.textContent = (l.role || l.type) + ' · ' + Math.round(l.w) + ' × ' + Math.round(el.offsetHeight);
-    box.appendChild(tag);
-    ['nw', 'ne', 'sw', 'se'].forEach(function (k) {
-      if (l.type === 'text' && (k === 'nw' || k === 'sw')) return;
-      var h = document.createElement('div');
-      h.className = 'h';
-      h.dataset.h = k;
-      h.addEventListener('pointerdown', function (e) { startResize(e, k); });
-      box.appendChild(h);
+    var set = App.selSet();
+    if (!set.length) return;
+    set.forEach(function (l) {
+      var el2 = App.map[l.id];
+      if (!el2) return;
+      var box = document.createElement('div');
+      box.className = 'sel' + (l.id === App.sel ? '' : ' secondary');
+      box.style.left = el2.offsetLeft + 'px';
+      box.style.top = el2.offsetTop + 'px';
+      box.style.width = el2.offsetWidth + 'px';
+      box.style.height = el2.offsetHeight + 'px';
+      if (l.rot) box.style.transform = 'rotate(' + l.rot + 'deg)';
+      if (l.id === App.sel) {
+        var tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.textContent = (set.length > 1 ? set.length + ' 个 · ' : '') + (l.role || l.type) + ' · ' +
+          Math.round(l.w) + ' × ' + Math.round(el2.offsetHeight);
+        box.appendChild(tag);
+        ['nw', 'ne', 'sw', 'se'].forEach(function (k) {
+          if (l.type === 'text' && (k === 'nw' || k === 'sw')) return;
+          var hd = document.createElement('div');
+          hd.className = 'h';
+          hd.dataset.h = k;
+          hd.addEventListener('pointerdown', function (e) { startResize(e, k); });
+          box.appendChild(hd);
+        });
+      }
+      host.appendChild(box);
     });
-    host.appendChild(box);
   }
   App.drawSel = drawSel;
   /* ---------------- 画布交互 ---------------- */
@@ -174,7 +202,7 @@
       if (!el) { App.deselect(); return; }
       var l = App.getLayer(el.dataset.id);
       if (!l) return;
-      App.select(l.id);
+      App.select(l.id, e.shiftKey);
       if (App.editing) return;
       startDrag(e, el, l);
     });
@@ -193,6 +221,11 @@
       document.execCommand('insertText', false, t);
     });
     root.addEventListener('dragover', function (e) {
+      if (e.dataTransfer && e.dataTransfer.types && e.dataTransfer.types.indexOf('Files') > -1) {
+        e.preventDefault();
+        if (root._drop) root._drop.classList.add('on');
+        return;
+      }
       if (!App.gdragging) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'copy';
@@ -200,6 +233,11 @@
     });
     root.addEventListener('dragleave', function () { if (root._drop) root._drop.classList.remove('on'); });
     root.addEventListener('drop', function (e) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+        e.preventDefault();
+        App.pickImage(e.dataTransfer.files[0], false);
+        return;
+      }
       if (root._drop) root._drop.classList.remove('on');
       var icon = e.dataTransfer.getData('text/cv-icon');
       if (!icon) return;
@@ -352,8 +390,113 @@
     if (el) startEdit(el, l);
   };
 
+  /* ---------------- 群组操作 ---------------- */
+  function selBounds(set) {
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    set.forEach(function (l) {
+      var el2 = App.map[l.id];
+      var w = l.w || 0, h = l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0);
+      x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
+      x1 = Math.max(x1, l.x + w); y1 = Math.max(y1, l.y + h);
+    });
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+  }
+  App.align = function (mode) {
+    var set = App.selSet(); if (!set.length) return;
+    var W = App.doc.w, H = App.doc.h, M = 64;
+    set.forEach(function (l) {
+      var el2 = App.map[l.id];
+      var w = l.w || 0, h = l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0);
+      if (mode === 'l') l.x = M;
+      else if (mode === 'r') l.x = W - M - w;
+      else if (mode === 'hc') l.x = Math.round((W - w) / 2);
+      else if (mode === 't') l.y = M;
+      else if (mode === 'b') l.y = H - M - h;
+      else if (mode === 'vc') l.y = Math.round((H - h) / 2);
+    });
+    App.apply(); App.commit();
+    App.toast('已对齐');
+  };
+  App.distribute = function (dir) {
+    var set = App.selSet();
+    if (set.length < 3) { App.toast('至少选 3 个元素才能分布', 'err'); return; }
+    if (dir === 'h') {
+      set.sort(function (a, b) { return a.x - b.x; });
+      var x0 = set[0].x, xn = set[set.length - 1].x, s = (xn - x0) / (set.length - 1);
+      set.forEach(function (l, i) { l.x = Math.round(x0 + s * i); });
+    } else {
+      set.sort(function (a, b) { return a.y - b.y; });
+      var y0 = set[0].y, yn = set[set.length - 1].y, s2 = (yn - y0) / (set.length - 1);
+      set.forEach(function (l, i) { l.y = Math.round(y0 + s2 * i); });
+    }
+    App.apply(); App.commit();
+    App.toast('已等距分布');
+  };
+  App.gridArrange = function (cols, gap) {
+    var set = App.selSet();
+    if (set.length < 2) { App.toast('至少选 2 个元素', 'err'); return; }
+    gap = gap == null ? 32 : gap;
+    var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
+    n = Math.max(1, Math.min(n, set.length));
+    var maxW = 0, maxH = 0;
+    set.forEach(function (l) {
+      var el2 = App.map[l.id];
+      maxW = Math.max(maxW, l.w || 0);
+      maxH = Math.max(maxH, l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0));
+    });
+    var rows = Math.ceil(set.length / n);
+    var gw = maxW * n + gap * (n - 1), gh = maxH * rows + gap * (rows - 1);
+    var ox = Math.round((App.doc.w - gw) / 2), oy = Math.round((App.doc.h - gh) / 2);
+    set.forEach(function (l, i) {
+      var c = i % n, r = Math.floor(i / n);
+      l.x = Math.round(ox + c * (maxW + gap) + (maxW - (l.w || 0)) / 2);
+      l.y = Math.round(oy + r * (maxH + gap));
+    });
+    App.apply(); App.commit();
+    App.toast('已排成 ' + n + ' 列');
+  };
+  App.scaleSelTo = function (pct) {
+    var set = App.selSet(); if (!set.length) return;
+    if (!App.__scaleBase) {
+      App.__scaleBase = set.map(function (l) {
+        var el2 = App.map[l.id];
+        return {
+          id: l.id, x: l.x, y: l.y, w: l.w || 0, size: l.size,
+          h: l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0)
+        };
+      });
+    }
+    var b = selBounds(set), k = pct / 100;
+    var cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    App.__scaleBase.forEach(function (o) {
+      var l = App.getLayer(o.id); if (!l) return;
+      l.x = Math.round(cx + (o.x - cx) * k);
+      l.y = Math.round(cy + (o.y - cy) * k);
+      l.w = Math.max(l.type === 'text' ? 24 : 2, Math.round(o.w * k));
+      if (l.type === 'text') { if (o.size) l.size = Math.max(8, Math.round(o.size * k)); }
+      else l.h = Math.max(1, Math.round(o.h * k));
+    });
+    App.suppress = true; App.apply(); App.suppress = false;
+  };
+  App.rotateSelTo = function (deg) {
+    App.selSet().forEach(function (l) { l.rot = deg; });
+    App.apply(); App.commit();
+  };
+  App.rotateAdd = function (deg) {
+    App.selSet().forEach(function (l) { l.rot = Math.round(((l.rot || 0) + deg) * 10) / 10; });
+    App.apply(); App.commit();
+  };
+
   /* ---------------- 图层操作 ---------------- */
   App.commit = function () { App.pushHist(); saveLocal(); };
+  App.addLayerAt = function (l, quiet, index) {
+    App.doc.layers.splice(index == null ? App.doc.layers.length : index, 0, l);
+    App.sel = l.id;
+    App.apply();
+    App.commit();
+    if (!quiet) App.toast('已添加图片图层');
+    return l;
+  };
   App.addLayer = function (l, quiet) {
     App.doc.layers.push(l);
     App.sel = l.id;
@@ -371,17 +514,27 @@
     App.commit();
   };
   App.removeSel = function () {
-    var l = App.selLayer(); if (!l) return;
-    App.doc.layers = App.doc.layers.filter(function (x) { return x.id !== l.id; });
-    App.sel = null; App.apply(); App.commit(); App.toast('已删除');
+    var set = App.selSet(); if (!set.length) return;
+    var kill = {};
+    set.forEach(function (l) { kill[l.id] = 1; });
+    App.doc.layers = App.doc.layers.filter(function (x) { return !kill[x.id]; });
+    App.sel = null; App.multi = [];
+    App.apply(); App.commit();
+    App.toast('已删除 ' + set.length + ' 个图层');
   };
   App.duplicate = function () {
-    var l = App.selLayer(); if (!l) return;
-    var c = JSON.parse(JSON.stringify(l));
-    c.id = CV.uid(l.type.charAt(0));
-    c.x += 24; c.y += 24;
-    App.addLayer(c, true);
-    App.toast('已复制图层');
+    var set = App.selSet(); if (!set.length) return;
+    var made = [];
+    set.forEach(function (l) {
+      var c = JSON.parse(JSON.stringify(l));
+      c.id = CV.uid(l.type.charAt(0));
+      c.x += 24; c.y += 24;
+      App.doc.layers.push(c);
+      made.push(c.id);
+    });
+    App.multi = made; App.sel = made[made.length - 1];
+    App.apply(); App.commit();
+    App.toast('已创建副本 ×' + made.length);
   };
   App.order = function (dir) {
     var l = App.selLayer(); if (!l) return;
@@ -393,10 +546,12 @@
     App.apply(); App.commit();
   };
   App.nudge = function (dx, dy) {
-    var l = App.selLayer(); if (!l) return;
-    l.x += dx; l.y += dy;
-    var el = App.map[l.id];
-    if (el) { el.style.left = l.x + 'px'; el.style.top = l.y + 'px'; }
+    var set = App.selSet(); if (!set.length) return;
+    set.forEach(function (l) {
+      l.x += dx; l.y += dy;
+      var el = App.map[l.id];
+      if (el) { el.style.left = l.x + 'px'; el.style.top = l.y + 'px'; }
+    });
     drawSel();
     if (window.Panels) Panels.syncInspector();
   };
@@ -437,6 +592,42 @@
         App.toast('出图失败：' + err.message, 'err');
       }
     });
+  };
+  /* 读图 -> 压到 1600px 宽 -> dataURL，避免 JSON 过大 */
+  App.pickImage = function (file, asBg) {
+    if (!file || !/^image\//.test(file.type)) { App.toast('请拖入图片文件', 'err'); return; }
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var maxW = 1600;
+        var k = Math.min(1, maxW / img.naturalWidth);
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * k);
+        c.height = Math.round(img.naturalHeight * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        var url = c.toDataURL('image/jpeg', 0.86);
+        var layer = CV.IMG(asBg ? 'bg' : 'pic', url, {
+          x: 0, y: 0, w: CV.W, h: CV.H, fit: 'cover',
+          dim: asBg ? 0.18 : 0, dimColor: (App.doc.tokens && App.doc.tokens.ink) || '#0e1115'
+        });
+        if (asBg) App.addLayerAt(layer, true, 0);
+        else App.addLayer(layer, true);
+        App.toast(asBg ? '已设为背景图' : '已插入图片', 'ok');
+      };
+      img.onerror = function () { App.toast('图片读取失败', 'err'); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  };
+  App.setAsBg = function () {
+    var l = App.selLayer();
+    if (!l || l.type !== 'image') return;
+    l.x = 0; l.y = 0; l.w = CV.W; l.h = CV.H; l.fit = 'cover'; l.role = 'bg';
+    var i = App.doc.layers.indexOf(l);
+    if (i > 0) { App.doc.layers.splice(i, 1); App.doc.layers.unshift(l); }
+    App.apply(); App.commit();
+    App.toast('已设为背景图', 'ok');
   };
   App.exportJson = function () {
     var blob = new Blob([JSON.stringify(App.doc, null, 2)], { type: 'application/json' });
@@ -485,6 +676,7 @@
     if (mod && e.key.toLowerCase() === 'y') { e.preventDefault(); App.redo(); return; }
     if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); App.exportPng(); return; }
     if (mod && e.key.toLowerCase() === 'd') { e.preventDefault(); App.duplicate(); return; }
+    if (mod && e.key.toLowerCase() === 'a') { e.preventDefault(); App.selectAll(); return; }
     if (inField) return;
     if (e.key === 'Escape') { if (!App.editing) App.deselect(); return; }
     if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); App.removeSel(); return; }
