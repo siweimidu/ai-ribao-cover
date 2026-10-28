@@ -202,7 +202,7 @@
     /* 7 —— 荡殇：暗色杂志 ------------------------------ */
     {
       id: 'noir', name: '暗色杂志', sub: '荡殇 · 发光与斜体',
-      t: { ink: '#f3f5f9', ink2: '#8b97ab', accent: '#ff3b30', violet: '#6d5cff' },
+      t: { ink: '#f3f5f9', ink2: '#8b97ab', accent: '#ff3b30', violet: '#6d5cff', bandInk: '#f3f5f9' },
       bg: 'radial-gradient(130% 105% at 74% 12%,#1b2233 0%,#11151f 44%,#080a0e 100%)',
       fx: ['glow', 'grain', 'scan'], dark: true,
       title: { font: 'heavy', size: 88, color: '#f7f9fc', shadow: 'glow' },
@@ -293,7 +293,7 @@
       decor: function (x) {
         var t = x.t, L = x.L;
         var po = x.layout === 'poster';
-        x.add(CV.S('c', 'circle', { x: po ? 52 : 1022, y: po ? 92 : 44, w: po ? 148 : 118, h: po ? 148 : 118, color: t.red }));
+        x.add(CV.S('c', 'circle', { x: po ? 52 : 1022, y: po ? 92 : (x.layout === 'split' ? 126 : 44), w: po ? 148 : 118, h: po ? 148 : 118, color: t.red }));
         x.add(CV.S('sq', 'rect', { x: po ? 1024 : 1004, y: po ? 108 : 494, w: po ? 116 : 128, h: po ? 116 : 128, color: t.blue, rot: 10 }));
         x.add(CV.S('tr', 'tri', { x: po ? 1040 : 664, y: po ? 470 : 466, w: 128, h: 112, color: t.yellow }));
         x.add(CV.S('bar1', 'rect', { x: 0, y: 640, w: W, h: 80, color: t.ink }));
@@ -396,6 +396,7 @@
       title: { font: 'serif', size: 96, lh: 1.04, ls: .01, color: '#1e1a16' },
       decor: function (x) {
         var t = x.t, L = x.L;
+        if (x.layout === 'split') return;
         x.add(CV.S('r1', 'bar', { x: 48, y: 96, w: W - 96, h: 3, color: t.ink }));
         x.add(CV.S('r2', 'bar', { x: 48, y: 102, w: W - 96, h: 1, color: t.ink, opacity: .65 }));
         x.add(CV.S('tag', 'rect', { x: 48, y: 30, w: 132, h: 30, color: t.accent }));
@@ -440,6 +441,7 @@
       title: { font: 'black', size: 92, lh: .98, ls: -.03, color: '#0b0b0c' },
       decor: function (x) {
         var t = x.t, L = x.L;
+        if (x.layout === 'split') return;
         x.add(CV.S('top', 'bar', { x: 56, y: 40, w: 1048, h: 2, color: t.ink }));
         x.add(CV.S('bot', 'bar', { x: 56, y: 664, w: 1048, h: 2, color: t.ink }));
         x.add(CV.S('box', 'rect', { x: 700, y: 96, w: 404, h: 404, color: 'transparent', bw: 2, bc: t.ink }));
@@ -590,6 +592,8 @@
     }
     /* --- 分栏头条：左侧标题列收窄，右侧图形不越界 --- */
     if (lay === 'split') {
+      var bd = find(L, 'band');
+      if (p.dark && bd) merge(bd, { color: 'rgba(255,255,255,.07)' });
       var bn3 = u('bignum') || f('bignum'); if (bn3) merge(bn3, { y: 508 });
       var nm3 = find(U, 'num'); if (nm3) merge(nm3, { y: 470 });
     }
