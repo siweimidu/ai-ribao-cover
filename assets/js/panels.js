@@ -209,7 +209,8 @@
         sw.appendChild(i2);
       });
       var nm = el('div', 'nm');
-      nm.innerHTML = CV.esc(s.name) + '<small>' + CV.esc(s.sub) + '</small>';
+      var sdesc = typeof s.sub === 'string' ? s.sub : (typeof s.desc === 'string' ? s.desc : '');
+      nm.innerHTML = CV.esc(s.name) + '<small>' + CV.esc(sdesc) + '</small>';
       b.appendChild(sw); b.appendChild(nm);
       b.addEventListener('click', function () {
         App.recompose({ style: s.id });
@@ -220,14 +221,31 @@
     p.appendChild(group('风格预设 · 11 套', grid));
 
     var lays = el('div', 'layouts');
-    var portraitNow = App.doc.h > App.doc.w;
+    lays.id = 'layoutGrid';
+    p.appendChild(group('版式', lays));
+
+
+    var note = el('div', 'note');
+    note.innerHTML = '<b>换风格不丢文案</b>：先从「内容」填一次，之后随时切风格/版式，文字会自动带过去。';
+    p.appendChild(note);
+  }
+
+  /* ---------- 版式选择（按当前方向只显示对应骨架） ---------- */
+  function renderLayouts() {
+    var host = $('#layoutGrid');
+    if (!host) return;
+    host.innerHTML = '';
+    var portraitNow = App && App.doc ? App.doc.h > App.doc.w : false;
     CV.LAYOUTS.filter(function (l) { return !!l.tall === portraitNow; }).forEach(function (l) {
-      var b = el('button', 'lay');
+      var b = el('button', 'lay' + (App && App.doc && App.doc.layout === l.id ? ' on' : ''));
+      b.type = 'button';
+      b.style.gridTemplateRows = '1fr 1fr';
       var bars = l.id === 'hero' ? [[0, 0, 60, 34], [60, 8, 38, 18]]
         : l.id === 'poster' ? [[16, 30, 68, 14], [30, 48, 40, 8]]
           : l.id === 'split' ? [[0, 0, 100, 18], [0, 22, 58, 34]]
-            : [[0, 20, 46, 40], [52, 8, 46, 52]];
-      b.style.gridTemplateRows = '1fr 1fr';
+            : l.id === 'stack' ? [[28, 0, 44, 16], [0, 20, 100, 26], [10, 50, 80, 10]]
+              : l.id === 'sheet' ? [[0, 0, 100, 14], [6, 18, 88, 22], [28, 44, 44, 26]]
+                : [[0, 20, 46, 40], [52, 8, 46, 52]];
       bars.forEach(function (r2) {
         var d = el('b');
         d.style.cssText = 'grid-column:1/-1;opacity:' + (r2[3] > 20 ? 0.95 : 0.55);
@@ -235,7 +253,6 @@
       });
       b.title = l.name;
       b.dataset.layout = l.id;
-      b.addEventListener('click', function () { App.recompose({ layout: l.id }); });
       b.addEventListener('click', function () {
         var LO = CV.layoutById(l.id);
         var portrait = App.doc.h > App.doc.w;
@@ -244,13 +261,8 @@
         if (LO && !LO.tall && portrait) opts.ratio = 'land';
         App.recompose(opts);
       });
-      lays.appendChild(b);
+      host.appendChild(b);
     });
-    p.appendChild(group('版式', lays));
-
-    var note = el('div', 'note');
-    note.innerHTML = '<b>换风格不丢文案</b>：先从「内容」填一次，之后随时切风格/版式，文字会自动带过去。';
-    p.appendChild(note);
   }
 
   /* ---------- 图标库：一厂商一格 · 按热度排序 · 右键看全部变体 ---------- */
@@ -909,7 +921,7 @@
   function syncStyles() {
     syncCanvas();
     $$('.style-card').forEach(function (b) { b.classList.toggle('on', b.dataset.style === App.doc.style); });
-    $$('.lay').forEach(function (b) { b.classList.toggle('on', b.dataset.layout === App.doc.layout); });
+    renderLayouts();
   }
   function syncHist() {
     var u = $('#btnUndo'), r = $('#btnRedo');
