@@ -24,8 +24,8 @@ const meta = await page.evaluate(function () {
   return { styles: window.CV.STYLES.map(function (s) { return s.id; }), layouts: window.CV.LAYOUTS.map(function (l) { return l.id; }) };
 });
 
-const ANALYZE = function (styleId, layoutId) {
-  var doc = window.CV.compose(styleId, layoutId, window.CV.defaultContent());
+const ANALYZE = function (styleId, layoutId, ratioId) {
+  var doc = window.CV.compose(styleId, layoutId, window.CV.defaultContent(), ratioId);
   document.body.innerHTML = '';
   document.body.style.cssText = 'margin:0;padding:0;overflow:hidden;background:#fff;width:' + doc.w + 'px;height:' + doc.h + 'px';
   var host = document.createElement('div');
@@ -77,7 +77,7 @@ const ANALYZE = function (styleId, layoutId) {
     if (b.type !== 'text') return;
     if (b.x < 14 || b.y < 14 || b.x + b.w > W - 14 || b.y + b.h > H - 14) probs.push('EDGE:' + b.role);
   });
-  return { probs: probs, n: boxes.length };
+  return { probs: probs, n: boxes.length, w: W, h: H };
 };
 
 let total = 0, bad = 0;
@@ -86,12 +86,13 @@ for (const s of meta.styles) {
   if (only && s !== only) continue;
   for (const l of meta.layouts) {
     total++;
-    const r = await page.evaluate(ANALYZE, s, l);
+    const ratio = l === 'stack' || l === 'sheet' ? 'xhs' : 'land';
+    const r = await page.evaluate(ANALYZE, s, l, ratio);
     const flag = r.probs.length;
     if (flag) bad++;
     rows.push({ k: s + '/' + l, p: r.probs });
     const file = path.join(QADIR, s + '-' + l + '.png');
-    await page.screenshot({ path: file, clip: { x: 0, y: 0, width: 1160, height: 720 } });
+    await page.screenshot({ path: file, clip: { x: 0, y: 0, width: r.w, height: r.h } });
     console.log((flag ? 'X ' : 'ok ') + (s + '/' + l).padEnd(26) + (flag ? r.probs.join('  ') : ''));
   }
 }
