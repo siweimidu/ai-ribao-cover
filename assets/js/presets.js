@@ -483,6 +483,149 @@
         var f = find(L, 'foot');
         if (f) merge(f, { x: 56, y: 634, w: 600, size: 10.5, ls: .16, color: t.ink2 });
       }
+    },
+
+    /* 17 —— 故障拼贴 ---------------------------------------- */
+    {
+      id: 'glitch', name: '故障拼贴', sub: '小小小名 · 深色扫描与错位重影',
+      t: { ink: '#eef2f8', ink2: '#7f8ba0', accent: '#ff2d55', cyan: '#22d3ee', bgSolid: '#0a0c11' },
+      bg: 'radial-gradient(120% 100% at 70% 6%,#161b26 0%,#0d1017 52%,#06070b 100%)',
+      fx: ['grain', 'scan'], dark: true,
+      title: { font: 'black', size: 94, lh: .98, ls: -.03, color: '#eef2f8' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        var ti = find(L, 'title');
+        if (ti) {
+          x.add(CV.T('g1', ti.text, {
+            x: ti.x - 6, y: ti.y - 2, w: ti.w, size: ti.size, font: ti.font, weight: ti.weight,
+            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(34,211,238,.5)', opacity: .3
+          }));
+          x.add(CV.T('g2', ti.text, {
+            x: ti.x + 6, y: ti.y + 2, w: ti.w, size: ti.size, font: ti.font, weight: ti.weight,
+            lh: ti.lh, ls: ti.ls, align: ti.align, color: 'rgba(255,45,85,.5)', opacity: .3
+          }));
+          merge(ti, { x: 64, y: 158, w: 640, size: 90 });
+        }
+        for (var i = 0; i < 3; i++) {
+          x.add(CV.S('h' + i, 'rect', { x: 1046 - i * 7, y: 118 + i * 12, w: 12, h: 92, color: t.cyan, rot: -18, opacity: .55 - i * .13 }));
+        }
+        x.add(CV.S('frame', 'rect', { x: 700, y: 108, w: 404, h: 404, color: 'transparent', bw: 1.5, bc: 'rgba(238,242,248,.3)' }));
+        x.add(CV.S('cor1', 'rect', { x: 700, y: 108, w: 26, h: 26, color: t.accent }));
+        x.add(CV.S('cor2', 'rect', { x: 1078, y: 486, w: 26, h: 26, color: t.cyan }));
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 752, y: 160, w: 300, h: 300 });
+      }
+    },
+    /* 18 —— 金色斜体 ---------------------------------------- */
+    {
+      id: 'golden', name: '金色斜体', sub: '灵感港 · 描金大标与叠影方块',
+      t: { ink: '#241f1b', ink2: '#7a6a56', accent: '#c0392b', gold: '#c8a24a', bgSolid: '#efe6d3' },
+      bg: 'radial-gradient(125% 105% at 24% 0%,#f7f0df 0%,#ece2cd 50%,#ded1b6 100%)',
+      fx: ['paper', 'wrinkle', 'grain'], dark: false,
+      title: { font: 'impact', size: 100, lh: .98, ls: -.005, color: '#c8a24a', italic: true, stroke: 3, strokeColor: '#2b2721' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('tag', 'rect', { x: 48, y: 34, w: 142, h: 32, color: t.accent }));
+        x.add(CV.S('r1', 'bar', { x: 48, y: 92, w: W - 96, h: 2, color: t.ink, opacity: .5 }));
+        x.add(CV.S('r2', 'bar', { x: 48, y: 664, w: W - 96, h: 2, color: t.ink, opacity: .5 }));
+        x.add(CV.S('c1', 'rect', { x: 806, y: 150, w: 180, h: 180, color: t.gold, opacity: .95 }));
+        x.add(CV.S('c2', 'rect', { x: 846, y: 190, w: 180, h: 180, color: '#9fc0e8', opacity: .9 }));
+        x.add(CV.S('c3', 'rect', { x: 826, y: 170, w: 180, h: 180, color: 'transparent', bw: 2, bc: t.ink, opacity: .45 }));
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 866, y: 210, w: 140, h: 140 });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 52, y: 196, w: 720, size: 96 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 48, y: 40, w: 300, size: 12, color: '#fff', ls: .05, upper: false });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 200, y: 40, w: 520, size: 17, font: 'mono', ls: .18, upper: true, color: t.ink2 });
+        var d = find(L, 'date');
+        if (d) merge(d, { x: 848, y: 42, w: 248, size: 13, color: t.ink2 });
+        var r = find(L, 'rule');
+        if (r) merge(r, { x: 52, y: 152, w: 88, h: 6, color: t.accent });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 52, y: 470, w: 560, size: 21, color: '#4a4238' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 48, y: 678, w: 620, size: 11, ls: .1, color: t.ink2 });
+      }
+    },
+    /* 19 —— 渐变丝带 ---------------------------------------- */
+    {
+      id: 'ribbon', name: '渐变丝带', sub: '绿鸭 · 2.5D 丝带与四角星',
+      t: { ink: '#16130f', ink2: '#8a7a68', accent: '#b81f2b', bgSolid: '#f5f1e6' },
+      bg: 'linear-gradient(160deg,#fbf7ee 0%,#f5f1e6 55%,#ebe4d4 100%)',
+      fx: ['paper', 'grain'], dark: false,
+      title: { font: 'heavy', size: 104, lh: .96, ls: -.025, color: '#b81f2b' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('rb1', 'round', { x: 742, y: 96, w: 400, h: 118, color: 'linear-gradient(135deg,#3b82f6 0%,#a855f7 100%)', radius: 32, rot: -22, opacity: .96 }));
+        x.add(CV.S('rb2', 'round', { x: 742, y: 238, w: 400, h: 118, color: 'linear-gradient(135deg,#a855f7 0%,#ec4899 100%)', radius: 32, rot: 22, opacity: .96 }));
+        x.add(CV.S('star', 'star4', { x: 902, y: 386, w: 190, h: 190, color: 'linear-gradient(135deg,#22d3ee 0%,#3b82f6 100%)', opacity: .92 }));
+        x.add(CV.S('tag', 'round', { x: 48, y: 36, w: 148, h: 30, color: '#2f7d4f', radius: 99 }));
+        x.add(CV.S('r1', 'bar', { x: 48, y: 622, w: 96, h: 6, color: t.ink }));
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 56, y: 152, w: 640, size: 104 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 62, y: 42, w: 200, size: 12, color: '#f4fbf6', ls: .04, upper: false });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 612, y: 330, w: 190, h: 190 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 56, y: 470, w: 560, size: 21 });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 56, y: 646, w: 600, size: 11, ls: .1 });
+      }
+    },
+    /* 20 —— 衬线矩阵 ---------------------------------------- */
+    {
+      id: 'serifgrid', name: '衬线矩阵', sub: '橘鸦 · 衬线西文与 3x3 圆格',
+      t: { ink: '#1b2230', ink2: '#7f8ea6', accent: '#3b6cf0', bgSolid: '#f6f8fd', card: '#ffffff' },
+      bg: 'linear-gradient(150deg,#eef3ff 0%,#f6f2fc 48%,#fbf3f6 100%)',
+      fx: [], dark: false,
+      title: { font: 'serif', size: 84, lh: 1.0, ls: -.01, color: '#1b2230' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('halo', 'circle', { x: 860, y: -180, w: 540, h: 540, color: '#ffffff', opacity: .5 }));
+        var MAT = ['OpenAI/OpenAI#symbol-color', 'Anthropic/Claude#symbol-color', 'Google/Gemini#symbol-color',
+          'xAI/Grok#symbol-color', 'DeepSeek/DeepSeek#symbol-color', '月之暗面/Kimi#symbol-color',
+          '智谱 AI/智谱 AI#symbol-color', 'MiniMax/MiniMax#symbol-color', '字节跳动/豆包#symbol-color'];
+        for (var i = 0; i < 9; i++) {
+          var cx = 728 + (i % 3) * 118, cy = 148 + Math.floor(i / 3) * 118;
+          x.add(CV.S('mc' + i, 'circle', { x: cx, y: cy, w: 100, h: 100, color: '#ffffff', opacity: .96, bw: 1, bc: 'rgba(27,34,48,.07)' }));
+          x.add(CV.I('mi' + i, MAT[i], { x: cx + 24, y: cy + 24, w: 52, h: 52, opacity: .92 }));
+        }
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 64, y: 186, w: 600, size: 80 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 64, y: 430, w: 520, size: 21 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 64, y: 96, w: 520, size: 20, font: 'mono', ls: .12, upper: true, color: t.accent });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { opacity: 0 });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 64, y: 662, w: 600, size: 12, ls: .06 });
+      }
+    },
+    /* 21 —— 极简巨字 ---------------------------------------- */
+    {
+      id: 'flat', name: '极简巨字', sub: '黑鸦 · 纯色底与两行巨字',
+      t: { ink: '#16130f', ink2: '#7d7362', accent: '#d8232a', bgSolid: '#f7edd8' },
+      bg: 'linear-gradient(180deg,#fcf5e3 0%,#f6eacf 58%,#efe0c0 100%)',
+      fx: ['paper', 'grain'], dark: false,
+      title: { font: 'black', size: 138, lh: .92, ls: -.035, color: '#16130f' },
+      decor: function (x) {
+        var t = x.t, L = x.L;
+        x.add(CV.S('r1', 'bar', { x: 56, y: 618, w: 112, h: 7, color: t.accent }));
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 52, y: 150, w: 700, size: 136, maxH: 380 });
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 792, y: 196, w: 300, h: 300 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 56, y: 486, w: 560, size: 21 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 56, y: 74, w: 520, size: 19, font: 'mono', ls: .1, upper: true, color: t.ink2 });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 56, y: 642, w: 600, size: 11, ls: .1 });
+      }
     }
   ];
 
