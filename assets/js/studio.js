@@ -5,6 +5,57 @@
   var App = { doc: null, sel: null, zoom: 1, hist: [], hi: -1, editing: false, map: {}, locked: false };
   window.App = App;
 
+  /* 命中兜底：没点到图层时按 7px 容差找最近的（细长条 / 1px 线专用） */
+  function hitFallback(cx, cy) {
+    var pad = 7, best = null;
+    for (var i = App.doc.layers.length - 1; i >= 0; i--) {
+      var l = App.doc.layers[i];
+      if (l.hidden || l.locked) continue;
+      var el = App.map[l.id];
+      if (!el) continue;
+      var r = el.getBoundingClientRect();
+      if (!r.width && !r.height) continue;
+      if (cx >= r.left - pad && cx <= r.right + pad && cy >= r.top - pad && cy <= r.bottom + pad) {
+        best = { l: l, el: el };
+        break;
+      }
+    }
+    return best;
+  }
+  App.hitFallback = hitFallback;
+
+  /* 命中栈：从顶到底列出盖住该点的图层；细线（屏幕宽或高 <=6px）额外给 5px 容差 */
+  function layersAt(cx, cy) {
+    var out = [];
+    App.doc.layers.forEach(function (l) {
+      if (l.hidden || l.locked) return;
+      var el = App.map[l.id];
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (!r.width && !r.height) return;
+      var thin = (r.width <= 6 || r.height <= 6);
+      var pad = thin ? 5 : 0;
+      if (cx >= r.left - pad && cx <= r.right + pad && cy >= r.top - pad && cy <= r.bottom + pad) {
+        out.push({ l: l, el: el, thin: thin });
+      }
+    });
+    return out.reverse();   /* 顶层在前 */
+  }
+  /* 取点上的图层：细线优先；deep=true 时从当前选中往下轮一个（Figma 的 Ctrl 深选） */
+  function pickAt(cx, cy, deep) {
+    var stack = layersAt(cx, cy);
+    if (!stack.length) return null;
+    if (deep) {
+      var idx = -1;
+      stack.forEach(function (h, i) { if (h.l.id === App.sel) idx = i; });
+      return stack[(idx + 1) % stack.length];
+    }
+    var t = null;
+    stack.forEach(function (h) { if (!t && h.thin) t = h; });
+    return t || stack[0];
+  }
+  App.pickAt = pickAt;
+
   App.getLayer = function (id) {
     var L = App.doc.layers;
     for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
@@ -128,6 +179,50 @@
     doc.id = App.doc.id;
     App.doc = doc; App.sel = null;
     App.pushHist(); App.apply(); saveLocal();
+  };
+
+  /* 纸纹实时预览：拖滑块时只改 fx 的内联样式，零重绘 */
+  App.paperLive = function () {
+    var root = App.root;
+    if (!root) return;
+    var p = App.doc.paper || {};
+    var on = p.on !== false;
+    var hasPaper = !!root.querySelector('.cv-fx.paper');
+    if (on !== hasPaper) { App.apply(); return; }      /* 开关状态变化才需要重建 */
+    var po = (p.opacity == null ? 80 : p.opacity) / 100;
+    var pn = (p.noise == null ? 60 : p.noise) / 100;
+    var ps = p.scale == null ? 260 : p.scale;
+    var e1 = root.querySelector('.cv-fx.paper');
+    if (e1) { e1.style.opacity = (po * 0.55).toFixed(3); e1.style.backgroundSize = ps + 'px ' + ps + 'px'; }
+    var e2 = root.querySelector('.cv-fx.wrinkle');
+    if (e2) { e2.style.opacity = (po * 0.34).toFixed(3); e2.style.backgroundSize = (ps * 1.9) + 'px ' + (ps * 1.9) + 'px'; }
+    var e3 = root.querySelector('.cv-fx.grain');
+    if (e3) { e3.style.opacity = (pn * 0.5).toFixed(3); e3.style.backgroundSize = Math.max(32, Math.round(ps * 0.5)) + 'px ' + Math.max(32, Math.round(ps * 0.5)) + 'px'; }
+  };
+
+  /* 网格间距实时预览：直接挪 DOM，不整屏重绘 */
+  App.gridLive = function (cols, gap) {
+    var set = App.selSet();
+    if (set.length < 2) { App.gridArrange(cols, gap); return; }
+    var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
+    n = Math.max(1, Math.min(n, set.length));
+    var rows = Math.ceil(set.length / n);
+    var M = 64, availW = App.doc.w - M * 2, availH = App.doc.h - M * 2;
+    var colW = Math.max(24, (availW - gap * (n - 1)) / n);
+    var rowH = Math.max(24, (availH - gap * (rows - 1)) / rows);
+    set.forEach(function (l, i) {
+      var el = App.map[l.id]; if (!el) return;
+      var h = l.type === 'text' ? el.offsetHeight : (l.h || 0);
+      var w = l.w || 0;
+      var c = i % n, r = Math.floor(i / n);
+      var cellX = M + c * (colW + gap), cellY = M + r * (rowH + gap);
+      var x = cellX + (w <= colW ? (colW - w) / 2 : 0);
+      var y = cellY + (h <= rowH ? (rowH - h) / 2 : 0);
+      l.x = Math.round(Math.max(M, Math.min(x, App.doc.w - M - Math.min(w, availW))));
+      l.y = Math.round(Math.max(M, Math.min(y, App.doc.h - M - Math.min(h, availH))));
+      el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
+    });
+    if (App.drawSel) App.drawSel();
   };
 
   App.apply = function () {
@@ -303,15 +398,15 @@
         return;
       }
       if (e.button !== 0) return;
-      var el = e.target.closest ? e.target.closest('.cv-el') : null;
-      if (!el) {
-        /* Figma：空白处左键拖动 = 框选（Shift 追加） */
+      var deep = e.ctrlKey || e.metaKey;
+      var pick = pickAt(e.clientX, e.clientY, deep);
+      if (!pick) {
         if (!e.shiftKey) App.deselect();
         startMarquee(e, e.shiftKey, false);
         return;
       }
-      var l = App.getLayer(el.dataset.id);
-      if (!l) return;
+      var el = pick.el;
+      var l = pick.l;
       /* 点已多选中的元素时不要打散多选，否则整组拖动失效 */
       var inMulti = App.multi.length > 1 && App.multi.indexOf(l.id) > -1;
       if (e.shiftKey || !inMulti) {
@@ -957,7 +1052,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f13';
+  App.BUILD = '20261029-f15';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
