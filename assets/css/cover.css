@@ -74,3 +74,10 @@
 .cv-image img{display:block;width:100%;height:100%;object-fit:cover;-webkit-user-drag:none;pointer-events:none}
 .cv-image .ov{position:absolute;inset:0;pointer-events:none}
 .cv-edit .cv-image{cursor:move}
+
+/* 装饰层（形状/图形）默认不接指针：画布上直接点文字与图标，形状从图层面板选；
+   按住 Alt 时临时恢复可点，方便直接拖装饰元素 */
+.cv-edit .cv-shape,.cv-edit .cv-raw{pointer-events:none}
+.cv-edit .cv-ghost{pointer-events:none}
+body.alt-down .cv-edit .cv-shape,body.alt-down .cv-edit .cv-raw{pointer-events:auto}
+.cv-edit .cv-shape:hover,.cv-edit .cv-raw:hover{outline:1px dashed rgba(0,101,253,.5);outline-offset:2px}
