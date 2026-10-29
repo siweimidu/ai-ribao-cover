@@ -628,11 +628,9 @@
       var val = n === '自动' ? 'auto' : n;
       var b = el('button', gCols === val ? 'on' : '', n);
       b.type = 'button';
-      b.addEventListener('click', function () {
-        gCols = val;
-        $('button', cr).forEach(function (x) { x.classList.remove('on'); });
-        b.classList.add('on');
-      });
+      b.dataset.cols = val;
+      b.dataset.act = 'gridcols:' + val;
+      b.title = '点一下就重排';
       cr.appendChild(b);
     });
     f1.appendChild(cr);
@@ -648,14 +646,13 @@
     r2.type = 'range'; r2.min = 0; r2.max = 120; r2.step = 1; r2.value = gGap;
     var v2 = el('span', 'val', gGap + 'px');
     r2.addEventListener('input', function () { gGap = parseInt(r2.value, 10); v2.textContent = gGap + 'px'; hint2.textContent = gGap + 'px'; });
+    r2.addEventListener('change', function () { App.gridArrange(gCols, gGap); });
     wrap2.appendChild(r2); wrap2.appendChild(v2);
     f2.appendChild(wrap2);
     gb.appendChild(f2);
-    var ap = el('button', 'btn');
-    ap.textContent = '应用排布';
-    ap.style.width = '100%'; ap.style.marginTop = '6px'; ap.style.justifyContent = 'center';
-    ap.dataset.act = 'grid';
-    gb.appendChild(ap);
+    var tip = el('p', 'empty', '点列数就立即重排，不用再点按钮');
+    tip.style.padding = '4px 0 0';
+    gb.appendChild(tip);
     out.push(group('网格排列', gb));
 
     var sb = el('div');
@@ -732,6 +729,8 @@
       if (!b) return;
       var act = b.dataset.act;
       if (act === 'selectAll') { App.selectAll(); return; }
+      if (act === 'gridcols:') { return; }
+      if (act.indexOf('gridcols:') === 0) { gCols = act.slice(9); App.gridArrange(gCols, gGap); return; }
       if (act === 'grid') { App.gridArrange(gCols, gGap); return; }
       if (act.indexOf('align:') === 0) { App.align(act.slice(6)); return; }
       if (act.indexOf('dist:') === 0) { App.distribute(act.slice(5)); return; }
@@ -932,7 +931,7 @@
         App.apply(); App.commit();
       });
       r.appendChild(ty); r.appendChild(tx); r.appendChild(eye);
-      r.addEventListener('click', function () { App.select(l.id); switchTab('props', true); });
+      r.addEventListener('click', function () { App.select(l.id); });
       list.appendChild(r);
     });
     p.appendChild(group('图层 · ' + App.doc.layers.length, list));
