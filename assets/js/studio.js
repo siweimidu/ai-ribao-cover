@@ -268,14 +268,14 @@
     root.addEventListener('pointerdown', function (e) {
       if (e.button === 1) {
         e.preventDefault();
-        startMarquee(e, e.shiftKey);
+        startMarquee(e, e.shiftKey, true);   /* 中键：只框图标 */
         return;
       }
       if (e.button !== 0) return;
       var el = e.target.closest ? e.target.closest('.cv-el') : null;
       if (!el) {
         if (!e.shiftKey) App.deselect();
-        startMarquee(e, e.shiftKey);
+        startMarquee(e, e.shiftKey, false);  /* 左键：框全部 */
         return;
       }
       var l = App.getLayer(el.dataset.id);
@@ -410,7 +410,7 @@
   }
 
   /* ---------------- 框选（中键 或 左键空白处） ---------------- */
-  function startMarquee(e, additive) {
+  function startMarquee(e, additive, onlyIcon) {
     var sx = e.clientX, sy = e.clientY;
     var base = additive ? App.multi.slice() : [];
     var mv = document.createElement('div');
@@ -445,6 +445,7 @@
       var ids = base.slice();
       App.doc.layers.forEach(function (l) {
         if (l.hidden) return;
+        if (onlyIcon && l.type !== 'icon') return;
         var el = App.map[l.id];
         if (!el) return;
         var r = el.getBoundingClientRect();
@@ -453,7 +454,8 @@
         }
       });
       App.selectMany(ids);
-      if (!ids.length) App.toast('框选范围内没有图层');
+      if (ids.length) App.toast('已框选 ' + ids.length + ' 个' + (onlyIcon ? '图标' : '图层'), 'ok');
+      else App.toast(onlyIcon ? '范围内没有图标' : '框选范围内没有图层');
     }
     document.addEventListener('pointermove', move);
     document.addEventListener('pointerup', up);
@@ -558,26 +560,31 @@
   };
   App.gridArrange = function (cols, gap) {
     var set = App.selSet();
-    if (set.length < 2) { App.toast('至少选 2 个元素', 'err'); return; }
+    if (set.length < 2) { App.toast('先框选至少 2 个图层（左键拖 / 中键只选图标）', 'err'); return; }
     gap = gap == null ? 32 : gap;
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
     n = Math.max(1, Math.min(n, set.length));
-    var maxW = 0, maxH = 0;
-    set.forEach(function (l) {
-      var el2 = App.map[l.id];
-      maxW = Math.max(maxW, l.w || 0);
-      maxH = Math.max(maxH, l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0));
-    });
     var rows = Math.ceil(set.length / n);
-    var gw = maxW * n + gap * (n - 1), gh = maxH * rows + gap * (rows - 1);
-    var ox = Math.round((App.doc.w - gw) / 2), oy = Math.round((App.doc.h - gh) / 2);
+    var M = 64;                                   /* 设计边距 */
+    var availW = App.doc.w - M * 2;
+    var availH = App.doc.h - M * 2;
+    /* 关键：格子按画布均分，而不是按最宽的元素 —— 否则一张全宽色带就会把整张网格推出画布 */
+    var colW = Math.max(24, (availW - gap * (n - 1)) / n);
+    var rowH = Math.max(24, (availH - gap * (rows - 1)) / rows);
     set.forEach(function (l, i) {
+      var el2 = App.map[l.id];
+      var h = l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0);
+      var w = l.w || 0;
       var c = i % n, r = Math.floor(i / n);
-      l.x = Math.round(ox + c * (maxW + gap) + (maxW - (l.w || 0)) / 2);
-      l.y = Math.round(oy + r * (maxH + gap));
+      var cellX = M + c * (colW + gap);
+      var cellY = M + r * (rowH + gap);
+      var x = cellX + (w <= colW ? (colW - w) / 2 : 0);
+      var y = cellY + (h <= rowH ? (rowH - h) / 2 : 0);
+      l.x = Math.round(Math.max(M, Math.min(x, App.doc.w - M - Math.min(w, availW))));
+      l.y = Math.round(Math.max(M, Math.min(y, App.doc.h - M - Math.min(h, availH))));
     });
     App.apply(); App.commit();
-    App.toast('已排成 ' + n + ' 列');
+    App.toast('已排成 ' + n + ' 列 × ' + rows + ' 行');
   };
   App.scaleSelTo = function (pct) {
     var set = App.selSet(); if (!set.length) return;
@@ -882,7 +889,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-select6';
+  App.BUILD = '20261029-select7';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
