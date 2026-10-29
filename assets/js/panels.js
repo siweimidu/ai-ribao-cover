@@ -529,7 +529,8 @@
         d.paper[key] = parseFloat(r.value);
         v.textContent = r.value + unit;
         hint.textContent = r.value + unit;
-        App.suppress = true; App.apply(); App.suppress = false;
+        if (key === 'scale') { v.textContent = r.value + 'px'; hint.textContent = r.value + 'px'; }
+        App.paperLive();
       });
       r.addEventListener('change', function () { App.commit(); });
       wrap.appendChild(r); wrap.appendChild(v);
@@ -645,7 +646,7 @@
     var r2 = document.createElement('input');
     r2.type = 'range'; r2.min = 0; r2.max = 120; r2.step = 1; r2.value = gGap;
     var v2 = el('span', 'val', gGap + 'px');
-    r2.addEventListener('input', function () { gGap = parseInt(r2.value, 10); v2.textContent = gGap + 'px'; hint2.textContent = gGap + 'px'; });
+    r2.addEventListener('input', function () { gGap = parseInt(r2.value, 10); v2.textContent = gGap + 'px'; hint2.textContent = gGap + 'px'; App.gridLive(gCols, gGap); });
     r2.addEventListener('change', function () { App.gridArrange(gCols, gGap); });
     wrap2.appendChild(r2); wrap2.appendChild(v2);
     f2.appendChild(wrap2);
@@ -918,6 +919,16 @@
     var p = $('#paneLayers');
     if (!p) return;
     p.innerHTML = '';
+    var bar = el('div', 'lyrbar');
+    [['清空全部', 'all', '删除画布上所有图层（可撤销）'], ['清空图标', 'icon', '只删图标图层，保留文字与装饰']].forEach(function (o) {
+      var b = el('button', 'btn sm', o[0]);
+      b.type = 'button';
+      b.title = o[2];
+      b.addEventListener('click', function () { App.clearLayers(o[1]); });
+      bar.appendChild(b);
+    });
+    p.appendChild(bar);
+
     var list = el('div', 'layerlist');
     App.doc.layers.slice().reverse().forEach(function (l) {
       var r = el('div', 'lrow' + (l.id === App.sel ? ' on' : '') + (l.hidden ? ' hid' : ''));
