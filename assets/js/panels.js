@@ -1302,18 +1302,31 @@
 
   /* ---------- 指针拖拽：不依赖 HTML5 drag，放在文件末尾避免被替换 ---------- */
   var ghostEl = null;
+  /* 落点换算：只用「视觉盒子 / 设计尺寸」的比例，缩放怎么实现都不影响 */
   function docPoint(cx, cy) {
     var cv = document.querySelector('#cover .cv');
     if (!cv) return null;
     var r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return null;
     if (cx < r.left || cx > r.right || cy < r.top || cy > r.bottom) return null;
-    var z = (window.App && App.stageScale) ? App.stageScale() : ((window.App && App.zoom) || 1);
-    if (!z || z <= 0) z = 1;
-    return { x: (cx - r.left) / z, y: (cy - r.top) / z, z: z };
+    var dw = cv.offsetWidth || (window.App && App.doc && App.doc.w) || r.width;
+    var dh = cv.offsetHeight || (window.App && App.doc && App.doc.h) || r.height;
+    return {
+      x: (cx - r.left) / r.width * dw,
+      y: (cy - r.top) / r.height * dh,
+      scale: r.width / dw
+    };
   }
   function startIconDrag(ev, ref, fromPop) {
     if (ev.button !== 0) return;
     var sx = ev.clientX, sy = ev.clientY, moved = false;
+    var srcEl = ev.currentTarget;
+    var tileScreen = 0;
+    try {
+      var tb = srcEl.getBoundingClientRect();
+      tileScreen = Math.max(16, Math.min(tb.width, tb.height));
+    } catch (e) { }
+    if (!tileScreen) tileScreen = 40;
     function move(e) {
       if (!moved) {
         if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) return;
@@ -1325,7 +1338,7 @@
         ghostEl.appendChild(im);
         document.body.appendChild(ghostEl);
       }
-      var gs = Math.max(36, Math.min(200, Math.round(240 * ((window.App && App.stageScale) ? App.stageScale() : 1))));
+      var gs = Math.max(24, Math.min(160, Math.round(tileScreen)));
       ghostEl.style.width = gs + 'px';
       ghostEl.style.height = gs + 'px';
       ghostEl.style.borderRadius = Math.round(gs * 0.17) + 'px';
@@ -1346,7 +1359,10 @@
       var dp = docPoint(e.clientX, e.clientY);
       if (!dp) return;
       App.__skipClick = true;
-      var size = 240;
+      /* 设计稿尺寸 = 格子屏幕尺寸 / 视觉缩放 → 落下去跟左侧栏看起来一样大 */
+      var sc = dp.scale > 0 ? dp.scale : 1;
+      var size = Math.round(tileScreen / sc);
+      size = Math.max(16, Math.min(1200, size));
       App.addLayer(CV.I('icon', ref, {
         x: Math.round(dp.x - size / 2), y: Math.round(dp.y - size / 2), w: size, h: size
       }), true);
