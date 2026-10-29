@@ -12,7 +12,7 @@
   };
   /* 真实缩放：量渲染宽 / CSS 宽反推，transform / zoom / 改宽度都准 */
   function stageScale() {
-    var cv = document.querySelector('#cover .cv');
+    var cv = App.root || document.querySelector('#cover .cv');
     if (!cv) return App.zoom || 1;
     var w = cv.getBoundingClientRect().width;
     var dw = cv.offsetWidth || (App.doc && App.doc.w) || w;
@@ -104,6 +104,7 @@
     var host = $('#cover');
     var out = CV.render(App.doc, host, { edit: true });
     App.map = out.map;
+    App.root = out.root;
     bindStage(out.root);
     App.fitZoom();
     drawSel();
@@ -811,7 +812,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-drop3';
+  App.BUILD = '20261029-drop5';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
