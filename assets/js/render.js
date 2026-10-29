@@ -286,18 +286,24 @@
     });
 
     var paperOn = !doc.paper || doc.paper.on !== false;
-    var po = doc.paper ? doc.paper.opacity : 80;
-    var pn = doc.paper ? doc.paper.noise : 60;
-    var ps = doc.paper ? doc.paper.scale : 260;
-    fx.forEach(function (n) {
+    var po = doc.paper && doc.paper.opacity != null ? doc.paper.opacity : 80;
+    var pn = doc.paper && doc.paper.noise != null ? doc.paper.noise : 60;
+    var ps = doc.paper && doc.paper.scale != null ? doc.paper.scale : 260;
+    /* 纸纹开关打开时，无论风格有没有声明，都注入纸纤维 / 颗粒 / 褶皱 */
+    var list = fx.slice();
+    if (paperOn) {
+      ['paper', 'grain', 'wrinkle'].forEach(function (n) { if (list.indexOf(n) < 0) list.push(n); });
+    }
+    list.sort(function (a, b) { return FX_ORDER.indexOf(a) - FX_ORDER.indexOf(b); });
+    list.forEach(function (n) {
       if (FX_BACK[n]) return;
       if (!paperOn && (n === 'paper' || n === 'grain' || n === 'wrinkle')) return;
       var d = document.createElement('div');
       d.className = 'cv-fx ' + n;
       if (n === 'dotgrid') d.style.color = (doc.tokens && doc.tokens.ink) || '#000';
-      if (n === 'paper') { d.style.opacity = (po / 80 * 0.34).toFixed(3); d.style.backgroundSize = ps + 'px ' + ps + 'px'; }
-      if (n === 'wrinkle') { d.style.backgroundSize = (ps * 1.9) + 'px ' + (ps * 1.9) + 'px'; }
-      if (n === 'grain') { d.style.opacity = (pn / 60 * 0.15).toFixed(3); d.style.backgroundSize = Math.round(ps * 0.55) + 'px ' + Math.round(ps * 0.55) + 'px'; }
+      if (n === 'paper') { d.style.opacity = (po / 100 * 0.55).toFixed(3); d.style.backgroundSize = ps + 'px ' + ps + 'px'; }
+      if (n === 'wrinkle') { d.style.opacity = (po / 100 * 0.34).toFixed(3); d.style.backgroundSize = (ps * 1.9) + 'px ' + (ps * 1.9) + 'px'; }
+      if (n === 'grain') { d.style.opacity = (pn / 100 * 0.5).toFixed(3); d.style.backgroundSize = Math.max(32, Math.round(ps * 0.5)) + 'px ' + Math.max(32, Math.round(ps * 0.5)) + 'px'; }
       root.appendChild(d);
     });
 
