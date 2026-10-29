@@ -1317,6 +1317,7 @@
       if (!moved) {
         if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 5) return;
         moved = true;
+        document.body.classList.add('cv-dragging');
         ghostEl = el('div', 'icdrag');
         var im = document.createElement('img');
         im.src = CV.iconSrc(ref, App.doc.dark);
@@ -1332,6 +1333,7 @@
       document.removeEventListener('pointermove', move);
       document.removeEventListener('pointerup', up);
       document.removeEventListener('pointercancel', up);
+      document.body.classList.remove('cv-dragging');
       if (ghostEl) { ghostEl.remove(); ghostEl = null; }
       var drop = document.querySelector('.cv-drop');
       if (drop) drop.classList.remove('on');
