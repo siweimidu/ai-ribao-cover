@@ -13,9 +13,10 @@
   /* 真实缩放：量渲染宽 / CSS 宽反推，transform / zoom / 改宽度都准 */
   function stageScale() {
     var cv = document.querySelector('#cover .cv');
-    if (!cv || !cv.offsetWidth) return App.zoom || 1;
+    if (!cv) return App.zoom || 1;
     var w = cv.getBoundingClientRect().width;
-    return w > 0 ? w / cv.offsetWidth : (App.zoom || 1);
+    var dw = cv.offsetWidth || (App.doc && App.doc.w) || w;
+    return (w > 0 && dw > 0) ? w / dw : (App.zoom || 1);
   }
   App.stageScale = stageScale;
 
@@ -819,7 +820,22 @@
   });
 
   /* ---------------- 启动 ---------------- */
+  App.BUILD = '20261028-drop2';
+  function stampBuild() {
+    document.documentElement.dataset.build = App.BUILD;
+    var bar = document.querySelector('.stage-bar');
+    if (!bar || document.getElementById('buildTag')) return;
+    var tag = document.createElement('span');
+    tag.id = 'buildTag';
+    tag.className = 'pill';
+    tag.title = '当前运行的前端构建号，用于确认是否已更新';
+    tag.textContent = 'build ' + App.BUILD;
+    tag.style.opacity = '.62';
+    bar.appendChild(tag);
+  }
+
   App.boot = function () {
+    stampBuild();
     var doc = App.loadLocal();
     if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent(), 'land');
     if (!doc.ratio) doc.ratio = 'land';
