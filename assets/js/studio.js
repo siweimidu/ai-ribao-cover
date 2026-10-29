@@ -632,6 +632,7 @@
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
     n = Math.max(1, Math.min(n, set.length));
     var rows = Math.ceil(set.length / n);
+    try { console.log('[grid] n=' + n + ' rows=' + rows + ' set=' + set.length + ' gap=' + gap); } catch (e) { }
     var M = 64;                                   /* 设计边距 */
     var availW = App.doc.w - M * 2;
     var availH = App.doc.h - M * 2;
@@ -956,7 +957,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f11';
+  App.BUILD = '20261029-f12';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
