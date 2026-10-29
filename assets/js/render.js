@@ -285,7 +285,7 @@
       root.appendChild(el);
     });
 
-    var paperOn = !doc.paper || doc.paper.on !== false;
+    var paperOn = !!(doc.paper && doc.paper.on === true);   /* 默认关，需要时手动开 */
     var po = doc.paper && doc.paper.opacity != null ? doc.paper.opacity : 80;
     var pn = doc.paper && doc.paper.noise != null ? doc.paper.noise : 60;
     var ps = doc.paper && doc.paper.scale != null ? doc.paper.scale : 260;
@@ -297,7 +297,7 @@
     list.sort(function (a, b) { return FX_ORDER.indexOf(a) - FX_ORDER.indexOf(b); });
     list.forEach(function (n) {
       if (FX_BACK[n]) return;
-      if (!paperOn && (n === 'paper' || n === 'grain' || n === 'wrinkle')) return;
+      /* 风格自带的纸纹始终保留，开关只决定是否「额外叠加」 */
       var d = document.createElement('div');
       d.className = 'cv-fx ' + n;
       if (n === 'dotgrid') d.style.color = (doc.tokens && doc.tokens.ink) || '#000';
