@@ -400,3 +400,9 @@ body.marquee-drag,body.marquee-drag *{cursor:crosshair!important}
 .lyrbar{display:flex;gap:6px;margin-bottom:8px}
 .lyrbar .btn{flex:1;justify-content:center}
 .lyrbar .btn:first-child:hover{background:#fee;border-color:#f3b4b0;color:#b4231d}
+
+/* 图层拖动排序 */
+.lrow{cursor:grab}
+.lrow.dragging{opacity:.6;background:var(--accent);border-color:var(--primary);cursor:grabbing}
+.lrow:active{cursor:grabbing}
+/* layer-sort */
