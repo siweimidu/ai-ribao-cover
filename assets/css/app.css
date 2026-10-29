@@ -364,3 +364,12 @@ textarea.input{height:auto;min-height:64px;padding:8px 10px;line-height:1.5;resi
 .elitem:hover{background:var(--accent);border-color:#c9d7ff;color:var(--accent-foreground)}
 [data-theme="dark"] .elitem:hover{background:#16233d;color:#bfdbfe}
 .elitem b{font-weight:400;color:var(--primary);font-size:14px;line-height:1}
+
+/* ---- 禁止误选：整个应用默认不可选中，输入框/编辑中的文字除外 ---- */
+html,body{-webkit-user-select:none;user-select:none}
+input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text}
+.cv-text{cursor:default}
+body.cv-dragging{cursor:grabbing}
+body.cv-dragging .cv-el:hover{outline:none!important}
+body.cv-dragging .cv-text{pointer-events:none}
+body.cv-dragging .cv-icon{pointer-events:none}
