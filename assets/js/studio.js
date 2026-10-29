@@ -10,6 +10,15 @@
     for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
     return null;
   };
+  /* 真实缩放：量渲染宽 / CSS 宽反推，transform / zoom / 改宽度都准 */
+  function stageScale() {
+    var cv = document.querySelector('#cover .cv');
+    if (!cv || !cv.offsetWidth) return App.zoom || 1;
+    var w = cv.getBoundingClientRect().width;
+    return w > 0 ? w / cv.offsetWidth : (App.zoom || 1);
+  }
+  App.stageScale = stageScale;
+
   App.selLayer = function () { return App.sel ? App.getLayer(App.sel) : null; };
 
   App.pushHist = function () {
@@ -315,7 +324,7 @@
   }
 
   function startDrag(e, el, l) {
-    var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = App.zoom;
+    var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = stageScale();
     function move(ev) {
       var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 1.5) return;
@@ -357,7 +366,7 @@
     e.preventDefault();
     var l = App.selLayer(); if (!l) return;
     var el = App.map[l.id]; if (!el) return;
-    var sx = e.clientX, sy = e.clientY, z = App.zoom;
+    var sx = e.clientX, sy = e.clientY, z = stageScale();
     var o = { x: l.x, y: l.y, w: l.w, h: l.h || el.offsetHeight };
     var ratio = o.w ? o.h / o.w : 1;
     document.body.classList.add('cv-dragging');
