@@ -279,6 +279,7 @@
       var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 1.5) return;
       moved = true;
+      document.body.classList.add('cv-dragging');
       var nx = ox + dx, ny = oy + dy;
       var sn = ev.altKey ? null : snapPos(nx, ny, l);
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
@@ -289,6 +290,7 @@
     function up() {
       document.removeEventListener('pointermove', move);
       document.removeEventListener('pointerup', up);
+      document.body.classList.remove('cv-dragging');
       showGuides([]);
       if (moved) { App.commit(); if (window.Panels) Panels.syncInspector(); }
     }
@@ -317,6 +319,7 @@
     var sx = e.clientX, sy = e.clientY, z = App.zoom;
     var o = { x: l.x, y: l.y, w: l.w, h: l.h || el.offsetHeight };
     var ratio = o.w ? o.h / o.w : 1;
+    document.body.classList.add('cv-dragging');
     function move(ev) {
       var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
       var x = o.x, y = o.y, w = o.w, h = o.h;
@@ -335,6 +338,7 @@
     function up() {
       document.removeEventListener('pointermove', move);
       document.removeEventListener('pointerup', up);
+      document.body.classList.remove('cv-dragging');
       App.apply();
       App.commit();
       if (window.Panels) Panels.syncInspector();
