@@ -187,7 +187,7 @@
     var root = App.root;
     if (!root) return;
     var p = App.doc.paper || {};
-    var on = p.on !== false;
+    var on = p.on === true;
     var hasPaper = !!root.querySelector('.cv-fx.paper');
     if (on !== hasPaper) { App.apply(); return; }      /* 开关状态变化才需要重建 */
     var po = (p.opacity == null ? 80 : p.opacity) / 100;
@@ -378,7 +378,6 @@
     var host = $('#selLayer');
     if (!host) return;
     host.innerHTML = '';
-    drawGuides();
     var set = App.selSet();
     showSelInfo(set);
     if (!set.length) return;
@@ -1143,7 +1142,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f19';
+  App.BUILD = '20261029-f21';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
@@ -1162,6 +1161,8 @@
     var doc = App.loadLocal();
     if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent(), 'land');
     if (!doc.ratio) doc.ratio = 'land';
+    doc.paper = Object.assign({ on: false, opacity: 80, noise: 60, scale: 260 }, doc.paper || {});
+    if (doc.paper.on !== true) doc.paper.on = false;
     App.doc = doc;
     App.hist = [JSON.stringify(doc)];
     App.hi = 0;
