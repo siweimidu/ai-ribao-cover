@@ -617,7 +617,7 @@
 
     var gb = el('div');
     var n1 = el('div', 'note');
-    n1.textContent = '把选中元素整齐排成表格，自动居中';
+    n1.textContent = '把选中元素整齐排成表格，自动居中（左键拖框选全部 / 中键拖只选图标）';
     n1.style.marginBottom = '8px';
     gb.appendChild(n1);
     var f1 = el('div', 'field');
