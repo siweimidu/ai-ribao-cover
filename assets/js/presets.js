@@ -846,67 +846,96 @@
       }
     },
 
-    /* 22 —— 小心鸦：白卡 + 品牌色渐变 + 圆点组 ---------------- */
+    /* 22 —— 小心鸦：按 1600×900 原图实测比例复刻 ---------------- */
     {
       id: 'xiaoxinya', name: '小心鸦', sub: '小心鸦Xxya · 浅渐变白卡', noPaper: true,
-      t: {
-        ink: '#16181d', ink2: '#8f949e', card: '#ffffff',
-        brand: '#e8743f', brand2: '#f0a06a'
-      },
-      bg: 'linear-gradient(135deg,#fdf1ea 0%,#f9edf0 52%,#f7e7f3 100%)',
-      fx: ['grain'], dark: false,
-      title: { font: 'bold', size: 72, weight: 800, lh: 1.08, ls: -.012, color: '#e8743f', fit: false, maxH: 0 },
+      t: { ink: '#141517', ink2: '#8e9096', card: '#ffffff', brand: '#da7858' },
+      bg: 'linear-gradient(115deg,#f2d0c6 0%,#fbf1ef 46%,#fbf1ef 62%,#f4dbd4 100%)',
+      fx: [], dark: false,
+      title: { font: 'heavy', size: 87, weight: 900, lh: 1.04, ls: -.01, color: '#da7858', fit: false, maxH: 0 },
       decor: function (x) {
         var t = x.t, L = x.L, lay = x.layout;
+        var Wd = x.W, Ht = x.H;
         var brand = x.brand || t.brand;
-        x.bgOverride = 'linear-gradient(135deg,' + CV.tint(brand, 0.92) + ' 0%,' + CV.tint(brand, 0.875) + ' 55%,' + CV.tint(brand, 0.82) + ' 100%)';
+        x.bgOverride = 'linear-gradient(115deg,' + CV.tint(brand, 0.62) + ' 0%,' + CV.tint(brand, 0.93) + ' 46%,' +
+          CV.tint(brand, 0.93) + ' 62%,' + CV.tint(brand, 0.82) + ' 100%)';
+
+        /* 白卡（实测：x 5.5%W, y 26.7%H, 29.4%W × 52.4%H, 圆角 3.75%W） */
+        x.add(CV.S('card', 'round', {
+          x: Math.round(Wd * 0.055), y: Math.round(Ht * 0.2667),
+          w: Math.round(Wd * 0.2938), h: Math.round(Ht * 0.5244),
+          color: t.card, radius: Math.round(Wd * 0.0375),
+          shadow: '0 22px 44px -26px rgba(120,60,40,.35)'
+        }));
+
         if (lay === 'poster') {
-          x.add(CV.S('card', 'round', { x: W / 2 - 130, y: 150, w: 260, h: 260, color: t.card, radius: 32, shadow: '0 18px 40px -22px rgba(22,24,29,.28)' }));
           var icp = find(L, 'icon');
-          if (icp) merge(icp, { x: W / 2 - 80, y: 200, w: 160, h: 160 });
+          if (icp) merge(icp, { x: Math.round(Wd / 2 - Wd * 0.0844), y: Math.round(Ht * 0.30), w: Math.round(Wd * 0.169), h: Math.round(Wd * 0.169) });
           var tp = find(L, 'title');
-          if (tp) merge(tp, { y: 450, w: 1000, x: 80, size: 84, color: brand });
+          if (tp) merge(tp, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.60), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.062), color: brand });
+          ['date', 'series', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
           var kp = find(L, 'kicker');
-          if (kp) merge(kp, { y: 418, w: 1000, x: 80, align: 'center', size: 14, color: t.ink2 });
-          var dp = find(L, 'date');
-          if (dp) merge(dp, { opacity: 0 });
-          var sp2 = find(L, 'series');
-          if (sp2) merge(sp2, { opacity: 0 });
-          var rp = find(L, 'rule');
-          if (rp) merge(rp, { opacity: 0 });
+          if (kp) merge(kp, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.55), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.0188), color: t.ink2 });
           return;
         }
-        x.add(CV.S('card', 'round', { x: 48, y: 150, w: 250, h: 250, color: t.card, radius: 30, shadow: '0 18px 40px -22px rgba(22,24,29,.28)' }));
-        x.add(CV.S('pill', 'round', { x: 986, y: 52, w: 118, h: 34, color: 'rgba(255,255,255,.82)', radius: 999 }));
-        x.add(CV.T('pilltext', 'AI 快讯', { x: 986, y: 62, w: 118, size: 14.5, font: 'bold', weight: 700, color: '#6f5c96', align: 'center', ls: .02 }));
-        x.add(CV.S('dot0', 'circle', { x: 48, y: 46, w: 34, h: 34, color: 'rgba(255,255,255,.95)', bw: 1, bc: 'rgba(22,24,29,.06)' }));
-        for (var i = 0; i < 4; i++) {
-          x.add(CV.S('dot' + (i + 1), 'circle', {
-            x: 306 + i * 34, y: 50, w: 26, h: 26, color: 'rgba(255,255,255,.94)',
-            shadow: '0 2px 6px rgba(22,24,29,.10)'
-          }));
-        }
-        var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 98, y: 200, w: 150, h: 150 });
-        var ti = find(L, 'title');
-        if (ti) merge(ti, { x: 305, y: 208, w: 640, size: 72, color: brand, fit: false, maxH: 0 });
+
+        /* 左上白圈（实测：中心 8.4%W, 14.1%H，直径 4.9%W） */
+        var d0 = Math.round(Wd * 0.0488);
+        x.add(CV.S('dot0', 'circle', {
+          x: Math.round(Wd * 0.0844 - d0 / 2), y: Math.round(Ht * 0.1411 - d0 / 2), w: d0, h: d0,
+          color: '#ffffff', bw: 2, bc: 'rgba(255,255,255,.9)',
+          shadow: '0 6px 16px -6px rgba(150,80,55,.35)'
+        }));
+
+        /* 右上 pill（实测：x 82.6%W, y 5.6%H, 12.5%W × 5.6%H；实心品牌色 + 白字） */
+        var pw = Math.round(Wd * 0.125), ph = Math.round(Ht * 0.0556);
+        x.add(CV.S('pill', 'round', { x: Math.round(Wd * 0.826), y: Math.round(Ht * 0.0556), w: pw, h: ph, color: brand, radius: 999 }));
+        x.add(CV.T('pilltext', 'AI 快讯', {
+          x: Math.round(Wd * 0.826), y: Math.round(Ht * 0.0556 + ph * 0.24), w: pw,
+          size: Math.round(Wd * 0.0138), font: 'bold', weight: 700, color: '#ffffff', align: 'center', ls: .01
+        }));
+
+        /* focus 行（实测：x 40%W, y 29.8%H, 30px@1600） */
         var k = find(L, 'kicker');
-        if (k) merge(k, { x: 305, y: 178, w: 520, size: 14, font: 'bold', weight: 700, ls: .06, color: t.ink2, upper: false });
-        var s = find(L, 'series');
-        if (s) merge(s, { opacity: 0 });
-        var r0 = find(L, 'rule');
-        if (r0) merge(r0, { opacity: 0 });
+        if (k) merge(k, {
+          x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.298), w: Math.round(Wd * 0.55),
+          size: Math.round(Wd * 0.0188), font: 'bold', weight: 700, ls: .06,
+          color: CV.tint(brand, 0.18), upper: false
+        });
+
+        /* 标题（实测：x 40%W, y 36.7%H, 字号 7.5%W, lh 1.04） */
+        var ti = find(L, 'title');
+        if (ti) merge(ti, {
+          x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.367), w: Math.round(Wd * 0.56),
+          size: Math.round(Wd * 0.075), font: 'heavy', weight: 900, lh: 1.04, ls: -.01,
+          color: brand, fit: false, maxH: 0
+        });
+
+        /* 日期（实测：右边缘 95.1%W, 顶部 15%H, 90px@1600） */
         var d = find(L, 'date');
-        if (d) merge(d, { x: 660, y: 52, w: 248, size: 38, font: 'bold', weight: 500, ls: -.01, color: t.ink, align: 'right' });
+        if (d) merge(d, {
+          x: Math.round(Wd * 0.60), y: Math.round(Ht * 0.148), w: Math.round(Wd * 0.351),
+          size: Math.round(Wd * 0.0563), font: 'bold', weight: 700, ls: -.02, color: t.ink, align: 'right'
+        });
+
+        /* 副信息（实测：x 40%W, y 68.3%H, 46px@1600） */
         var sb = find(L, 'sub');
-        if (sb) merge(sb, { x: 305, y: 470, w: 620, size: 15.5, font: 'bold', weight: 600, lh: 1.5, color: '#3a3f47' });
-        var f = find(L, 'foot');
-        if (f) merge(f, { opacity: 0 });
-        var fl = find(L, 'footline');
-        if (fl) merge(fl, { opacity: 0 });
+        if (sb) merge(sb, {
+          x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.683), w: Math.round(Wd * 0.56),
+          size: Math.round(Wd * 0.0288), font: 'bold', weight: 700, lh: 1.35, color: t.ink
+        });
+
+        /* 图标进卡（实测 16.9%W 居中） */
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, {
+          x: Math.round(Wd * 0.055 + Wd * 0.2938 / 2 - Wd * 0.0844),
+          y: Math.round(Ht * 0.2667 + Ht * 0.5244 / 2 - Wd * 0.0844),
+          w: Math.round(Wd * 0.169), h: Math.round(Wd * 0.169)
+        });
+
+        ['series', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
     }
-
   ];
 
   /* 横向撕纸：用于竖版 zine */
@@ -1078,7 +1107,7 @@
     return {
       v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
-      paper: p.noPaper ? { on: false, opacity: 80, noise: 60, scale: 260 } : undefined,
+      paper: { on: false, opacity: 80, noise: 60, scale: 260 },
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
