@@ -598,7 +598,7 @@
     [['左对齐', 'l'], ['水平居中', 'hc'], ['右对齐', 'r'],
     ['顶对齐', 't'], ['垂直居中', 'vc'], ['底对齐', 'b']].forEach(function (o) {
       var b = el('button', null, o[0]); b.type = 'button';
-      b.addEventListener('click', function () { App.align(o[1]); });
+      b.dataset.act = 'align:' + o[1];
       row1.appendChild(b);
     });
     ag.appendChild(row1);
@@ -606,11 +606,11 @@
     row2.style.marginTop = '4px';
     [['横向分布', 'h'], ['纵向分布', 'v']].forEach(function (o) {
       var b = el('button', null, o[0]); b.type = 'button';
-      b.addEventListener('click', function () { App.distribute(o[1]); });
+      b.dataset.act = 'dist:' + o[1];
       row2.appendChild(b);
     });
     var all = el('button', null, '全选元素'); all.type = 'button';
-    all.addEventListener('click', function () { App.selectAll(); });
+    all.dataset.act = 'selectAll';
     row2.appendChild(all);
     ag.appendChild(row2);
     out.push(group('对齐', ag));
@@ -654,7 +654,7 @@
     var ap = el('button', 'btn');
     ap.textContent = '应用排布';
     ap.style.width = '100%'; ap.style.marginTop = '6px'; ap.style.justifyContent = 'center';
-    ap.addEventListener('click', function () { App.gridArrange(gCols, gGap); });
+    ap.dataset.act = 'grid';
     gb.appendChild(ap);
     out.push(group('网格排列', gb));
 
@@ -662,12 +662,7 @@
     var c5 = el('div', 'chiprow');
     [0.5, 0.75, 1.25, 1.5, 2].forEach(function (k) {
       var b = el('button', null, '×' + k); b.type = 'button';
-      b.addEventListener('click', function () {
-        App.__scaleBase = null;
-        App.scaleSelTo(k * 100);
-        App.__scaleBase = null;
-        App.commit();
-      });
+      b.dataset.act = 'scale:' + k;
       c5.appendChild(b);
     });
     sb.appendChild(c5);
@@ -700,7 +695,7 @@
     var c6 = el('div', 'chiprow');
     [-90, -45, -15, 15, 45, 90].forEach(function (d) {
       var b = el('button', null, (d > 0 ? '+' : '') + d + '°'); b.type = 'button';
-      b.addEventListener('click', function () { App.rotateAdd(d); });
+      b.dataset.act = 'rotadd:' + d;
       c6.appendChild(b);
     });
     rb.appendChild(c6);
@@ -725,6 +720,28 @@
     rb.appendChild(f4);
     out.push(group('整体旋转', rb));
     return out;
+  }
+
+  /* ---------- 属性面板：事件委托（重绘也不会丢 handler） ---------- */
+  function mountPanelDelegation() {
+    var pane = $('#paneProps');
+    if (!pane || pane.__bound) return;
+    pane.__bound = true;
+    pane.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-act]') : null;
+      if (!b) return;
+      var act = b.dataset.act;
+      if (act === 'selectAll') { App.selectAll(); return; }
+      if (act === 'grid') { App.gridArrange(gCols, gGap); return; }
+      if (act.indexOf('align:') === 0) { App.align(act.slice(6)); return; }
+      if (act.indexOf('dist:') === 0) { App.distribute(act.slice(5)); return; }
+      if (act.indexOf('scale:') === 0) {
+        var k = parseFloat(act.slice(6));
+        App.__scaleBase = null; App.scaleSelTo(k * 100); App.__scaleBase = null; App.commit();
+        return;
+      }
+      if (act.indexOf('rotadd:') === 0) { App.rotateAdd(parseFloat(act.slice(7))); return; }
+    });
   }
 
   /* ---------- 检查器 ---------- */
@@ -1189,6 +1206,7 @@
       });
     });
 
+    mountPanelDelegation();
     buildContentPane();
     buildStylePane();
     buildIconPane();
