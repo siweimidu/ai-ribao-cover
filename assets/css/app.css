@@ -395,3 +395,8 @@ body.cv-dragging .cv-icon{pointer-events:none}
   border:1px solid #0065fd;background:rgba(0,101,253,.12);border-radius:2px;
   box-shadow:0 0 0 1px rgba(255,255,255,.7) inset}
 body.marquee-drag,body.marquee-drag *{cursor:crosshair!important}
+
+/* ---------- 图层面板工具条 ---------- */
+.lyrbar{display:flex;gap:6px;margin-bottom:8px}
+.lyrbar .btn{flex:1;justify-content:center}
+.lyrbar .btn:first-child:hover{background:#fee;border-color:#f3b4b0;color:#b4231d}
