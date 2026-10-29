@@ -567,9 +567,42 @@
     g2.appendChild(restore);
     p.appendChild(g2);
 
+    /* 吸附 & 参考线 */
+    var g3 = el('div', 'group');
+    var h3 = el('div', 'group-h');
+    h3.appendChild(el('span', 'group-t', '辅助'));
+    g3.appendChild(h3);
+    [['吸附对齐', 'snap', '拖动时自动贴中线 / 边距 / 兄弟元素'],
+    ['显示参考线', 'guides', '常显中线、三分线、安全区']].forEach(function (o) {
+      var line = el('div', 'toggleline');
+      line.appendChild(el('span', null, o[0]));
+      var sw = el('button', 'switch');
+      sw.type = 'button';
+      sw.dataset.aux = o[1];
+      line.appendChild(sw);
+      line.title = o[2];
+      g3.appendChild(line);
+    });
+    p.appendChild(g3);
+
     var note = el('div', 'note');
     note.innerHTML = '纸纹由三张贴图叠加而成（纸纤维 / 颗粒 / 褶皱）。<b>纹理尺寸</b> 越小颗粒越细。';
     p.appendChild(note);
+  }
+
+  function bindAuxSwitches() {
+    var pane = $('#paneCanvas');
+    if (!pane || pane.__aux) return;
+    pane.__aux = true;
+    pane.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-aux]') : null;
+      if (!b) return;
+      var k = b.dataset.aux;
+      App.doc[k] = App.doc[k] || { on: true };
+      App.doc[k].on = App.doc[k].on === false;
+      App.apply(); App.commit();
+      App.toast((k === 'snap' ? '吸附' : '参考线') + (App.doc[k].on ? '已开启' : '已关闭'));
+    });
   }
 
   function syncCanvas() {
@@ -578,6 +611,10 @@
     if (sw) sw.classList.toggle('on', !(d.paper && d.paper.on === false));
     var DEF = { opacity: 80, noise: 60, scale: 260 };
     var p = Object.assign({}, DEF, d.paper || {});
+    [].forEach.call(document.querySelectorAll('#paneCanvas [data-aux]'), function (b) {
+      var o = App.doc[b.dataset.aux] || {};
+      b.classList.toggle('on', o.on !== false);
+    });
     Object.keys(paperRefs).forEach(function (k) {
       var o = paperRefs[k];
       if (!o.r) return;
@@ -1234,6 +1271,7 @@
     buildIconPane();
     buildTextPane();
     buildCanvasPane();
+    bindAuxSwitches();
 
     $('#btnUndo').addEventListener('click', function () { App.undo(); });
     $('#btnRedo').addEventListener('click', function () { App.redo(); });
