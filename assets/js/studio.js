@@ -229,6 +229,7 @@
     if (App.editing) return;
     var host = $('#cover');
     var out = CV.render(App.doc, host, { edit: true });
+    [].forEach.call(out.root.querySelectorAll('.cv-text[contenteditable]'), function (e) { e.removeAttribute('contenteditable'); });
     App.map = out.map;
     App.root = out.root;
     bindStage(out.root);
@@ -419,7 +420,7 @@
       if (App.editing) return;
       /* 自己判定双击：同一个文字图层 350ms 内点两下 → 直接进入编辑 */
       var now = Date.now();
-      if (l.type === 'text' && App.__lastClick && App.__lastClick.id === l.id && now - App.__lastClick.t < 350) {
+      if (l.type === 'text' && App.__lastClick && App.__lastClick.id === l.id && now - App.__lastClick.t < 500) {
         App.__lastClick = null;
         startEdit(el, l);
         return;
@@ -655,6 +656,8 @@
     function done(save) {
       el.removeEventListener('blur', onBlur);
       el.removeEventListener('keydown', onKey);
+      el.removeAttribute('contenteditable');   /* 关键：不摘掉的话双击会变浏览器选词 */
+      try { var sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (e) { }
       App.editing = false;
       var t = serializeRich(el);
       if (save && t !== l.text) {
@@ -1060,7 +1063,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f16';
+  App.BUILD = '20261029-f17';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
