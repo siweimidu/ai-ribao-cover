@@ -1229,6 +1229,14 @@
     }
     $('#btnAi').addEventListener('click', openAiModal);
     $('#btnFit').addEventListener('click', function () { App.fitZoom(); App.drawSel(); });
+    var mk = document.querySelector('.brand-mark');
+    if (mk) {
+      mk.style.cursor = 'pointer';
+      mk.addEventListener('click', cycleMark);
+      var savedMark = null;
+      try { savedMark = localStorage.getItem('cover-mark'); } catch (e) { }
+      applyMark(savedMark || 'stack');
+    }
     var th = $('#btnTheme');
     if (th) th.addEventListener('click', function () {
       var root = document.documentElement;
@@ -1343,6 +1351,78 @@
     document.addEventListener('pointermove', move);
     document.addEventListener('pointerup', up);
     document.addEventListener('pointercancel', up);
+  }
+
+  /* ---------- 品牌标记：四款可切换 ---------- */
+  var MARKS = [
+    {
+      id: 'stack', name: '封面叠层',
+      svg: '<svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="mkA" x1="6" y1="4" x2="30" y2="30" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#5B93FF"/><stop offset=".55" stop-color="#1F6BFF"/><stop offset="1" stop-color="#0043AD"/>' +
+        '</linearGradient></defs>' +
+        '<rect x="2.6" y="2.6" width="17.4" height="17.4" rx="5" fill="#C7D8FF" opacity=".72"/>' +
+        '<rect x="10.2" y="10.2" width="18.8" height="18.8" rx="5.6" fill="url(#mkA)"/>' +
+        '<rect x="13.6" y="14.6" width="9.6" height="2.3" rx="1.15" fill="#fff" opacity=".96"/>' +
+        '<rect x="13.6" y="18.6" width="5.4" height="2.3" rx="1.15" fill="#fff" opacity=".62"/>' +
+        '<path d="M24.55 20.4l.86 2.44 2.44.86-2.44.86-.86 2.44-.86-2.44-2.44-.86 2.44-.86.86-2.44z" fill="#fff" opacity=".95"/>' +
+        '</svg>'
+    },
+    {
+      id: 'construct', name: '构成主义',
+      svg: '<svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="mkB" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#4A86FF"/><stop offset="1" stop-color="#00307F"/></linearGradient>' +
+        '<clipPath id="mkBc"><rect x="3" y="3" width="26" height="26" rx="7"/></clipPath></defs>' +
+        '<rect x="3" y="3" width="26" height="26" rx="7" fill="url(#mkB)"/>' +
+        '<g clip-path="url(#mkBc)">' +
+        '<path d="M0 22.6 L32 8.2 L32 15.4 L0 29.8 Z" fill="#fff" opacity=".93"/>' +
+        '<path d="M0 16.6 L32 2.2 L32 5.4 L0 19.8 Z" fill="#fff" opacity=".38"/>' +
+        '</g>' +
+        '<circle cx="9.6" cy="9.2" r="3.5" fill="#fff" opacity=".92"/>' +
+        '</svg>'
+    },
+    {
+      id: 'bauhaus', name: '包豪斯',
+      svg: '<svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="mkC" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#4F8CFF"/><stop offset="1" stop-color="#002E7A"/></linearGradient></defs>' +
+        '<rect x="2" y="2" width="28" height="28" rx="8" fill="url(#mkC)"/>' +
+        '<circle cx="11" cy="10.6" r="4.1" fill="#fff"/>' +
+        '<rect x="17.6" y="15.4" width="8.2" height="8.2" rx="1" fill="#BFD4FF" transform="rotate(12 21.7 19.5)"/>' +
+        '<path d="M9 20.6l4.7 7.6H4.3z" fill="#fff" opacity=".86"/>' +
+        '</svg>'
+    },
+    {
+      id: 'swiss', name: '瑞士极简',
+      svg: '<svg viewBox="0 0 32 32" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs><linearGradient id="mkD" x1="3" y1="3" x2="29" y2="29" gradientUnits="userSpaceOnUse">' +
+        '<stop offset="0" stop-color="#3C7BFF"/><stop offset="1" stop-color="#002F80"/></linearGradient></defs>' +
+        '<rect x="3" y="3" width="26" height="26" rx="4.5" fill="url(#mkD)"/>' +
+        '<rect x="8" y="8.6" width="16" height="3.2" rx="1.6" fill="#fff" opacity=".96"/>' +
+        '<rect x="8" y="14.9" width="10.6" height="3.2" rx="1.6" fill="#fff" opacity=".56"/>' +
+        '<rect x="8" y="21.2" width="16" height="1.6" rx=".8" fill="#fff" opacity=".32"/>' +
+        '</svg>'
+    }
+  ];
+  function applyMark(id) {
+    var box = document.querySelector('.brand-mark');
+    if (!box) return;
+    var m = MARKS[0];
+    for (var i = 0; i < MARKS.length; i++) if (MARKS[i].id === id) m = MARKS[i];
+    box.innerHTML = m.svg;
+    box.title = '品牌标记：' + m.name + '（点击切换）';
+    box.dataset.mark = m.id;
+    try { localStorage.setItem('cover-mark', m.id); } catch (e) { }
+  }
+  function cycleMark() {
+    var cur = null;
+    try { cur = localStorage.getItem('cover-mark'); } catch (e) { }
+    var idx = 0;
+    for (var i = 0; i < MARKS.length; i++) if (MARKS[i].id === cur) idx = i;
+    var next = MARKS[(idx + 1) % MARKS.length];
+    applyMark(next.id);
+    App.toast('品牌标记：' + next.name + '（' + (idx + 2) + '/4）');
   }
 
   window.Panels = {
