@@ -177,6 +177,7 @@
     var doc = CV.compose(opts.style || App.doc.style, opts.layout || App.doc.layout, content, opts.ratio || App.doc.ratio);
     if (keep.length) doc.layers = keep.concat(doc.layers);
     doc.id = App.doc.id;
+    doc.brand = App.doc.brand;   /* 保留采样到的品牌色 */
     App.doc = doc; App.sel = null;
     App.pushHist(); App.apply(); saveLocal();
   };
@@ -235,12 +236,49 @@
     bindStage(out.root);
     App.fitZoom();
     drawSel();
+    if (App.syncBrand) requestAnimationFrame(function () { App.syncBrand(); });
     if (window.Panels) {
       if (!App.suppress) Panels.syncInspector();
       Panels.syncLayers();
       Panels.syncStyles();
     }
   };
+  /* 从主视觉图标取品牌色，套到背景与标题上（只改颜色，不动版式） */
+  App.__brandFor = null;
+  App.syncBrand = function () {
+    var doc = App.doc;
+    if (doc.style !== 'xiaoxinya') return;
+    var ic = null;
+    doc.layers.forEach(function (l) { if (!ic && l.type === 'icon' && l.role === 'icon') ic = l; });
+    if (!ic) return;
+    var key = ic.icon;
+    if (App.__brandFor === key) return;
+    var el = App.map[ic.id];
+    if (!el || !el.complete || !el.naturalWidth) {
+      App.__brandTry = (App.__brandTry || 0) + 1;
+      if (App.__brandTry < 12) setTimeout(function () { App.syncBrand(); }, 160);
+      return;
+    }
+    App.__brandTry = 0;
+    var c = CV.brandColorOf(el);
+    if (!c) {
+      App.__brandTry = (App.__brandTry || 0) + 1;
+      if (App.__brandTry < 12) setTimeout(function () { App.syncBrand(); }, 160);
+      return;
+    }
+    App.__brandFor = key;
+    doc.brand = c;
+    doc.bg = 'linear-gradient(135deg,' + CV.tint(c, 0.92) + ' 0%,' + CV.tint(c, 0.875) + ' 55%,' + CV.tint(c, 0.82) + ' 100%)';
+    if (App.root) App.root.style.background = doc.bg;
+    doc.layers.forEach(function (l) {
+      if (l.role !== 'title') return;
+      l.color = c;
+      var e2 = App.map[l.id];
+      if (e2) e2.style.color = c;
+    });
+    App.commit();
+  };
+
   App.schedule = (function () {
     var q = false;
     return function () {
@@ -309,10 +347,38 @@
     if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
   };
 
+  /* 参考线常显：中线 / 三分线 / 安全区（只画在编辑器覆盖层，不进出图） */
+  function drawGuides() {
+    var host = $('#selLayer');
+    if (!host) return;
+    [].forEach.call(host.querySelectorAll('.guide-line'), function (n) { n.remove(); });
+    var g = App.doc.guides || {};
+    if (g.on === false) return;
+    var W = App.doc.w, H = App.doc.h, S = 64;
+    var vs = [W / 2, W / 3, (W * 2) / 3, S, W - S];
+    var hs = [H / 2, H / 3, (H * 2) / 3, S, H - S];
+    vs.forEach(function (x, i) {
+      var d = document.createElement('div');
+      d.className = 'guide-line' + (i === 0 ? ' strong' : '');
+      d.style.cssText = 'position:absolute;left:' + x + 'px;top:0;width:1px;height:' + H + 'px;pointer-events:none;' +
+        'background:' + (i === 0 ? 'rgba(255,45,135,.55)' : 'rgba(0,101,253,.28)');
+      host.appendChild(d);
+    });
+    hs.forEach(function (y, i) {
+      var d = document.createElement('div');
+      d.className = 'guide-line' + (i === 0 ? ' strong' : '');
+      d.style.cssText = 'position:absolute;top:' + y + 'px;left:0;height:1px;width:' + W + 'px;pointer-events:none;' +
+        'background:' + (i === 0 ? 'rgba(255,45,135,.55)' : 'rgba(0,101,253,.28)');
+      host.appendChild(d);
+    });
+  }
+  App.drawGuides = drawGuides;
+
   function drawSel() {
     var host = $('#selLayer');
     if (!host) return;
     host.innerHTML = '';
+    drawGuides();
     var set = App.selSet();
     showSelInfo(set);
     if (!set.length) return;
@@ -503,7 +569,7 @@
         return;
       }
       var nx = ox + dx, ny = oy + dy;
-      var sn = ev.altKey ? null : snapPos(nx, ny, l);
+      var sn = (ev.altKey || (App.doc.snap && App.doc.snap.on === false)) ? null : snapPos(nx, ny, l);
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
       l.x = Math.round(nx); l.y = Math.round(ny);
       el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
@@ -1077,7 +1143,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f18';
+  App.BUILD = '20261029-f19';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
