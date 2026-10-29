@@ -1304,11 +1304,63 @@
     if (rsel2 && App.doc.ratio) rsel2.value = App.doc.ratio;
   }
 
+  /* 落位：先量出「1 个设计单位 = 多少屏幕像素」，再反算坐标与尺寸。
+     完全不假设缩放方式，舞台怎么套 transform / zoom / 内容缩放都准。 */
+  function dropAtCursor(ref, clientX, clientY, tileScreen) {
+    var layer = CV.I('icon', ref, { x: 0, y: 0, w: 100, h: 100 });
+    App.addLayer(layer, true);
+    var el = App.map[layer.id];
+    if (!el) return;
+    function put(x, y, w) {
+      layer.x = x; layer.y = y; layer.w = w; layer.h = w;
+      CV.applyLayer(el, layer, App.doc);
+      return el.getBoundingClientRect();
+    }
+    var a = put(0, 0, 100);        // doc(0,0) 的屏幕位置
+    var b = put(200, 200, 100);    // 移动 200 设计单位后的屏幕位置
+    var perX = (b.left - a.left) / 200;   // 屏幕像素 / 设计单位
+    var perY = (b.top - a.top) / 200;
+    if (!isFinite(perX) || !isFinite(perY) || perX === 0 || perY === 0) {
+      App.apply(); App.commit();
+      App.toast('落位失败：无法测量画布缩放', 'err');
+      return;
+    }
+    var size = Math.max(16, Math.min(1200, Math.round(tileScreen / perX)));
+    var nx = (clientX - a.left) / perX - size / 2;
+    var ny = (clientY - a.top) / perY - size / 2;
+    layer.x = Math.round(nx);
+    layer.y = Math.round(ny);
+    layer.w = size; layer.h = size;
+    App.apply();
+    /* 布局定稿后再量一次并静默校正（不再触发 apply，避免又一次重排/滚动） */
+    try {
+      var el2 = App.map[layer.id];
+      if (el2) {
+        var r2 = el2.getBoundingClientRect();
+        var dx2 = clientX - (r2.left + r2.width / 2);
+        var dy2 = clientY - (r2.top + r2.height / 2);
+        if (Math.abs(dx2) > 0.6 || Math.abs(dy2) > 0.6) {
+          layer.x = Math.round((layer.x + dx2 / perX) * 10) / 10;
+          layer.y = Math.round((layer.y + dy2 / perY) * 10) / 10;
+          CV.applyLayer(el2, layer, App.doc);
+          if (App.drawSel) App.drawSel();
+        }
+      }
+    } catch (e) { }
+    App.commit();
+    App.toast('落点 (' + layer.x + ',' + layer.y + ') · 尺寸 ' + size + '（屏幕 ' + Math.round(size * perX) + 'px）', 'ok');
+    try {
+      console.log('[drop] perDoc=' + perX.toFixed(4) + ' size=' + size +
+        ' 屏幕尺寸=' + (size * perX).toFixed(1) + 'px 期望=' + Math.round(tileScreen) +
+        ' layer=(' + layer.x + ',' + layer.y + ')');
+    } catch (e) { }
+  }
+
   /* ---------- 指针拖拽：不依赖 HTML5 drag，放在文件末尾避免被替换 ---------- */
   var ghostEl = null;
   /* 落点换算：只用「视觉盒子 / 设计尺寸」的比例，缩放怎么实现都不影响 */
   function docPoint(cx, cy) {
-    var cv = document.querySelector('#cover .cv');
+    var cv = (window.App && App.root) || document.querySelector('#cover .cv');
     if (!cv) return null;
     var r = cv.getBoundingClientRect();
     if (!r.width || !r.height) return null;
@@ -1368,20 +1420,7 @@
       var dp = docPoint(e.clientX, e.clientY);
       if (!dp) return;
       App.__skipClick = true;
-      /* 设计稿尺寸 = 格子屏幕尺寸 / 视觉缩放 → 落下去跟左侧栏看起来一样大 */
-      var sc = dp.scale > 0 ? dp.scale : 1;
-      var size = Math.round(tileScreen / sc);
-      size = Math.max(16, Math.min(1200, size));
-      var nx = Math.round(dp.x - size / 2), ny = Math.round(dp.y - size / 2);
-      App.addLayer(CV.I('icon', ref, { x: nx, y: ny, w: size, h: size }), true);
-      App.commit();
-      App.toast('落点 (' + Math.round(dp.x) + ',' + Math.round(dp.y) + ') · 缩放 ' +
-        dp.scale.toFixed(3) + ' · 尺寸 ' + size, 'ok');
-      try {
-        console.log('[drop] client=(' + Math.round(e.clientX) + ',' + Math.round(e.clientY) + ')' +
-          ' doc=(' + Math.round(dp.x) + ',' + Math.round(dp.y) + ')' +
-          ' scale=' + dp.scale.toFixed(4) + ' size=' + size + ' layer=(' + nx + ',' + ny + ')');
-      } catch (err) { }
+      dropAtCursor(ref, e.clientX, e.clientY, tileScreen);
       if (fromPop && typeof closePop === 'function') closePop();
       setTimeout(function () { App.__skipClick = false; }, 60);
     }
