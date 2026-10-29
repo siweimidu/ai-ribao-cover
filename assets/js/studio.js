@@ -271,10 +271,12 @@
     doc.bg = 'linear-gradient(135deg,' + CV.tint(c, 0.92) + ' 0%,' + CV.tint(c, 0.875) + ' 55%,' + CV.tint(c, 0.82) + ' 100%)';
     if (App.root) App.root.style.background = doc.bg;
     doc.layers.forEach(function (l) {
-      if (l.role !== 'title') return;
-      l.color = c;
+      if (l.role === 'title') l.color = c;
+      else if (l.role === 'pill') l.color = c;
+      else if (l.role === 'kicker') l.color = CV.tint(c, 0.18);
+      else return;
       var e2 = App.map[l.id];
-      if (e2) e2.style.color = c;
+      if (e2) { if (l.type === 'shape') e2.style.background = l.color; else e2.style.color = l.color; }
     });
     App.commit();
   };
@@ -1142,7 +1144,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f21';
+  App.BUILD = '20261029-f22';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
