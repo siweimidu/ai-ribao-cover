@@ -20,6 +20,18 @@
   }
   App.stageScale = stageScale;
 
+  /* 屏幕像素 → 设计单位：用图层自身渲染宽反推，内容被缩放也不会偏 */
+  function screenToDoc(el, l) {
+    try {
+      var r = el.getBoundingClientRect();
+      if (r.width > 2 && l.w > 2) return l.w / r.width;
+      if (r.height > 2 && (l.h || 0) > 2) return l.h / r.height;
+    } catch (e) { }
+    var s = stageScale();
+    return s > 0 ? 1 / s : 1;
+  }
+  App.screenToDoc = screenToDoc;
+
   App.selLayer = function () { return App.sel ? App.getLayer(App.sel) : null; };
 
   App.pushHist = function () {
@@ -274,8 +286,9 @@
       if (e.button !== 0) return;
       var el = e.target.closest ? e.target.closest('.cv-el') : null;
       if (!el) {
+        /* Figma：空白处左键拖动 = 框选（Shift 追加） */
         if (!e.shiftKey) App.deselect();
-        startMarquee(e, e.shiftKey, false);  /* 左键：框全部 */
+        startMarquee(e, e.shiftKey, false);
         return;
       }
       var l = App.getLayer(el.dataset.id);
@@ -344,14 +357,14 @@
   }
 
   function startDrag(e, el, l) {
-    var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = stageScale();
+    var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = screenToDoc(el, l);
     /* 命中已多选的图层时，整组一起拖 */
     var group = null;
     if (App.multi.length > 1 && App.multi.indexOf(l.id) > -1) {
       group = App.selSet().map(function (x) { return { id: x.id, x: x.x, y: x.y }; });
     }
     function move(ev) {
-      var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
+      var dx = (ev.clientX - sx) * z, dy = (ev.clientY - sy) * z;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 1.5) return;
       moved = true;
       document.body.classList.add('cv-dragging');
@@ -406,12 +419,12 @@
     e.preventDefault();
     var l = App.selLayer(); if (!l) return;
     var el = App.map[l.id]; if (!el) return;
-    var sx = e.clientX, sy = e.clientY, z = stageScale();
+    var sx = e.clientX, sy = e.clientY, z = screenToDoc(el, l);
     var o = { x: l.x, y: l.y, w: l.w, h: l.h || el.offsetHeight };
     var ratio = o.w ? o.h / o.w : 1;
     document.body.classList.add('cv-dragging');
     function move(ev) {
-      var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
+      var dx = (ev.clientX - sx) * z, dy = (ev.clientY - sy) * z;
       var x = o.x, y = o.y, w = o.w, h = o.h;
       if (dir.indexOf('e') > -1) w = o.w + dx;
       if (dir.indexOf('w') > -1) { w = o.w - dx; x = o.x + dx; }
@@ -588,7 +601,14 @@
   };
   App.gridArrange = function (cols, gap) {
     var set = App.selSet();
-    if (set.length < 2) { App.toast('先框选至少 2 个图层（左键拖 / 中键只选图标）', 'err'); return; }
+    if (set.length < 2) {
+      /* 没框选就直接排布：按 Figma 习惯退回「全部可见图层」，并说明 */
+      var all = App.doc.layers.filter(function (l) { return !l.hidden; });
+      if (all.length < 2) { App.toast('画布上不足 2 个图层', 'err'); return; }
+      App.selectMany(all.map(function (l) { return l.id; }));
+      set = App.selSet();
+      App.toast('未框选，已对全部 ' + set.length + ' 个图层排布');
+    }
     gap = gap == null ? 32 : gap;
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
     n = Math.max(1, Math.min(n, set.length));
@@ -917,7 +937,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-select9';
+  App.BUILD = '20261029-figma10';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
