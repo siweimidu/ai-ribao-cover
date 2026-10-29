@@ -988,7 +988,47 @@
         App.apply(); App.commit();
       });
       r.appendChild(ty); r.appendChild(tx); r.appendChild(lock); r.appendChild(eye);
-      r.addEventListener('click', function () { App.select(l.id); });
+      r.dataset.id = l.id;
+      r.addEventListener('click', function () {
+        if (App.__skipRowClick) { App.__skipRowClick = false; return; }
+        App.select(l.id);
+      });
+      /* 拖拽排序：面板自上而下 = 顶层 → 底层 */
+      r.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        var startY = e.clientY, moved = false;
+        function move(ev) {
+          if (!moved && Math.abs(ev.clientY - startY) < 4) return;
+          moved = true;
+          r.classList.add('dragging');
+          var rows = [].slice.call(list.querySelectorAll('.lrow'));
+          rows.forEach(function (row) {
+            if (row === r) return;
+            var b = row.getBoundingClientRect();
+            if (ev.clientY > b.top && ev.clientY < b.bottom) {
+              if (ev.clientY < b.top + b.height / 2) list.insertBefore(r, row);
+              else list.insertBefore(r, row.nextSibling);
+            }
+          });
+        }
+        function up() {
+          document.removeEventListener('pointermove', move);
+          document.removeEventListener('pointerup', up);
+          r.classList.remove('dragging');
+          if (!moved) return;
+          App.__skipRowClick = true;
+          setTimeout(function () { App.__skipRowClick = false; }, 80);
+          var ids = [].slice.call(list.querySelectorAll('.lrow')).map(function (row) { return row.dataset.id; });
+          ids.reverse();                       /* 面板自上而下 = 顶层 → 底层 */
+          var map = {};
+          App.doc.layers.forEach(function (x) { map[x.id] = x; });
+          App.doc.layers = ids.map(function (id) { return map[id]; }).filter(Boolean);
+          App.apply(); App.commit();
+          App.toast('图层顺序已更新', 'ok');
+        }
+        document.addEventListener('pointermove', move);
+        document.addEventListener('pointerup', up);
+      });
       list.appendChild(r);
     });
     p.appendChild(group('图层 · ' + App.doc.layers.length, list));
