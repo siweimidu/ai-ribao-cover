@@ -286,8 +286,7 @@
       }
       if (!App.gdragging) return;
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'copy';
-      if (root._drop) root._drop.classList.add('on');
+      e.dataTransfer.dropEffect = 'none';
     });
     root.addEventListener('dragleave', function () { if (root._drop) root._drop.classList.remove('on'); });
     root.addEventListener('drop', function (e) {
@@ -297,15 +296,7 @@
         return;
       }
       if (root._drop) root._drop.classList.remove('on');
-      var icon = e.dataTransfer.getData('text/cv-icon');
-      if (!icon) return;
-      e.preventDefault();
-      var r = root.getBoundingClientRect();
-      var x = (e.clientX - r.left) / App.zoom - 90;
-      var y = (e.clientY - r.top) / App.zoom - 90;
-      App.addLayer(CV.I('icon', icon, { x: Math.round(x), y: Math.round(y), w: 180, h: 180 }), true);
-      App.commit();
-      App.toast('已放入 ' + CV.iconLabel(icon), 'ok');
+      /* 图标投放统一走 panels.js 的指针拖拽（比例换算 + 与格子同尺寸），这里不再处理 */
     });
   }
 
@@ -820,7 +811,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261028-drop2';
+  App.BUILD = '20261029-drop3';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
