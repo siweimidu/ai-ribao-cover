@@ -504,7 +504,7 @@
       }
       var ids = base.slice();
       App.doc.layers.forEach(function (l) {
-        if (l.hidden) return;
+        if (l.hidden || l.locked) return;
         if (onlyIcon && l.type !== 'icon') return;
         var el = App.map[l.id];
         if (!el) return;
@@ -957,7 +957,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f12';
+  App.BUILD = '20261029-f13';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
