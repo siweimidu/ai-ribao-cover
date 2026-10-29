@@ -365,28 +365,32 @@
     /* 6 —— 绿鸭 / 黑鸦：米底红字 ------------------------ */
     {
       id: 'beigeRed', name: '米底红字', sub: '绿鸭 · 黑鸦 · 超粗压缩',
-      t: { ink: '#14110e', ink2: '#8a7a68', accent: '#b81f2b', bgSolid: '#f4f0e6', grad: 'linear-gradient(135deg,#3b82f6 0%,#a855f7 48%,#ec4899 100%)' },
-      bg: 'radial-gradient(130% 110% at 78% 8%,#fbf8ef 0%,#f4f0e6 48%,#ece5d6 100%)',
+      t: { ink: '#14110e', ink2: '#8a7a68', accent: '#b81f2b', grad: 'linear-gradient(135deg,#2f6bd6 0%,#7c3aed 52%,#c026d3 100%)' },
+      bg: 'radial-gradient(130% 110% at 78% 6%,#ffffff 0%,#fbf7ee 46%,#f4eddc 100%)',
       fx: ['paper', 'grain'], dark: false,
-      title: { font: 'heavy', size: 104, color: '#b81f2b', lh: .96, ls: -.03 },
-      sub: { color: '#5a4a3c' },
+      title: { font: 'black', size: 128, lh: .95, ls: -.03, color: '#b81f2b', stroke: 13, strokeColor: '#ffffff' },
       decor: function (x) {
         var t = x.t, L = x.L;
-        x.add(CV.S('star', 'star4', { x: 806, y: 86, w: 316, h: 316, color: t.grad, rot: 0, opacity: .95 }));
-        x.add(CV.S('tag', 'rect', { x: M, y: 34, w: 122, h: 32, color: t.accent }));
-        var k = find(L, 'kicker');
-        if (k) merge(k, { x: M, y: 42, size: 13, color: '#fff', ls: .04, upper: false });
-        var d = find(L, 'date');
-        if (d) merge(d, { y: 40, size: 14, color: t.ink2 });
+        x.add(CV.S('star', 'star4', { x: 598, y: 128, w: 430, h: 430, color: t.grad, dieCut: 15 }));
+        x.add(CV.S('tag', 'round', { x: 52, y: 42, w: 200, h: 44, color: '#2f7d4f', radius: 99 }));
         var s = find(L, 'series');
-        if (s) merge(s, { y: 78, size: 17, font: 'mono', ls: .18, upper: true, color: t.ink2, weight: 700 });
-        var r = find(L, 'rule');
-        if (r) merge(r, { y: 118, w: 96, h: 6 });
+        if (s) merge(s, { x: 62, y: 54, w: 180, size: 19, color: '#f4fbf6', align: 'center', ls: .02 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { opacity: 0 });
+        var d = find(L, 'date');
+        if (d) merge(d, { x: 880, y: 48, w: 224, size: 26, color: t.ink, align: 'right' });
         var ti = find(L, 'title');
-        if (ti) merge(ti, { y: 152, w: 660, size: 104 });
+        if (ti) merge(ti, { x: 44, y: 168, w: 560, size: 128, maxH: 400 });
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 596, y: 300, w: 200, h: 200, opacity: .96 });
-        x.add(CV.S('b1', 'bar', { x: M, y: 616, w: 96, h: 6, color: t.ink }));
+        if (ic) merge(ic, { x: 60, y: 520, w: 148, h: 148, opacity: .95 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 236, y: 548, w: 380, size: 20, color: '#5a4a3c' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 56, y: 668, w: 600, size: 11, color: '#8a7a68' });
+        var fl = find(L, 'footline');
+        if (fl) merge(fl, { opacity: 0 });
+        var r = find(L, 'rule');
+        if (r) merge(r, { x: 52, y: 130, w: 88, h: 6 });
       }
     },
     /* 7 —— 荡殇：暗色杂志 ------------------------------ */
@@ -509,51 +513,72 @@
 
     /* 12 —— 荡殇永魔：撕纸拼贴 ----------------------------- */
     {
-      id: 'zine', name: '撕纸拼贴', sub: '荡殇永魔 · 撕口与粗黑对照',
-      t: { ink: '#141210', ink2: '#6d6459', accent: '#c8102e', blue: '#1c5fd0', bgSolid: '#efe8d9' },
-      bg: 'radial-gradient(128% 108% at 16% 2%,#f8f1e2 0%,#eee6d5 48%,#dfd4be 100%)',
-      fx: ['paper', 'wrinkle', 'grain', 'vignette'], dark: false,
-      title: { font: 'black', size: 96, lh: 0.94, ls: -.028, color: '#141210' },
+      id: 'zine', name: '撕纸拼贴', sub: '荡殇永魔 · 剪纸屑与粗黑对照',
+      t: { ink: '#141210', ink2: '#6d6459', accent: '#c8102e', blue: '#1c5fd0', bgSolid: '#f7f6f2' },
+      bg: 'linear-gradient(168deg,#faf9f5 0%,#f4f2ec 55%,#e9e6dd 100%)',
+      fx: ['paper', 'grain'], dark: false,
+      title: { font: 'black', size: 122, lh: .92, ls: -.035, color: '#141210' },
       decor: function (x) {
         var t = x.t, L = x.L, lay = x.layout;
-        var tx = lay === 'poster' ? 0 : lay === 'feature' ? 730 : lay === 'split' ? 600 : 540;
-        if (tx) {
-          x.add(CV.S('sheet', 'rect', { x: tx + 82, y: 0, w: W - tx - 82, h: H, color: 'rgba(255,250,236,.55)' }));
-          x.add(CV.S('shade', 'rect', { x: tx - 96, y: 0, w: 98, h: H, color: 'linear-gradient(to right,rgba(74,56,30,0),rgba(74,56,30,.30))' }));
-          x.add(CV.R('tear', tearRaw(82), { x: tx, y: 0, w: 82, h: H }));
-          x.add(CV.S('blot', 'blob', { x: 30, y: 130, w: 560, h: 330, color: t.accent, opacity: .055, rot: -3 }));
+        x.add(CV.S('wall', 'rect', { x: 0, y: 0, w: W, h: H, color: '#f3f1ea', opacity: 1 }));
+        var cw = lay === 'poster' ? 1080 : 742;
+        x.add(CV.S('clip', 'rect', {
+          x: 20, y: 16, w: cw, h: H - 32, color: '#fdfcf8', rot: -1.1,
+          shadow: '0 26px 60px -26px rgba(40,32,18,.45)'
+        }));
+        x.add(CV.S('shade', 'rect', { x: cw - 44, y: 0, w: 56, h: H, color: 'linear-gradient(to right,rgba(80,64,38,0),rgba(80,64,38,.16))' }));
+        x.add(CV.R('tear', tearRaw(54), { x: cw - 6, y: 0, w: 54, h: H }));
+        if (cw + 380 < W) {
+          x.add(CV.R('chart', radarHand(), { x: cw + 46, y: 176, w: 296, h: 296, opacity: .95 }));
+          var labs = [['前端', '60.33', cw + 140, 148], ['后端', '55.34', cw + 316, 250],
+          ['算法', '79.79', cw + 306, 400], ['数据', '69.81', cw + 34, 400], ['研究', '85.07', cw + 140, 496]];
+          labs.forEach(function (l, i) {
+            x.add(CV.T('lb' + i, l[0], { x: l[2], y: l[3], w: 120, size: 15, font: 'hand', color: '#141210', align: 'center' }));
+            x.add(CV.T('lv' + i, l[1], { x: l[2], y: l[3] + 20, w: 120, size: 15, font: 'hand', color: t.accent, align: 'center' }));
+          });
         }
         var ti = find(L, 'title');
-        if (ti && lay !== 'poster') merge(ti, { x: 52, w: tx ? tx - 40 : 620, size: lay === 'feature' ? 86 : 98, maxH: 340 });
-        if (ti && lay === 'poster') merge(ti, { size: 104 });
+        if (ti) merge(ti, lay === 'poster' ? { size: 118 } : { x: 46, y: 118, w: cw - 96, size: 118, maxH: 420 });
         var ic = find(L, 'icon');
-        if (ic) merge(ic, lay === 'feature' ? { x: 838, y: 210, w: 250, h: 250 } : { x: tx ? tx + 96 : 712, y: 132, w: 372, h: 372 });
-        x.add(CV.S('rule1', 'bar', { x: 56, y: 618, w: 118, h: 8, color: t.accent }));
-        x.add(CV.S('rule2', 'bar', { x: 56, y: 632, w: 62, h: 4, color: t.ink, opacity: .5 }));
-        x.add(CV.S('rule3', 'bar', { x: 56, y: 646, w: 26, h: 3, color: t.accent, opacity: .8 }));
-        x.add(CV.T('spray', (x.c.spray || '不相上下?'), {
-          x: lay === 'poster' ? 110 : 296, y: lay === 'poster' ? 116 : 592, w: 280,
-          size: lay === 'poster' ? 40 : 38, font: 'hand', weight: 400,
-          color: t.accent, rot: -7, opacity: .95
-        }));
-        x.add(CV.R('radar6', radarHand(), { x: lay === 'poster' ? 900 : 596, y: lay === 'poster' ? 470 : 470, w: 176, h: 176, opacity: .75 }));
+        if (ic) merge(ic, lay === 'poster' ? { x: W / 2 - 54, y: 24, w: 108, h: 108 } : { x: cw + 96, y: 520, w: 190, h: 190, opacity: .9 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 46, y: 566, w: cw - 130, size: 22, color: '#3a332b' });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 46, y: 52, w: cw - 200, size: 14, color: t.ink2 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 46, y: 76, w: 520, size: 24, color: t.ink });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 46, y: 652, w: 620, size: 12, color: t.ink2 });
+        var r = find(L, 'rule');
+        if (r) merge(r, { x: 46, y: 110, w: 74, h: 6, color: t.accent });
       }
     },
     /* 13 —— 黑鸦：贴纸描边 --------------------------------- */
     {
       id: 'sticker', name: '贴纸描边', sub: '黑鸦 · 巨号白描边红字',
-      t: { ink: '#17130f', ink2: '#8a7a5f', accent: '#d8232a', blue: '#2f7bd6', bgSolid: '#f8eed6' },
-      bg: 'linear-gradient(180deg,#f4e2bb 0%,#efd9a8 58%,#e6cb90 100%)',
+      t: { ink: '#17130f', ink2: '#8a7a5f', accent: '#cf1f26', blue: '#2f6bd6', bgSolid: '#fdf8e9' },
+      bg: 'linear-gradient(180deg,#fffdf4 0%,#fbf3dd 56%,#f6ebd0 100%)',
       fx: ['paper', 'grain'], dark: false,
-      title: { font: 'black', size: 118, lh: 1.0, ls: -.02, color: '#d8232a', stroke: 14, strokeColor: '#ffffff', shadow: 'drop' },
+      title: { font: 'black', size: 132, lh: .94, ls: -.03, color: '#cf1f26', stroke: 15, strokeColor: '#ffffff', stroke2: 3, stroke2Color: '#241d15' },
       decor: function (x) {
         var t = x.t, L = x.L;
+        x.add(CV.S('rule', 'bar', { x: 56, y: 104, w: W - 112, h: 1, color: t.ink, opacity: .18 }));
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 746, y: 210, w: 330, h: 330 });
+        if (ic) merge(ic, { x: 596, y: 150, w: 470, h: 470, dieCut: 16 });
         var ti = find(L, 'title');
-        if (ti) merge(ti, { x: 56, w: 640, size: 112 });
-        x.add(CV.S('dot1', 'circle', { x: 1104, y: 120, w: 18, h: 18, color: t.blue, opacity: .8 }));
-        x.add(CV.S('dot2', 'circle', { x: 1064, y: 596, w: 30, h: 30, color: t.accent, opacity: .9 }));
+        if (ti) merge(ti, { x: 44, y: 176, w: 560, size: 132, maxH: 400 });
+        var s = find(L, 'series');
+        if (s) merge(s, { x: 56, y: 46, w: 420, size: 27, color: t.ink });
+        var d = find(L, 'date');
+        if (d) merge(d, { x: 900, y: 40, w: 204, size: 27, align: 'right', color: t.ink, ls: .02 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { opacity: 0 });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 56, y: 610, w: 600, size: 19, color: '#8a7a5f' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { x: 56, y: 668, w: 600, size: 11, color: '#a2937a' });
+        var fl = find(L, 'footline');
+        if (fl) merge(fl, { opacity: 0 });
       }
     },
     /* 14 —— 渐近自由：糖果立体字 --------------------------- */
@@ -819,7 +844,69 @@
         var f = find(L, 'foot');
         if (f) merge(f, { x: 56, y: 642, w: 600, size: 11, ls: .1 });
       }
+    },
+
+    /* 22 —— 小心鸦：白卡 + 品牌色渐变 + 圆点组 ---------------- */
+    {
+      id: 'xiaoxinya', name: '小心鸦', sub: '小心鸦Xxya · 浅渐变白卡', noPaper: true,
+      t: {
+        ink: '#16181d', ink2: '#8f949e', card: '#ffffff',
+        brand: '#e8743f', brand2: '#f0a06a'
+      },
+      bg: 'linear-gradient(135deg,#fdf1ea 0%,#f9edf0 52%,#f7e7f3 100%)',
+      fx: ['grain'], dark: false,
+      title: { font: 'bold', size: 72, weight: 800, lh: 1.08, ls: -.012, color: '#e8743f', fit: false, maxH: 0 },
+      decor: function (x) {
+        var t = x.t, L = x.L, lay = x.layout;
+        var brand = x.brand || t.brand;
+        x.bgOverride = 'linear-gradient(135deg,' + CV.tint(brand, 0.92) + ' 0%,' + CV.tint(brand, 0.875) + ' 55%,' + CV.tint(brand, 0.82) + ' 100%)';
+        if (lay === 'poster') {
+          x.add(CV.S('card', 'round', { x: W / 2 - 130, y: 150, w: 260, h: 260, color: t.card, radius: 32, shadow: '0 18px 40px -22px rgba(22,24,29,.28)' }));
+          var icp = find(L, 'icon');
+          if (icp) merge(icp, { x: W / 2 - 80, y: 200, w: 160, h: 160 });
+          var tp = find(L, 'title');
+          if (tp) merge(tp, { y: 450, w: 1000, x: 80, size: 84, color: brand });
+          var kp = find(L, 'kicker');
+          if (kp) merge(kp, { y: 418, w: 1000, x: 80, align: 'center', size: 14, color: t.ink2 });
+          var dp = find(L, 'date');
+          if (dp) merge(dp, { opacity: 0 });
+          var sp2 = find(L, 'series');
+          if (sp2) merge(sp2, { opacity: 0 });
+          var rp = find(L, 'rule');
+          if (rp) merge(rp, { opacity: 0 });
+          return;
+        }
+        x.add(CV.S('card', 'round', { x: 48, y: 150, w: 250, h: 250, color: t.card, radius: 30, shadow: '0 18px 40px -22px rgba(22,24,29,.28)' }));
+        x.add(CV.S('pill', 'round', { x: 986, y: 52, w: 118, h: 34, color: 'rgba(255,255,255,.82)', radius: 999 }));
+        x.add(CV.T('pilltext', 'AI 快讯', { x: 986, y: 62, w: 118, size: 14.5, font: 'bold', weight: 700, color: '#6f5c96', align: 'center', ls: .02 }));
+        x.add(CV.S('dot0', 'circle', { x: 48, y: 46, w: 34, h: 34, color: 'rgba(255,255,255,.95)', bw: 1, bc: 'rgba(22,24,29,.06)' }));
+        for (var i = 0; i < 4; i++) {
+          x.add(CV.S('dot' + (i + 1), 'circle', {
+            x: 306 + i * 34, y: 50, w: 26, h: 26, color: 'rgba(255,255,255,.94)',
+            shadow: '0 2px 6px rgba(22,24,29,.10)'
+          }));
+        }
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, { x: 98, y: 200, w: 150, h: 150 });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: 305, y: 208, w: 640, size: 72, color: brand, fit: false, maxH: 0 });
+        var k = find(L, 'kicker');
+        if (k) merge(k, { x: 305, y: 178, w: 520, size: 14, font: 'bold', weight: 700, ls: .06, color: t.ink2, upper: false });
+        var s = find(L, 'series');
+        if (s) merge(s, { opacity: 0 });
+        var r0 = find(L, 'rule');
+        if (r0) merge(r0, { opacity: 0 });
+        var d = find(L, 'date');
+        if (d) merge(d, { x: 660, y: 52, w: 248, size: 38, font: 'bold', weight: 500, ls: -.01, color: t.ink, align: 'right' });
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { x: 305, y: 470, w: 620, size: 15.5, font: 'bold', weight: 600, lh: 1.5, color: '#3a3f47' });
+        var f = find(L, 'foot');
+        if (f) merge(f, { opacity: 0 });
+        var fl = find(L, 'footline');
+        if (fl) merge(fl, { opacity: 0 });
+      }
     }
+
   ];
 
   /* 横向撕纸：用于竖版 zine */
@@ -983,14 +1070,15 @@
     merge(find(L, 'foot'), p.foot);
     var under = [];
     var addU = function (o) { under.push(o); return o; };
-    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p };
+    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p, brand: (window.App && App.doc && App.doc.brand) || null, bgOverride: null };
     if (LO.tall) tallDecor(p, ctx);
     else if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
     return {
       v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
-      bg: p.bg, fx: (p.fx || []).slice(), dark: !!p.dark,
+      bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
+      paper: p.noPaper ? { on: false, opacity: 80, noise: 60, scale: 260 } : undefined,
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
