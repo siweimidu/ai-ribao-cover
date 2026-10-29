@@ -757,6 +757,8 @@
       var mk = el('div', 'note');
       mk.innerHTML = '<b>快捷键</b>：方向键微调 · Shift+方向 10px · Ctrl+Z 撤销 · Ctrl+D 复制 · Ctrl+S 出图 · [ ] 调字号 · Esc 取消选择';
       p.appendChild(mk);
+      /* 未选中时也保留对齐 / 网格排列：没有选择就作用于全部图层 */
+      selectionTools({ rot: 0 }).forEach(function (g) { p.appendChild(g); });
       return;
     }
     var patch = function (o) {
