@@ -1307,8 +1307,9 @@
     if (!cv) return null;
     var r = cv.getBoundingClientRect();
     if (cx < r.left || cx > r.right || cy < r.top || cy > r.bottom) return null;
-    var z = (window.App && App.zoom) || 1;
-    return { x: (cx - r.left) / z, y: (cy - r.top) / z };
+    var z = (window.App && App.stageScale) ? App.stageScale() : ((window.App && App.zoom) || 1);
+    if (!z || z <= 0) z = 1;
+    return { x: (cx - r.left) / z, y: (cy - r.top) / z, z: z };
   }
   function startIconDrag(ev, ref, fromPop) {
     if (ev.button !== 0) return;
@@ -1324,7 +1325,11 @@
         ghostEl.appendChild(im);
         document.body.appendChild(ghostEl);
       }
-      ghostEl.style.transform = 'translate(' + (e.clientX - 36) + 'px,' + (e.clientY - 36) + 'px)';
+      var gs = Math.max(36, Math.min(200, Math.round(240 * ((window.App && App.stageScale) ? App.stageScale() : 1))));
+      ghostEl.style.width = gs + 'px';
+      ghostEl.style.height = gs + 'px';
+      ghostEl.style.borderRadius = Math.round(gs * 0.17) + 'px';
+      ghostEl.style.transform = 'translate(' + (e.clientX - gs / 2) + 'px,' + (e.clientY - gs / 2) + 'px)';
       var dp = docPoint(e.clientX, e.clientY);
       var drop = document.querySelector('.cv-drop');
       if (drop) drop.classList.toggle('on', !!dp);
