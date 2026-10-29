@@ -169,7 +169,27 @@
     if (!host) return;
     host.innerHTML = '';
     var set = App.selSet();
+    showSelInfo(set);
     if (!set.length) return;
+    if (set.length > 6) {
+      var b = { x: 1e9, y: 1e9, x2: -1e9, y2: -1e9 };
+      set.forEach(function (l) {
+        var e2 = App.map[l.id]; if (!e2) return;
+        var h = l.type === 'text' ? e2.offsetHeight : (l.h || e2.offsetHeight);
+        b.x = Math.min(b.x, l.x); b.y = Math.min(b.y, l.y);
+        b.x2 = Math.max(b.x2, l.x + l.w); b.y2 = Math.max(b.y2, l.y + h);
+      });
+      var box = document.createElement('div');
+      box.className = 'sel secondary';
+      box.style.left = b.x + 'px'; box.style.top = b.y + 'px';
+      box.style.width = (b.x2 - b.x) + 'px'; box.style.height = (b.y2 - b.y) + 'px';
+      var tg = document.createElement('div');
+      tg.className = 'tag';
+      tg.textContent = set.length + ' 个图层 · Esc 取消';
+      box.appendChild(tg);
+      host.appendChild(box);
+      return;
+    }
     set.forEach(function (l) {
       var el2 = App.map[l.id];
       if (!el2) return;
@@ -199,6 +219,27 @@
     });
   }
   App.drawSel = drawSel;
+
+  var selInfoEl = null;
+  function showSelInfo(set) {
+    if (!selInfoEl) {
+      selInfoEl = document.createElement('div');
+      selInfoEl.id = 'selInfo';
+      selInfoEl.className = 'selinfo';
+      document.body.appendChild(selInfoEl);
+    }
+    if (!set || set.length < 2) { selInfoEl.classList.remove('on'); return; }
+    var l = App.selLayer();
+    selInfoEl.innerHTML = '<b>已选 ' + set.length + ' 个图层</b>' +
+      '<span>主选：' + CV.esc((l && (l.role || l.type)) || '-') + '</span>' +
+      '<button type="button">取消选择 (Esc)</button>';
+    selInfoEl.querySelector('button').addEventListener('click', function () { App.deselect(); });
+    selInfoEl.classList.add('on');
+  }
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Alt') document.body.classList.add('alt-down'); });
+  document.addEventListener('keyup', function (e) { if (e.key === 'Alt') document.body.classList.remove('alt-down'); });
+  window.addEventListener('blur', function () { document.body.classList.remove('alt-down'); });
   /* ---------------- 画布交互 ---------------- */
   function bindStage(root) {
     if (root._bound) return;
