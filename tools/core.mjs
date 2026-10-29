@@ -46,10 +46,12 @@ export function sendFile(res, abs, extraHeaders) {
   fs.stat(abs, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404); res.end('not found'); return; }
     const ext = path.extname(abs).toLowerCase();
+    var noCache = /\.(html|css|js|mjs|json)$/i.test(ext);
     const h = Object.assign({
       'Content-Type': MIME[ext] || 'application/octet-stream',
       'Content-Length': st.size
     }, extraHeaders || {});
+    if (noCache) { h['Cache-Control'] = 'no-store, must-revalidate'; h['Pragma'] = 'no-cache'; h['Expires'] = '0'; }
     res.writeHead(200, h);
     fs.createReadStream(abs).pipe(res);
   });
