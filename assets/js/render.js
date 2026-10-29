@@ -217,8 +217,10 @@
       el.innerHTML = l.html || '';
     }
     el.dataset.id = l.id;
-    if ((l.opacity == null ? 1 : l.opacity) < 0.5) el.classList.add('cv-ghost');
     CV.applyLayer(el, l, doc);
+    /* applyLayer 会重设 className，所以这两个类必须加在它之后 */
+    if ((l.opacity == null ? 1 : l.opacity) < 0.5) el.classList.add('cv-ghost');
+    if (l.locked) el.classList.add('cv-locked');
     return el;
   };
 
