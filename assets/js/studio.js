@@ -417,6 +417,14 @@
         if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
       }
       if (App.editing) return;
+      /* 自己判定双击：同一个文字图层 350ms 内点两下 → 直接进入编辑 */
+      var now = Date.now();
+      if (l.type === 'text' && App.__lastClick && App.__lastClick.id === l.id && now - App.__lastClick.t < 350) {
+        App.__lastClick = null;
+        startEdit(el, l);
+        return;
+      }
+      App.__lastClick = { id: l.id, t: now };
       startDrag(e, el, l);
     });
     root.addEventListener('dblclick', function (e) {
@@ -1052,7 +1060,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f15';
+  App.BUILD = '20261029-f16';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
