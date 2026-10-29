@@ -79,3 +79,10 @@
    按住 Alt 时临时恢复可点，方便直接拖装饰元素 */
 .cv-edit .cv-locked{pointer-events:none!important}
 .cv-edit .cv-shape:hover,.cv-edit .cv-raw:hover{outline:1px dashed rgba(0,101,253,.5);outline-offset:2px}
+
+/* 细长形状（4px 竖条 / 1px 分隔线）在画布上根本点不中：用伪元素把命中区撑到 14px */
+.cv-edit .cv-shape::after{
+  content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:max(100%,14px);height:max(100%,14px);pointer-events:auto;
+}
+/* min-hit */
