@@ -332,6 +332,8 @@
     var frag = document.createDocumentFragment();
     hits.slice(0, 400).forEach(function (v) {
       var tile = el('div', 'ictile');
+      tile.draggable = false;
+      tile.style.webkitUserDrag = 'none';
       tile.title = v.vendor + '（' + v.models.length + ' 个模型 · ' + v.total + ' 个图标）';
       var img = document.createElement('img');
       img.src = variantURL(v.rep.id, v.rep.variant, App.doc.dark);
@@ -378,6 +380,8 @@
         var ref = m.id + '#' + vv;
         var b = el('button', 'icp-i');
         b.type = 'button';
+        b.draggable = false;
+        b.style.webkitUserDrag = 'none';
         b.title = m.product + ' · ' + vv;
         b.style.background = tileBg(vv);
         var im = document.createElement('img');
@@ -1319,6 +1323,8 @@
   }
   function startIconDrag(ev, ref, fromPop) {
     if (ev.button !== 0) return;
+    /* 阻止浏览器原生拖拽/选择，否则会走另一条旧公式，落点会偏 */
+    if (ev.preventDefault) ev.preventDefault();
     var sx = ev.clientX, sy = ev.clientY, moved = false;
     var srcEl = ev.currentTarget;
     var tileScreen = 0;
@@ -1355,7 +1361,10 @@
       if (ghostEl) { ghostEl.remove(); ghostEl = null; }
       var drop = document.querySelector('.cv-drop');
       if (drop) drop.classList.remove('on');
-      if (!moved) return;
+      if (!moved) {
+        if (!fromPop) { App.__skipClick = true; placeIcon(ref, 'main'); setTimeout(function () { App.__skipClick = false; }, 60); }
+        return;
+      }
       var dp = docPoint(e.clientX, e.clientY);
       if (!dp) return;
       App.__skipClick = true;
@@ -1363,11 +1372,16 @@
       var sc = dp.scale > 0 ? dp.scale : 1;
       var size = Math.round(tileScreen / sc);
       size = Math.max(16, Math.min(1200, size));
-      App.addLayer(CV.I('icon', ref, {
-        x: Math.round(dp.x - size / 2), y: Math.round(dp.y - size / 2), w: size, h: size
-      }), true);
+      var nx = Math.round(dp.x - size / 2), ny = Math.round(dp.y - size / 2);
+      App.addLayer(CV.I('icon', ref, { x: nx, y: ny, w: size, h: size }), true);
       App.commit();
-      App.toast('已放入 ' + CV.iconLabel(ref), 'ok');
+      App.toast('落点 (' + Math.round(dp.x) + ',' + Math.round(dp.y) + ') · 缩放 ' +
+        dp.scale.toFixed(3) + ' · 尺寸 ' + size, 'ok');
+      try {
+        console.log('[drop] client=(' + Math.round(e.clientX) + ',' + Math.round(e.clientY) + ')' +
+          ' doc=(' + Math.round(dp.x) + ',' + Math.round(dp.y) + ')' +
+          ' scale=' + dp.scale.toFixed(4) + ' size=' + size + ' layer=(' + nx + ',' + ny + ')');
+      } catch (err) { }
       if (fromPop && typeof closePop === 'function') closePop();
       setTimeout(function () { App.__skipClick = false; }, 60);
     }
