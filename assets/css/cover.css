@@ -86,3 +86,8 @@
   width:max(100%,14px);height:max(100%,14px);pointer-events:auto;
 }
 /* min-hit */
+
+/* 文字层悬停显示文本光标，提示「双击可编辑」 */
+.cv-edit .cv-text{cursor:text}
+.cv-edit .cv-text:hover{cursor:text}
+/* 双击可编辑 */
