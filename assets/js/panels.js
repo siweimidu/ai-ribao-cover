@@ -505,8 +505,8 @@
     sw.id = 'paperSwitch';
     sw.addEventListener('click', function () {
       var d = App.doc;
-      d.paper = Object.assign({ on: true, opacity: 80, noise: 60, scale: 260 }, d.paper || {});
-      d.paper.on = !d.paper.on;
+      d.paper = Object.assign({ on: false, opacity: 80, noise: 60, scale: 260 }, d.paper || {});
+      d.paper.on = d.paper.on !== true;   /* 默认关，点一下才开 */
       App.apply(); App.commit();
     });
     h.appendChild(sw);
@@ -572,15 +572,14 @@
     var h3 = el('div', 'group-h');
     h3.appendChild(el('span', 'group-t', '辅助'));
     g3.appendChild(h3);
-    [['吸附对齐', 'snap', '拖动时自动贴中线 / 边距 / 兄弟元素'],
-    ['显示参考线', 'guides', '常显中线、三分线、安全区']].forEach(function (o) {
+    [['吸附对齐', 'snap', '拖动时自动贴中线 / 边距 / 兄弟元素']].forEach(function (o) {
       var line = el('div', 'toggleline');
       line.appendChild(el('span', null, o[0]));
       var sw = el('button', 'switch');
       sw.type = 'button';
       sw.dataset.aux = o[1];
-      line.appendChild(sw);
       line.title = o[2];
+      line.appendChild(sw);
       g3.appendChild(line);
     });
     p.appendChild(g3);
