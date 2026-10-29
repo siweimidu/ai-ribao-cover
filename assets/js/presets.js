@@ -880,11 +880,17 @@
         }
 
         /* 左上白圈（实测：中心 8.4%W, 14.1%H，直径 4.9%W） */
+        /* 左上白圈里放一个同品牌小图标 */
         var d0 = Math.round(Wd * 0.0488);
         x.add(CV.S('dot0', 'circle', {
           x: Math.round(Wd * 0.0844 - d0 / 2), y: Math.round(Ht * 0.1411 - d0 / 2), w: d0, h: d0,
           color: '#ffffff', bw: 2, bc: 'rgba(255,255,255,.9)',
           shadow: '0 6px 16px -6px rgba(150,80,55,.35)'
+        }));
+
+        x.add(CV.I('minilogo', x.c.icon, {
+          x: Math.round(Wd * 0.0844 - d0 * 0.30), y: Math.round(Ht * 0.1411 - d0 * 0.30),
+          w: Math.round(d0 * 0.60), h: Math.round(d0 * 0.60)
         }));
 
         /* 右上 pill（实测：x 82.6%W, y 5.6%H, 12.5%W × 5.6%H；实心品牌色 + 白字） */
@@ -907,7 +913,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.367), w: Math.round(Wd * 0.56),
-          size: Math.round(Wd * 0.075), font: 'heavy', weight: 900, lh: 1.04, ls: -.01,
+          size: Math.round(Wd * 0.075), font: 'heavy', weight: 900, lh: 1.04, ls: 0,
           color: brand, fit: false, maxH: 0
         });
 
