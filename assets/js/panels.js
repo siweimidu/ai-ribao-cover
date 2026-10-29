@@ -923,6 +923,16 @@
       var r = el('div', 'lrow' + (l.id === App.sel ? ' on' : '') + (l.hidden ? ' hid' : ''));
       var ty = el('span', 'ty', l.type === 'text' ? 'T' : l.type === 'icon' ? '◉' : l.type === 'shape' ? '◼' : '✦');
       var tx = el('span', 'tx', (l.role || l.type) + ' · ' + (l.type === 'text' ? CV.plain(l.text).replace(/\n/g, ' ').slice(0, 18) : l.type === 'icon' ? CV.iconLabel(l.icon) : (l.shape || 'graphic')));
+      var lock = el('span', 'eye', l.locked ? '🔒' : '🔓');
+      lock.style.cursor = 'pointer';
+      lock.style.opacity = l.locked ? '1' : '.35';
+      lock.title = l.locked ? '已锁定（画布上点不到）' : '未锁定（可点选、可拖动）';
+      lock.addEventListener('click', function (e) {
+        e.stopPropagation();
+        l.locked = !l.locked;
+        App.apply(); App.commit();
+        App.toast(l.locked ? '已锁定：' + (l.role || l.type) : '已解锁：' + (l.role || l.type), 'ok');
+      });
       var eye = el('span', 'eye', l.hidden ? '○' : '●');
       eye.style.cursor = 'pointer';
       eye.addEventListener('click', function (e) {
@@ -930,7 +940,7 @@
         l.hidden = !l.hidden;
         App.apply(); App.commit();
       });
-      r.appendChild(ty); r.appendChild(tx); r.appendChild(eye);
+      r.appendChild(ty); r.appendChild(tx); r.appendChild(lock); r.appendChild(eye);
       r.addEventListener('click', function () { App.select(l.id); });
       list.appendChild(r);
     });
