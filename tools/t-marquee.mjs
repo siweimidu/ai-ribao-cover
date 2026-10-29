@@ -37,12 +37,12 @@ const multi = await page.evaluate('App.multi.length');
 const pill = await page.evaluate("(function(){var p=document.getElementById('selInfo');return p?p.textContent:'-'})()");
 console.log('框选过程 marquee =', midDrag);
 ok('中键框选只含图标', await page.evaluate('App.selSet().every(function(l){return l.type==="icon"})'), 'multi=' + multi);
-ok('框选后出现提示条', /已选/.test(pill), pill);
+ok('多选时出现提示条（≥2 才有）', multi < 2 || /已选/.test(pill), 'multi=' + multi + ' ' + pill);
 ok('中键不会触发浏览器自动滚动', true);
 
 // 网格排列
 const before = await page.evaluate('JSON.stringify(App.doc.layers.map(function(l){return [l.x,l.y]}))');
-await page.evaluate("(function(){var b=[].slice.call(document.querySelectorAll('#paneProps button')).find(function(x){return x.textContent==='应用排布'});b.click()})()");
+await page.evaluate("document.querySelector('#paneProps [data-cols=\"3\"]').click()");
 await new Promise(r => setTimeout(r, 500));
 const after = await page.evaluate('JSON.stringify(App.doc.layers.map(function(l){return [l.x,l.y]}))');
 ok('网格排列对框选结果生效', before !== after);
