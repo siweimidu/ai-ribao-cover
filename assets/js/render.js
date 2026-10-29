@@ -330,3 +330,75 @@
     })).then(function () { return document.fonts ? document.fonts.ready : null; });
   };
 })();
+
+/* ================= 品牌色：从图标像素里取 ================= */
+(function () {
+  var CV = window.CV;
+  function h2(n) { var s = Math.round(Math.max(0, Math.min(255, n))).toString(16); return s.length < 2 ? '0' + s : s; }
+  CV.rgbHex = function (r, g, b) { return '#' + h2(r) + h2(g) + h2(b); };
+  CV.hexRgb = function (hex) {
+    var s = String(hex).replace('#', '');
+    if (s.length === 3) s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
+    return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+  };
+  /* 与白色混合：t=0 原色，t=1 纯白 */
+  CV.tint = function (hex, t) {
+    var c = CV.hexRgb(hex);
+    return CV.rgbHex(c[0] + (255 - c[0]) * t, c[1] + (255 - c[1]) * t, c[2] + (255 - c[2]) * t);
+  };
+  /* 提到固定饱和/明度，做品牌强调色 */
+  CV.vivid = function (hex, sat, val) {
+    var c = CV.hexRgb(hex), r = c[0] / 255, g = c[1] / 255, b = c[2] / 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+    var h = 0;
+    if (d) {
+      if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+      else if (mx === g) h = ((b - r) / d + 2) / 6;
+      else h = ((r - g) / d + 4) / 6;
+    }
+    var s = sat == null ? 0.78 : sat, v = val == null ? 0.92 : val;
+    var i = Math.floor(h * 6), f = h * 6 - i, p = v * (1 - s), q = v * (1 - f * s), tt = v * (1 - (1 - f) * s);
+    var out;
+    switch (i % 6) {
+      case 0: out = [v, tt, p]; break;
+      case 1: out = [q, v, p]; break;
+      case 2: out = [p, v, tt]; break;
+      case 3: out = [p, q, v]; break;
+      case 4: out = [tt, p, v]; break;
+      default: out = [v, p, q];
+    }
+    return CV.rgbHex(out[0] * 255, out[1] * 255, out[2] * 255);
+  };
+  CV.brandColorOf = function (img) {
+    try {
+      if (!img || !img.complete || !img.naturalWidth) return null;
+      var S = 40, c = document.createElement('canvas');
+      c.width = c.height = S;
+      var g = c.getContext('2d');
+      g.drawImage(img, 0, 0, S, S);
+      var d = g.getImageData(0, 0, S, S).data;
+      var buckets = {}, k;
+      for (var i = 0; i < d.length; i += 4) {
+        if (d[i + 3] < 200) continue;
+        var r = d[i], gg = d[i + 1], b = d[i + 2];
+        var mx = Math.max(r, gg, b), mn = Math.min(r, gg, b);
+        if (mx > 245 && mn > 232) continue;
+        if (mx < 30) continue;
+        if (mx - mn < 26) continue;
+        k = (r >> 4) + '_' + (gg >> 4) + '_' + (b >> 4);
+        if (!buckets[k]) buckets[k] = { n: 0, r: 0, g: 0, b: 0 };
+        var o = buckets[k]; o.n++; o.r += r; o.g += gg; o.b += b;
+      }
+      var best = null;
+      for (k in buckets) {
+        var q = buckets[k];
+        q.r /= q.n; q.g /= q.n; q.b /= q.n;
+        var sat = Math.max(q.r, q.g, q.b) - Math.min(q.r, q.g, q.b);
+        var score = q.n * (1 + sat / 70);
+        if (!best || score > best.score) best = { score: score, r: q.r, g: q.g, b: q.b };
+      }
+      if (!best) return null;
+      return CV.vivid(CV.rgbHex(best.r, best.g, best.b));
+    } catch (e) { return null; }
+  };
+})();
