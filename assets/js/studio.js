@@ -168,6 +168,13 @@
     if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
   };
   App.deselect = function () { App.select(null); };
+  App.selectMany = function (ids) {
+    App.multi = (ids || []).slice();
+    App.sel = App.multi.length ? App.multi[App.multi.length - 1] : null;
+    drawSel();
+    if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
+    if (App.multi.length) App.toast('已框选 ' + App.multi.length + ' 个图层', 'ok');
+  };
   App.selectAll = function () {
     App.multi = App.doc.layers.filter(function (l) { return !l.hidden; }).map(function (l) { return l.id; });
     App.sel = App.multi[App.multi.length - 1] || null;
@@ -255,10 +262,22 @@
   function bindStage(root) {
     if (root._bound) return;
     root._bound = true;
+    /* 中键：任意位置起框选，顺便压掉浏览器自动滚动 */
+    root.addEventListener('mousedown', function (e) { if (e.button === 1) e.preventDefault(); });
+    root.addEventListener('auxclick', function (e) { if (e.button === 1) e.preventDefault(); });
     root.addEventListener('pointerdown', function (e) {
+      if (e.button === 1) {
+        e.preventDefault();
+        startMarquee(e, e.shiftKey);
+        return;
+      }
       if (e.button !== 0) return;
       var el = e.target.closest ? e.target.closest('.cv-el') : null;
-      if (!el) { App.deselect(); return; }
+      if (!el) {
+        if (!e.shiftKey) App.deselect();
+        startMarquee(e, e.shiftKey);
+        return;
+      }
       var l = App.getLayer(el.dataset.id);
       if (!l) return;
       App.select(l.id, e.shiftKey);
@@ -388,6 +407,57 @@
     }
     document.addEventListener('pointermove', move);
     document.addEventListener('pointerup', up);
+  }
+
+  /* ---------------- 框选（中键 或 左键空白处） ---------------- */
+  function startMarquee(e, additive) {
+    var sx = e.clientX, sy = e.clientY;
+    var base = additive ? App.multi.slice() : [];
+    var mv = document.createElement('div');
+    mv.className = 'marquee';
+    document.body.appendChild(mv);
+    document.body.classList.add('cv-dragging');
+    document.body.classList.add('marquee-drag');
+    var moved = false;
+    function paint(ev) {
+      var x = Math.min(sx, ev.clientX), y = Math.min(sy, ev.clientY);
+      var w = Math.abs(ev.clientX - sx), h = Math.abs(ev.clientY - sy);
+      mv.style.left = x + 'px'; mv.style.top = y + 'px';
+      mv.style.width = w + 'px'; mv.style.height = h + 'px';
+      return { l: x, t: y, r: x + w, b: y + h, w: w, h: h };
+    }
+    function move(ev) {
+      if (!moved && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) > 3) moved = true;
+      if (moved) paint(ev);
+    }
+    function up(ev) {
+      document.removeEventListener('pointermove', move);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      document.body.classList.remove('cv-dragging');
+      document.body.classList.remove('marquee-drag');
+      var box = paint(ev);
+      mv.remove();
+      if (!moved) {
+        if (!additive) App.deselect();
+        return;
+      }
+      var ids = base.slice();
+      App.doc.layers.forEach(function (l) {
+        if (l.hidden) return;
+        var el = App.map[l.id];
+        if (!el) return;
+        var r = el.getBoundingClientRect();
+        if (r.right >= box.l && r.left <= box.r && r.bottom >= box.t && r.top <= box.b) {
+          if (ids.indexOf(l.id) < 0) ids.push(l.id);
+        }
+      });
+      App.selectMany(ids);
+      if (!ids.length) App.toast('框选范围内没有图层');
+    }
+    document.addEventListener('pointermove', move);
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
   }
 
   /* ---------------- 行内编辑 ---------------- */
@@ -812,7 +882,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-drop5';
+  App.BUILD = '20261029-select6';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
