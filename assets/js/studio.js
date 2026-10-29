@@ -280,7 +280,15 @@
       }
       var l = App.getLayer(el.dataset.id);
       if (!l) return;
-      App.select(l.id, e.shiftKey);
+      /* 点已多选中的元素时不要打散多选，否则整组拖动失效 */
+      var inMulti = App.multi.length > 1 && App.multi.indexOf(l.id) > -1;
+      if (e.shiftKey || !inMulti) {
+        App.select(l.id, e.shiftKey);
+      } else {
+        App.sel = l.id;
+        drawSel();
+        if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
+      }
       if (App.editing) return;
       startDrag(e, el, l);
     });
@@ -337,11 +345,27 @@
 
   function startDrag(e, el, l) {
     var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = stageScale();
+    /* 命中已多选的图层时，整组一起拖 */
+    var group = null;
+    if (App.multi.length > 1 && App.multi.indexOf(l.id) > -1) {
+      group = App.selSet().map(function (x) { return { id: x.id, x: x.x, y: x.y }; });
+    }
     function move(ev) {
       var dx = (ev.clientX - sx) / z, dy = (ev.clientY - sy) / z;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 1.5) return;
       moved = true;
       document.body.classList.add('cv-dragging');
+      if (group) {
+        group.forEach(function (g) {
+          var L = App.getLayer(g.id);
+          if (!L) return;
+          L.x = Math.round(g.x + dx); L.y = Math.round(g.y + dy);
+          var e2 = App.map[g.id];
+          if (e2) { e2.style.left = L.x + 'px'; e2.style.top = L.y + 'px'; }
+        });
+        drawSel();
+        return;
+      }
       var nx = ox + dx, ny = oy + dy;
       var sn = ev.altKey ? null : snapPos(nx, ny, l);
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
@@ -354,7 +378,11 @@
       document.removeEventListener('pointerup', up);
       document.body.classList.remove('cv-dragging');
       showGuides([]);
-      if (moved) { App.commit(); if (window.Panels) Panels.syncInspector(); }
+      if (moved) {
+        if (group) { App.apply(); App.toast('已移动 ' + group.length + ' 个图层'); }
+        App.commit();
+        if (window.Panels) Panels.syncInspector();
+      }
     }
     document.addEventListener('pointermove', move);
     document.addEventListener('pointerup', up);
@@ -584,7 +612,7 @@
       l.y = Math.round(Math.max(M, Math.min(y, App.doc.h - M - Math.min(h, availH))));
     });
     App.apply(); App.commit();
-    App.toast('已排成 ' + n + ' 列 × ' + rows + ' 行');
+    App.toast('已排成 ' + n + ' 列 × ' + rows + ' 行（' + set.length + ' 个图层）', 'ok');
   };
   App.scaleSelTo = function (pct) {
     var set = App.selSet(); if (!set.length) return;
@@ -889,7 +917,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-select7';
+  App.BUILD = '20261029-select9';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
