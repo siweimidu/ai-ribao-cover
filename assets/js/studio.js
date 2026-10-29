@@ -10,6 +10,25 @@
     for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
     return null;
   };
+  /* 拖拽状态清理：pointerup 丢失 / 切窗口 / 失焦时兜底，避免永远「拖不动」 */
+  function clearDragState() {
+    document.body.classList.remove('cv-dragging');
+    document.body.classList.remove('marquee-drag');
+    document.body.classList.remove('alt-down');
+    var mv = document.querySelector('.marquee');
+    if (mv) mv.remove();
+    var gh = document.querySelector('.icdrag');
+    if (gh) gh.remove();
+  }
+  App.clearDragState = clearDragState;
+  window.addEventListener('blur', clearDragState);
+  document.addEventListener('visibilitychange', function () { if (document.hidden) clearDragState(); });
+  document.addEventListener('pointercancel', clearDragState);
+  /* 任何新的按下都先清一次历史状态 */
+  document.addEventListener('pointerdown', function () { 
+    document.body.classList.remove('marquee-drag');
+  }, true);
+
   /* 真实缩放：量渲染宽 / CSS 宽反推，transform / zoom / 改宽度都准 */
   function stageScale() {
     var cv = App.root || document.querySelector('#cover .cv');
@@ -937,7 +956,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-figma10';
+  App.BUILD = '20261029-f11';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
