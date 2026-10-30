@@ -844,7 +844,7 @@
 
     var gb = el('div');
     var n1 = el('div', 'note');
-    n1.textContent = '把选中元素整齐排成表格，自动居中（左键拖框选全部 / 中键拖只选图标）';
+    n1.textContent = '把<strong>图标</strong>整齐排成网格，自动居中。选中里没有图标时，作用于画布上全部图标';
     n1.style.marginBottom = '8px';
     gb.appendChild(n1);
     var f1 = el('div', 'field');
@@ -877,7 +877,7 @@
     wrap2.appendChild(r2); wrap2.appendChild(v2);
     f2.appendChild(wrap2);
     gb.appendChild(f2);
-    var tip = el('p', 'empty', '点列数就立即重排，不用再点按钮');
+    var tip = el('p', 'empty', '点列数立即重排（只作用于图标）');
     tip.style.padding = '4px 0 0';
     gb.appendChild(tip);
     out.push(group('网格排列', gb));
