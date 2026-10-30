@@ -941,7 +941,89 @@
 
         ['series', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
+    },
+
+    /* 23 —— 渐近自由：米色纸 + 巨型贴纸图标 + 黄红两行粗描边标题 ------ */
+    {
+      id: 'jianjinziyou', name: '渐近自由', sub: '渐近自由JJZY · 贴纸大字',
+      t: { ink: '#14100a', ink2: '#5a5140', paper: '#e9ddc4', yellow: '#f5c33b', red: '#f0555b' },
+      bg: '#eae0c8',
+      paperCfg: { on: false, opacity: 20, noise: 42, scale: 320 },
+      fx: ['grain'],
+      dark: false,
+      title: { font: 'heavy', size: 157, weight: 900, lh: 1.02, ls: 0, color: '#f5c33b', fit: false, maxH: 0,
+               stroke: 14, strokeColor: '#14100a', stroke2: 5, stroke2Color: '#ffffff' },
+      decor: function (x) {
+        var t = x.t, L = x.L, lay = x.layout;
+        var Wd = x.W, Ht = x.H;
+        var k = Wd / 1600;
+
+        var head = Math.round(Wd * 0.0325);
+        var stk = Math.max(2, Math.round(14 * k));      /* 黑描边 */
+        var stk2 = Math.max(1, Math.round(5 * k));      /* 白外圈 */
+
+        /* 页眉：左标题 + 右日期 + 细分隔线 */
+        var se = find(L, 'series');
+        if (se) merge(se, {
+          x: Math.round(Wd * 0.094), y: Math.round(Ht * 0.010), w: Math.round(Wd * 0.42),
+          size: head, font: 'heavy', weight: 900, ls: .10, color: t.ink, upper: false, opacity: 1
+        });
+        var da = find(L, 'date');
+        if (da) merge(da, {
+          x: Math.round(Wd * 0.68), y: Math.round(Ht * 0.012), w: Math.round(Wd * 0.245),
+          size: head, font: 'heavy', weight: 900, ls: .06, color: t.ink, align: 'right'
+        });
+        var ru = find(L, 'rule');
+        if (ru) merge(ru, {
+          x: Math.round(Wd * 0.0625), y: Math.round(Ht * 0.078), w: Math.round(Wd * 0.875),
+          h: Math.max(1, Math.round(1.6 * k)), color: 'rgba(20,16,10,.20)', radius: 0, opacity: 1
+        });
+        var ki = find(L, 'kicker');
+        if (ki) merge(ki, { opacity: 0 });
+
+        /* 巨型贴纸图标（白发光边） */
+        var size = Math.round(Wd * 0.47);
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, {
+          x: Math.round(-Wd * 0.02), y: Math.round(Ht * 0.085), w: size, h: size,
+          filter: 'drop-shadow(0 0 ' + Math.round(10 * k) + 'px #fff) drop-shadow(0 0 ' + Math.round(18 * k) + 'px rgba(255,255,255,.85))'
+        });
+
+        /* 标题按行拆层，黄/红交替 */
+        var lines = String(x.c.title || '').split('\n').filter(function (s) { return s.trim(); });
+        var cols = [t.yellow, t.red, t.yellow, t.red];
+        var tsize = Math.round(Wd * 0.135);
+        var ty = [0.117, 0.578, 0.800, 1.02];
+        var tx = [0.306, 0.312, 0.312, 0.312];
+
+        var ti = find(L, 'title');
+        if (ti) {
+          if (lines.length) merge(ti, {
+            x: Math.round(Wd * tx[0]), y: Math.round(Ht * ty[0]), w: Math.round(Wd * (1 - tx[0] - 0.006)),
+            text: lines[0], size: tsize, color: cols[0], font: 'heavy', weight: 900, lh: 1.02, ls: 0,
+            stroke: stk, strokeColor: t.ink, stroke2: stk2, stroke2Color: '#ffffff',
+            fit: false, maxH: 0, align: 'left'
+          });
+          else merge(ti, { opacity: 0 });
+        }
+        for (var i = 1; i < lines.length && i < 4; i++) {
+          x.add(CV.T('title' + (i + 1), lines[i], {
+            x: Math.round(Wd * tx[i]), y: Math.round(Ht * ty[i]), w: Math.round(Wd * (1 - tx[i] - 0.006)),
+            size: tsize, color: cols[i], font: 'heavy', weight: 900, lh: 1.02, ls: 0,
+            stroke: stk, strokeColor: t.ink, stroke2: stk2, stroke2Color: '#ffffff'
+          }));
+        }
+
+        /* 副信息放底部（若内容里有） */
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, { opacity: 0 });
+        var ft = find(L, 'foot');
+        if (ft) merge(ft, { opacity: 0 });
+        var fl = find(L, 'footline');
+        if (fl) merge(fl, { opacity: 0 });
+      }
     }
+
   ];
 
   /* 横向撕纸：用于竖版 zine */
@@ -1107,7 +1189,7 @@
     merge(find(L, 'foot'), p.foot);
     var under = [];
     var addU = function (o) { under.push(o); return o; };
-    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: (RT && RT.w) || W, H: (RT && RT.h) || H, p: p, brand: (window.App && App.doc && App.doc.brand) || null, bgOverride: null };
+    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p, brand: (window.App && App.doc && App.doc.brand) || null, bgOverride: null };
     if (LO.tall) tallDecor(p, ctx);
     else if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
@@ -1115,7 +1197,7 @@
     return {
       v: CV.VERSION, pv: CV.PRESET_VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
-      paper: { on: false, opacity: 80, noise: 60, scale: 260 },
+      paper: p.paperCfg || { on: false, opacity: 80, noise: 60, scale: 260 },
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
