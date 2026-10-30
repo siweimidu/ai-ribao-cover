@@ -237,8 +237,9 @@
 
   /* 网格间距实时预览：直接挪 DOM，不整屏重绘 */
   App.gridLive = function (cols, gap) {
-    var set = App.selSet();
-    if (set.length < 2) { App.gridArrange(cols, gap); return; }
+    var pk = App.iconSet();
+    var set = pk.list;
+    if (!set.length) { App.gridArrange(cols, gap); return; }
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
     n = Math.max(1, Math.min(n, set.length));
     var rows = Math.ceil(set.length / n);
@@ -825,15 +826,24 @@
     App.apply(); App.commit();
     App.toast('已等距分布');
   };
+  /* 网格排列只对图标生效：优先用选中的图标，没有就用画布上全部图标 */
+  App.iconSet = function () {
+    var sel = App.selSet().filter(function (l) { return l.type === 'icon'; });
+    if (sel.length >= 2) return { list: sel, from: 'sel' };
+    var all = App.doc.layers.filter(function (l) { return l.type === 'icon' && !l.hidden && !l.locked; });
+    if (all.length >= 2) return { list: all, from: 'all' };
+    return { list: [], from: 'none' };
+  };
+
   App.gridArrange = function (cols, gap) {
-    var set = App.selSet();
-    if (set.length < 2) {
-      /* 没框选就直接排布：按 Figma 习惯退回「全部可见图层」，并说明 */
-      var all = App.doc.layers.filter(function (l) { return !l.hidden; });
-      if (all.length < 2) { App.toast('画布上不足 2 个图层', 'err'); return; }
-      App.selectMany(all.map(function (l) { return l.id; }));
-      set = App.selSet();
-      App.toast('未框选，已对全部 ' + set.length + ' 个图层排布');
+    var pick = App.iconSet();
+    if (!pick.list.length) { App.toast('画布上没有图标可排布', 'err'); return; }
+    var set = pick.list;
+    if (pick.from === 'all') {
+      App.selectMany(set.map(function (l) { return l.id; }));
+      App.toast('只排图标：本次作用于画布上全部 ' + set.length + ' 个图标');
+    } else if (set.length < App.selSet().length) {
+      App.toast('只排图标：忽略 ' + (App.selSet().length - set.length) + ' 个非图标图层');
     }
     gap = gap == null ? 32 : gap;
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
@@ -1178,7 +1188,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f28';
+  App.BUILD = '20261029-f29';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
