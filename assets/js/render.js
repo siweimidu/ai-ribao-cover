@@ -263,6 +263,10 @@
     root.style.width = doc.w + 'px';
     root.style.height = doc.h + 'px';
     root.style.background = doc.bg || '#fff';
+    if (doc.bgPattern && CV.bgPatternEl) {
+      var bpEl = CV.bgPatternEl(doc.bgPattern, doc.w, doc.h);
+      if (bpEl) root.appendChild(bpEl);
+    }
     if (doc.tokens && doc.tokens.ink) root.style.color = doc.tokens.ink;
     if (doc.tokens && doc.tokens.accent) root.style.setProperty('--hl', doc.tokens.accent);
 
