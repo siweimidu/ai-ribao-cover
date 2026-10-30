@@ -271,16 +271,36 @@
 
     /* 自定义背景图：在底色之上、图层之下 */
     if (doc.bgImage && doc.bgImage.src) {
+      var B = doc.bgImage;
       var bi = document.createElement('div');
       bi.className = 'cv-bgimg';
-      bi.style.backgroundImage = 'url("' + doc.bgImage.src + '")';
-      bi.style.backgroundSize = doc.bgImage.fit === 'contain' ? 'contain' : 'cover';
-      if (doc.bgImage.blur) bi.style.filter = 'blur(' + doc.bgImage.blur + 'px)';
+      bi.style.left = (B.x == null ? 0 : B.x) + '%';
+      bi.style.top = (B.y == null ? 0 : B.y) + '%';
+      bi.style.width = (B.w == null ? 100 : B.w) + '%';
+      bi.style.height = (B.h == null ? 100 : B.h) + '%';
+      bi.style.backgroundImage = 'url("' + B.src + '")';
+      bi.style.backgroundSize = B.fit === 'contain' ? 'contain' : 'cover';
+      if (B.blur) bi.style.filter = 'blur(' + B.blur + 'px)';
+      if (B.opacity != null && B.opacity < 100) bi.style.opacity = (B.opacity / 100);
+      /* 渐变遮罩：让图片淡入背景 */
+      var dir = B.fade && B.fade.dir, stg = B.fade && B.fade.strength != null ? B.fade.strength : 45;
+      if (dir && dir !== 'none') {
+        var m;
+        if (dir === 'radial') m = 'radial-gradient(ellipse at center, #000 ' + Math.max(0, 100 - stg) + '%, transparent 100%)';
+        else {
+          var ang = { left: 'to left', right: 'to right', top: 'to top', bottom: 'to bottom' }[dir] || 'to bottom';
+          m = 'linear-gradient(' + ang + ', #000 ' + Math.max(0, 100 - stg) + '%, transparent 100%)';
+        }
+        bi.style.webkitMaskImage = m;
+        bi.style.maskImage = m;
+      }
       root.appendChild(bi);
-      if (doc.bgImage.dim) {
+      if (B.dim) {
         var dm = document.createElement('div');
         dm.className = 'cv-bgdim';
-        dm.style.background = 'rgba(0,0,0,' + Math.min(0.85, doc.bgImage.dim / 100) + ')';
+        dm.style.left = bi.style.left; dm.style.top = bi.style.top;
+        dm.style.width = bi.style.width; dm.style.height = bi.style.height;
+        dm.style.background = 'rgba(0,0,0,' + Math.min(0.85, B.dim / 100) + ')';
         root.appendChild(dm);
       }
     }
