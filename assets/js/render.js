@@ -269,6 +269,22 @@
     bg.className = 'cv-bg';
     root.appendChild(bg);
 
+    /* 自定义背景图：在底色之上、图层之下 */
+    if (doc.bgImage && doc.bgImage.src) {
+      var bi = document.createElement('div');
+      bi.className = 'cv-bgimg';
+      bi.style.backgroundImage = 'url("' + doc.bgImage.src + '")';
+      bi.style.backgroundSize = doc.bgImage.fit === 'contain' ? 'contain' : 'cover';
+      if (doc.bgImage.blur) bi.style.filter = 'blur(' + doc.bgImage.blur + 'px)';
+      root.appendChild(bi);
+      if (doc.bgImage.dim) {
+        var dm = document.createElement('div');
+        dm.className = 'cv-bgdim';
+        dm.style.background = 'rgba(0,0,0,' + Math.min(0.85, doc.bgImage.dim / 100) + ')';
+        root.appendChild(dm);
+      }
+    }
+
     var fx = (doc.fx || []).slice().sort(function (a, b) { return FX_ORDER.indexOf(a) - FX_ORDER.indexOf(b); });
     fx.forEach(function (n) {
       if (!FX_BACK[n]) return;
