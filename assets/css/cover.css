@@ -99,3 +99,8 @@
 .cv-edit .cv-text{cursor:text}
 .cv-edit .cv-text:hover{cursor:text}
 /* 双击可编辑 */
+
+/* 自定义背景图 */
+.cv-bgimg{position:absolute;inset:-60px;background-position:center center;background-repeat:no-repeat;pointer-events:none}
+.cv-bgdim{position:absolute;inset:0;pointer-events:none}
+/* bg-image */
