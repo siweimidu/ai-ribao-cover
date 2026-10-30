@@ -1024,16 +1024,20 @@
         }
 
         /* 行1：品牌名（黑） */
+        var lines = String(c.title || '').split('\n');
+        var l1 = (lines[0] || '').trim();
+        var l2 = (lines.slice(1).join(' ').trim() || String(c.sub || '').replace(/\[\[|\]\]/g, '')).trim();
         var ti = find(L, 'title');
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.345), w: Math.round(Wd * 0.515),
+          text: l1,
           size: Math.round(Wd * 0.0578), font: pickFont(c.title), weight: 700, lh: 1.04, ls: -.028,
           color: t.ink, align: 'left', fit: false, maxH: 0
         });
 
         /* 行2：产品名（品牌色）+ 荧光笔底线 */
         var sb = find(L, 'sub');
-        var line2 = (c.kicker || c.sub || '');
+        var line2 = l2;
         if (sb) merge(sb, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.527), w: Math.round(Wd * 0.30),
           text: line2, size: Math.round(Wd * 0.0715), font: pickFont(line2), weight: 700, lh: 1.10,
@@ -1093,7 +1097,7 @@
         var t = x.t, L = x.L, lay = x.layout, c = x.c;
         var Wd = x.W, Ht = x.H;
         var brand = x.brand || t.brand;
-        var cjk = /[\u3400-\u9fff]/.test(String(c.title || '') + String(c.kicker || ''));
+        var cjk = /[\u3400-\u9fff]/.test(String(c.title || '') + String(c.sub || ''));
         x.bgOverride = 'linear-gradient(180deg,#ffffff 0%,' + CV.tint(brand, 0.955) + ' 55%,' + CV.tint(brand, 0.91) + ' 100%)';
 
         var se = find(L, 'series');
@@ -1103,14 +1107,18 @@
           size: Math.round(Wd * 0.0475), font: 'mono', weight: 400, ls: .06, color: brand, opacity: 1
         });
 
+        var lines = String(c.title || '').split('\n');
+        var l1 = (lines[0] || '').trim();
+        var l2 = (lines.slice(1).join(' ').trim() || String(c.sub || '').replace(/\[\[|\]\]/g, '')).trim();
         var ti = find(L, 'title');
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.345), w: Math.round(Wd * 0.515),
-          size: Math.round(Wd * 0.0578), font: pickFont(c.title), weight: 700, lh: 1.04, ls: -.028,
+          text: l1,
+          size: Math.round(Wd * 0.0578), font: pickFont(l1), weight: 700, lh: 1.04, ls: -.028,
           color: t.ink, align: 'left', fit: false, maxH: 0
         });
 
-        var line2 = (c.kicker || c.sub || '');
+        var line2 = l2;
         var sb = find(L, 'sub');
         if (sb) merge(sb, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.527), w: Math.round(Wd * 0.46),
