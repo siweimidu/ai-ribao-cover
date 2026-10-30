@@ -313,6 +313,46 @@
   function buildIconPane() {
     var p = $('#paneIcons');
     p.innerHTML = '';
+    /* 圆阵排列 */
+    var g5 = el('div', 'group');
+    var h5 = el('div', 'group-h');
+    h5.appendChild(el('span', 'group-t', '圆阵排列'));
+    g5.appendChild(h5);
+    var c5r = el('div', 'chiprow');
+    [['3', 3], ['4', 4], ['6', 6], ['9', 9], ['自动', 'auto']].forEach(function (o) {
+      var b = el('button', '', o[0]);
+      b.type = 'button';
+      b.title = '排成 ' + o[0] + ' 个的圆阵（点一下立即生效）';
+      b.addEventListener('click', function () { App.circleCluster(o[1]); });
+      c5r.appendChild(b);
+    });
+    g5.appendChild(c5r);
+    var f5 = el('div', 'field');
+    f5.style.marginTop = '8px';
+    var l5 = el('label');
+    l5.appendChild(el('span', null, '圆间距'));
+    var v5 = el('span', 'hint', (App.__ringOpts ? App.__ringOpts.gap : 4) + '%');
+    l5.appendChild(v5);
+    f5.appendChild(l5);
+    var w5 = el('div', 'slider');
+    var r5 = document.createElement('input');
+    r5.type = 'range'; r5.min = 0; r5.max = 24; r5.step = 1; r5.value = App.__ringOpts ? App.__ringOpts.gap : 4;
+    r5.addEventListener('input', function () { App.__ringOpts.gap = parseInt(r5.value, 10); v5.textContent = r5.value + '%'; });
+    w5.appendChild(r5);
+    f5.appendChild(w5);
+    g5.appendChild(f5);
+    var tl5 = el('div', 'toggleline');
+    tl5.appendChild(el('span', null, '按品牌色描边'));
+    var sw5 = el('button', (App.__ringOpts && App.__ringOpts.brand) ? 'switch on' : 'switch');
+    sw5.type = 'button';
+    sw5.addEventListener('click', function () {
+      App.__ringOpts.brand = !App.__ringOpts.brand;
+      sw5.classList.toggle('on', App.__ringOpts.brand);
+    });
+    tl5.appendChild(sw5);
+    g5.appendChild(tl5);
+    p.appendChild(g5);
+
     var sc = el('div', 'icsearch');
     sc.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
     var si = input('', function (v) { renderIcons(v); });
