@@ -857,8 +857,8 @@
         var t = x.t, L = x.L, lay = x.layout;
         var Wd = x.W, Ht = x.H;
         var brand = x.brand || t.brand;
-        x.bgOverride = 'linear-gradient(115deg,' + CV.tint(brand, 0.62) + ' 0%,' + CV.tint(brand, 0.93) + ' 46%,' +
-          CV.tint(brand, 0.93) + ' 62%,' + CV.tint(brand, 0.82) + ' 100%)';
+        x.bgOverride = 'linear-gradient(118deg,' + CV.tint(brand, 0.52) + ' 0%,' + CV.tint(brand, 0.86) + ' 34%,' +
+          CV.tint(brand, 0.93) + ' 58%,' + CV.tint(brand, 0.94) + ' 74%,' + CV.tint(brand, 0.78) + ' 100%)';
 
         /* 白卡（实测：x 5.5%W, y 26.7%H, 29.4%W × 52.4%H, 圆角 3.75%W） */
         x.add(CV.S('card', 'round', {
@@ -1070,6 +1070,8 @@
   }
 
   /* ============================ 组装 ============================ */
+  CV.PRESET_VERSION = 'p23';
+
   CV.styleById = function (id) {
     for (var i = 0; i < CV.STYLES.length; i++) if (CV.STYLES[i].id === id) return CV.STYLES[i];
     return CV.STYLES[0];
@@ -1111,7 +1113,7 @@
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
     return {
-      v: CV.VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
+      v: CV.VERSION, pv: CV.PRESET_VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
       paper: { on: false, opacity: 80, noise: 60, scale: 260 },
       tokens: CV.clone(t), content: c,
