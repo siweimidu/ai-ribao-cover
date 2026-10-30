@@ -988,6 +988,96 @@
         if (fl) merge(fl, { opacity: 0 });
       }
     }
+,
+
+    /* 24 —— 橘鸦：极浅底 + 两行粗标题 + 图标圆阵 ---------------- */
+    {
+      id: 'juya', name: '橘鸦', sub: '橘鸦Juya · 图标圆阵',
+      t: { ink: '#101114', ink2: '#6b7280', brand: '#4285f4' },
+      bg: 'linear-gradient(180deg,#ffffff 0%,#f7f9fc 58%,#f2f6fd 100%)',
+      paperCfg: { on: false, opacity: 8, noise: 10, scale: 360 },
+      fx: [],
+      dark: false,
+      title: { font: 'heavy', size: 101, weight: 800, lh: 1.04, ls: -.015, color: '#101114', fit: false, maxH: 0 },
+      decor: function (x) {
+        var t = x.t, L = x.L, lay = x.layout, c = x.c;
+        var Wd = x.W, Ht = x.H;
+        var brand = x.brand || t.brand;
+
+        /* 背景：极浅品牌色调，右边略深 */
+        x.bgOverride = 'linear-gradient(180deg,#ffffff 0%,' + CV.tint(brand, 0.955) + ' 55%,' + CV.tint(brand, 0.91) + ' 100%)';
+
+        /* 左上：日期 · 条数（品牌色，等宽） */
+        var head = Math.round(Wd * 0.0475);
+        var se = find(L, 'series');
+        var headTxt = (c.date || '') + (c.badge ? '   ·   ' + c.badge : '');
+        if (se) merge(se, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.068), w: Math.round(Wd * 0.45),
+          text: headTxt, size: head, font: 'mono', weight: 400, ls: .06, color: brand, opacity: 1
+        });
+
+        if (lay === 'poster') {
+          var tp0 = find(L, 'title');
+          if (tp0) merge(tp0, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.16), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.0875), color: t.ink });
+          ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+          return;
+        }
+
+        /* 行1：品牌名（黑） */
+        var ti = find(L, 'title');
+        if (ti) merge(ti, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.360), w: Math.round(Wd * 0.52),
+          size: Math.round(Wd * 0.064), font: 'bahn', weight: 700, lh: 1.06, ls: -.01,
+          color: t.ink, align: 'left', fit: false, maxH: 0
+        });
+
+        /* 行2：产品名（品牌色）+ 荧光笔底线 */
+        var sb = find(L, 'sub');
+        var line2 = (c.kicker || c.sub || '');
+        if (sb) merge(sb, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.545), w: Math.round(Wd * 0.46),
+          text: line2, size: Math.round(Wd * 0.072), font: 'bahn', weight: 700, lh: 1.12,
+          ls: -.02, color: brand, opacity: 1, maxH: 0
+        });
+        x.add(CV.S('hili', 'bar', {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.664), w: Math.round(Wd * 0.235),
+          h: Math.round(Ht * 0.024), color: brand, opacity: .22, radius: 2
+        }));
+
+        /* 右侧图标圆阵：9 / 6 / 4 / 3 */
+        var pool = (CV.JUYA_POOL || []).slice();
+        var main = c.icon || 'OpenAI/ChatGPT#symbol-color';
+        var n = 9;
+        var ids = [main];
+        for (var i = 0; i < pool.length && ids.length < n; i++) if (pool[i] !== main) ids.push(pool[i]);
+        var grid = n === 9 ? [3, 3] : (n === 6 ? [3, 2] : (n === 4 ? [2, 2] : [3, 1]));
+        var d = Math.round(Wd * 0.112);
+        var gap = Math.round(Wd * 0.0095);
+        var gx = Math.round(Wd * 0.625);
+        var totalH = grid[1] * d + (grid[1] - 1) * gap;
+        var gy = Math.round(Ht * 0.5 - totalH / 2);
+        for (var k = 0; k < n; k++) {
+          var col = k % grid[0], row = Math.floor(k / grid[0]);
+          var cx = gx + col * (d + gap), cy = gy + row * (d + gap);
+          x.add(CV.S('ring' + k, 'circle', {
+            x: cx, y: cy, w: d, h: d, color: '#ffffff', radius: 999,
+            bw: Math.max(2, Math.round(Wd * 0.0028)), bc: k === 0 ? brand : '#101114'
+          }));
+          x.add(CV.I('ringicon' + k, ids[k] || main, {
+            x: cx + Math.round(d * 0.22), y: cy + Math.round(d * 0.22),
+            w: Math.round(d * 0.56), h: Math.round(d * 0.56)
+          }));
+        }
+
+        /* 原来的主图标挪进第一个圆（避免它单独出现在别处） */
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, {
+          x: gx + Math.round(d * 0.22), y: gy + Math.round(d * 0.22),
+          w: Math.round(d * 0.56), h: Math.round(d * 0.56)
+        });
+        ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    }
 
   ];
 
@@ -1242,6 +1332,8 @@
     }
     return s;
   };
+
+  CV.JUYA_POOL = ['Anthropic/Claude#symbol-color','Anthropic/Anthropic#symbol-color','Google/Gemini#symbol-color','DeepSeek/DeepSeek#symbol-color','月之暗面/Kimi#symbol-color','智谱 AI/ChatGLM#symbol-color','MiniMax/MiniMax#symbol-color','xAI/Grok#symbol-color','xAI/Cursor#symbol-color'];
 
   CV.PRESET_VERSION = 'p23';
 
