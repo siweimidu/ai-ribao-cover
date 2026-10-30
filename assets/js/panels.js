@@ -689,6 +689,68 @@
         f3.appendChild(wrap3);
         g2.appendChild(f3);
       });
+      /* 图片区域 */
+      var rl = el('label'); rl.appendChild(el('span', null, '图片区域'));
+      g2.appendChild(rl);
+      var rrow = el('div', 'chiprow');
+      [['全屏', 0, 0, 100, 100], ['右半', 50, 0, 50, 100], ['左半', 0, 0, 50, 100],
+       ['上半', 0, 0, 100, 50], ['下半', 0, 50, 100, 50]].forEach(function (o) {
+        var cur = (bgI.w === o[3] && bgI.h === o[4] && (bgI.x || 0) === o[1] && (bgI.y || 0) === o[2]);
+        var b = el('button', cur ? 'on' : '', o[0]);
+        b.type = 'button';
+        b.addEventListener('click', function () { App.setBgImage({ x: o[1], y: o[2], w: o[3], h: o[4] }); });
+        rrow.appendChild(b);
+      });
+      g2.appendChild(rrow);
+
+      /* 渐变遮罩 */
+      var fl = el('label'); fl.appendChild(el('span', null, '渐变遮罩'));
+      g2.appendChild(fl);
+      var frow = el('div', 'chiprow');
+      [['无', 'none'], ['左淡', 'left'], ['右淡', 'right'], ['上淡', 'top'], ['下淡', 'bottom'], ['四周', 'radial']].forEach(function (o) {
+        var cur = ((bgI.fade && bgI.fade.dir) || 'none') === o[1];
+        var b = el('button', cur ? 'on' : '', o[0]);
+        b.type = 'button';
+        b.addEventListener('click', function () { App.setBgImage({ fade: { dir: o[1], strength: (bgI.fade && bgI.fade.strength) || 45 } }); });
+        frow.appendChild(b);
+      });
+      g2.appendChild(frow);
+
+      if (bgI.fade && bgI.fade.dir && bgI.fade.dir !== 'none') {
+        var sfl = el('div', 'field');
+        var slb = el('label');
+        slb.appendChild(el('span', null, '遮罩强度'));
+        var shv = el('span', 'hint', (bgI.fade.strength || 45) + '%');
+        slb.appendChild(shv);
+        sfl.appendChild(slb);
+        var swrap = el('div', 'slider');
+        var sr = document.createElement('input');
+        sr.type = 'range'; sr.min = 5; sr.max = 95; sr.step = 1; sr.value = bgI.fade.strength || 45;
+        sr.addEventListener('input', function () { shv.textContent = sr.value + '%'; });
+        sr.addEventListener('change', function () {
+          App.setBgImage({ fade: { dir: bgI.fade.dir, strength: parseInt(sr.value, 10) } });
+        });
+        swrap.appendChild(sr);
+        sfl.appendChild(swrap);
+        g2.appendChild(sfl);
+      }
+
+      /* 图片不透明度 */
+      var opf = el('div', 'field');
+      var opl = el('label');
+      opl.appendChild(el('span', null, '图片不透明度'));
+      var ohv = el('span', 'hint', (bgI.opacity == null ? 100 : bgI.opacity) + '%');
+      opl.appendChild(ohv);
+      opf.appendChild(opl);
+      var owrap = el('div', 'slider');
+      var orr = document.createElement('input');
+      orr.type = 'range'; orr.min = 5; orr.max = 100; orr.step = 1; orr.value = bgI.opacity == null ? 100 : bgI.opacity;
+      orr.addEventListener('input', function () { ohv.textContent = orr.value + '%'; });
+      orr.addEventListener('change', function () { App.setBgImage({ opacity: parseInt(orr.value, 10) }); });
+      owrap.appendChild(orr);
+      opf.appendChild(owrap);
+      g2.appendChild(opf);
+
       var rm = el('button', 'btn');
       rm.textContent = '移除背景图';
       rm.style.width = '100%'; rm.style.marginTop = '6px'; rm.style.justifyContent = 'center';
