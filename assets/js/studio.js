@@ -186,6 +186,11 @@
 
   /* 纸纹实时预览：拖滑块时只改 fx 的内联样式，零重绘 */
   /* 背景：纯色 / 渐变（实时预览，松手才进撤销栈） */
+  App.setBgPattern = function (id) {
+    if (!id) delete App.doc.bgPattern; else App.doc.bgPattern = id;
+    App.apply(); App.commit();
+  };
+
   App.setBg = function (css, commit) {
     App.doc.bg = css;
     if (App.root) App.root.style.background = css;
@@ -1203,7 +1208,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f33';
+  App.BUILD = '20261029-f35';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
