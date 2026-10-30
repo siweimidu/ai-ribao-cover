@@ -406,3 +406,95 @@ body.marquee-drag,body.marquee-drag *{cursor:crosshair!important}
 .lrow.dragging{opacity:.6;background:var(--accent);border-color:var(--primary);cursor:grabbing}
 .lrow:active{cursor:grabbing}
 /* layer-sort */
+
+/* ==========================================================================
+   UI 精修（按 Doubao token 重排右栏控件）
+   ========================================================================== */
+.panel.right .pane{padding:12px 14px 22px}
+.group{margin:0 0 4px;padding:14px 0 12px;border-bottom:1px solid var(--border)}
+.group:last-child{border-bottom:0;padding-bottom:4px}
+.group-h{margin:0 0 10px;padding:0}
+.group-t{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted-foreground);text-transform:none}
+.field{margin-bottom:11px}
+.field > label{font-size:11.5px;font-weight:600;color:var(--secondary-foreground);margin-bottom:6px}
+.field > label .hint,.field > label .val{
+  font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.02em;
+  color:var(--primary);background:var(--accent);border-radius:6px;padding:1px 6px;opacity:1
+}
+
+/* 滑块：填充 + 细轨 + 白盘 */
+.slider{gap:0}
+.slider input[type=range]{
+  -webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:99px;outline:none;margin:7px 0;
+  background-image:linear-gradient(to right,var(--primary) 0,var(--primary) var(--p,0%),#e4e8ef var(--p,0%),#e4e8ef 100%);
+  background-repeat:no-repeat;border:0
+}
+.slider input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;border-radius:99px;background:#fff;
+  border:0;box-shadow:0 0 0 1px rgba(14,17,21,.10),0 1px 3px rgba(14,17,21,.22);
+  transition:transform .12s,box-shadow .12s;cursor:grab
+}
+.slider input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 1px var(--ring),0 1px 4px rgba(0,101,253,.3)}
+.slider input[type=range]:active::-webkit-slider-thumb{transform:scale(1.08);cursor:grabbing}
+.slider .val{display:none}
+
+/* 取色器 */
+input[type=color]{
+  -webkit-appearance:none;appearance:none;width:34px;height:28px;padding:2px;cursor:pointer;
+  border:1px solid var(--border);border-radius:8px;background:#fff
+}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+input[type=color]::-webkit-color-swatch{border:0;border-radius:5px}
+input[type=color]:hover{border-color:var(--ring)}
+
+/* 选项片 */
+.chiprow{gap:6px}
+.chiprow button{
+  height:28px;padding:0 11px;border-radius:8px;font-size:11.5px;font-weight:600;
+  border:1px solid var(--border);background:#fff;color:var(--secondary-foreground);transition:.14s
+}
+.chiprow button:hover{background:var(--muted);border-color:#dbe0e8}
+.chiprow button.on{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 2px 6px -2px rgba(0,101,253,.5)}
+.chiprow button.on:hover{background:var(--primary)}
+
+/* 渐变片：等高、等分、带柔和边 */
+#paneCanvas .chiprow button[style*="linear-gradient"]{
+  flex:1 1 0;min-width:56px;height:34px;border-radius:9px;font-size:11px;font-weight:700;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)
+}
+
+/* 按钮 */
+.btn{height:32px;border-radius:9px;font-size:12.5px;font-weight:600;border:1px solid var(--border);
+  background:#fff;color:var(--foreground);transition:.14s}
+.btn:hover{background:var(--muted);border-color:#dbe0e8}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn.primary:hover{filter:brightness(1.05)}
+
+/* 开关 */
+.switch{width:38px;height:21px;background:#d7dde6}
+.switch.on{background:var(--primary)}
+.switch::after{box-shadow:0 1px 2px rgba(14,17,21,.25)}
+
+/* 说明块 */
+.note{background:var(--muted);border-radius:9px;padding:9px 11px;font-size:11px;line-height:1.55;
+  color:var(--muted-foreground);border-left:2px solid var(--accent)}
+.note b{color:var(--foreground);font-weight:700}
+
+.seclabel{display:block;margin:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  color:var(--muted-foreground);text-transform:none}
+.seclabel .hint{float:right;font-family:var(--font-mono);font-size:10.5px;font-weight:600;
+  color:var(--primary);background:var(--accent);border-radius:6px;padding:1px 6px}
+.group > .btn{margin-top:10px}
+.btn.primary{margin-top:14px}
+.btn.danger{color:var(--destructive);border-color:#f6c9c9;background:#fff}
+.btn.danger:hover{background:#fef2f2;border-color:#f0a9a9}
+.toggleline{font-size:12px;padding:4px 0}
+.toggleline span{color:var(--secondary-foreground);font-weight:600}
+
+/* 小节标签最终优先级修正（盖过 .field > label） */
+label.seclabel,.field > label.seclabel,.group > label.seclabel{
+  display:block;margin:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  color:var(--muted-foreground);text-transform:none;min-height:0
+}
+label.seclabel .hint{float:right;font-family:var(--font-mono);font-size:10.5px;font-weight:600;
+  color:var(--primary);background:var(--accent);border-radius:6px;padding:1px 6px}
