@@ -602,83 +602,64 @@
       }
     },
 
-    /* 15 —— 真报纸头版（按白鸦原图 1872x1053 比例复刻） -------- */
+    /* 15 —— 报纸·经典 */
     {
-      id: 'newspaper', name: '真报纸', sub: '报头 · 七栏密排 · 贴纸鲸',
-      t: { ink: '#1b2a4a', ink2: '#8f8a80', accent: '#e8663c', paper: '#f8f5ee', yellow: '#f5c33b' },
+      id: 'paper1', name: '报纸·经典', sub: '大报 · 七栏密排 · 橙框日期',
+      t: {ink: '#1b2a4a',accent: '#e8663c',paper: '#f8f5ee'},
       bg: '#f8f5ee',
-      paperCfg: { on: true, opacity: 10, noise: 14, scale: 360 },
+      paperCfg: {on: true,opacity: 10,noise: 12,scale: 360},
       fx: ['paper'],
       dark: false,
-      title: { font: 'heavy', size: 83, weight: 900, lh: 1.05, ls: 0, color: '#f5c33b',
-               stroke: 9, strokeColor: '#14100a', stroke2: 3, stroke2Color: '#ffffff' },
-      decor: function (x) {
-        var t = x.t, L = x.L, lay = x.layout;
-        var Wd = x.W, Ht = x.H;
+      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f5c33b' },
+      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.022,bodyY: 0.2,bodySize: 0.0105,bodyFont: 'serif',bodyColor: '#a8a29a',cols: 7,gap: 0.011,rule: 'rgba(27,42,74,.14)',bodyH: 0.755,rounds: 3,mast: {text: 'AI 日报',center: true,y: 0.03,size: 0.068,font: 'heavy',color: '#1b2a4a',ls: 0.06},lines: [{x: 0.022,y: 0.128,w: 0.956,h: 2.2,color: '#1b2a4a'},{x: 0.022,y: 0.133,w: 0.956,h: 1,color: '#1b2a4a',opacity: 0.5}],dateBox: {x: 0.8,y: 0.03,w: 0.155,h: 0.075,fill: '#ffffff',border: 0.0042,borderColor: '#e8663c',text: '#e8663c',size: 0.03,radius: 0.006},accent: '#e8663c',logo: 0.28,logoX: 0.13,logoY: 0.34,titleX: 0.47,titleY: 0.42,titleW: 0.5,titleSize: 0.07,titleColor: '#f5c33b',titleStroke: 0.0075,titleStrokeColor: '#14100a'})
+    },
 
-        /* 七栏假文字（铺满下半页，作为报纸正文肌理） */
-        var filler = '';
-        var seed = ['模型发布与产品更新带来新一轮算力需求，创作者需要更快的判断路径。',
-          '本期共收录 22 条资讯，全部经人工核对来源，标注可信度与影响面。',
-          '资本动向与开源生态同步变化，值得关注的并不只有参数规模。',
-          '为便于二次创作，每条都附带可引用的关键数据与时间点。'];
-        for (var i = 0; i < 90; i++) filler += seed[i % seed.length] + '　';
-        x.add(CV.T('cols', filler, {
-          x: Math.round(Wd * 0.022), y: Math.round(Ht * 0.20), w: Math.round(Wd * 0.956),
-          size: Math.round(Wd * 0.0105), font: 'serif', weight: 400, lh: 1.46, ls: .01,
-          color: '#a8a29a', cols: 7, gap: Math.round(Wd * 0.011), rule: 'rgba(27,42,74,.14)',
-          maxH: Math.round(Ht * 0.755), align: 'justify'
-        }));
+    /* 15 —— 报纸·华尔街 */
+    {
+      id: 'paper2', name: '报纸·华尔街', sub: '窄栏 · 米黄纸 · 细线分栏',
+      t: {ink: '#22201c',accent: '#8c6d3f',paper: '#f4ead6'},
+      bg: '#f4ead6',
+      paperCfg: {on: true,opacity: 14,noise: 16,scale: 320},
+      fx: ['paper'],
+      dark: false,
+      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f2c14e' },
+      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.03,bodyY: 0.215,bodySize: 0.0102,bodyFont: 'serif',bodyColor: '#9c8f78',cols: 6,gap: 0.014,rule: 'rgba(34,32,28,.18)',bodyH: 0.745,rounds: 4,mast: {text: 'AI 日报',x: 0.03,y: 0.028,w: 0.55,size: 0.058,font: 'serif',color: '#22201c',ls: 0.02},lines: [{x: 0.03,y: 0.112,w: 0.94,h: 3,color: '#22201c'}],dateBox: {x: 0.795,y: 0.03,w: 0.175,h: 0.062,fill: 'transparent',border: 0.003,borderColor: '#8c6d3f',text: '#8c6d3f',size: 0.026,radius: 0.002},accent: '#8c6d3f',logo: 0.26,logoX: 0.14,logoY: 0.35,titleX: 0.46,titleY: 0.44,titleW: 0.5,titleSize: 0.066,titleColor: '#f2c14e',titleStroke: 0.007,titleStrokeColor: '#1a1712'})
+    },
 
-        if (lay === 'poster') return;
+    /* 15 —— 报纸·泰晤士 */
+    {
+      id: 'paper3', name: '报纸·泰晤士', sub: '衬线报头 · 双线 · 五栏',
+      t: {ink: '#141414',accent: '#8d1f1f',paper: '#fbf9f4'},
+      bg: '#fbf9f4',
+      paperCfg: {on: true,opacity: 6,noise: 10,scale: 380},
+      fx: ['paper'],
+      dark: false,
+      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f4c33f' },
+      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.034,bodyY: 0.235,bodySize: 0.0108,bodyFont: 'serif',bodyColor: '#a8a49c',cols: 5,gap: 0.018,rule: 'rgba(20,20,20,.20)',bodyH: 0.73,rounds: 4,mast: {text: 'THE AI  TIMES',center: true,y: 0.026,size: 0.05,font: 'serif',color: '#141414',ls: 0.16},lines: [{x: 0.034,y: 0.098,w: 0.932,h: 1,color: '#141414'},{x: 0.034,y: 0.104,w: 0.932,h: 1,color: '#141414'},{x: 0.034,y: 0.11,w: 0.932,h: 2,color: '#141414'}],dateBox: {x: 0.034,y: 0.135,w: 0.2,h: 0.045,fill: 'transparent',border: 0,borderColor: '#141414',text: '#8d1f1f',size: 0.02,radius: 0},accent: '#8d1f1f',logo: 0.27,logoX: 0.12,logoY: 0.36,titleX: 0.45,titleY: 0.43,titleW: 0.51,titleSize: 0.072,titleColor: '#f4c33f',titleStroke: 0.0068,titleStrokeColor: '#101010'})
+    },
 
-        /* 日期块：白底 + 橙色粗边 + 暖黄数字 */
-        var bx = Math.round(Wd * 0.080), by = Math.round(Ht * 0.028);
-        var bw = Math.round(Wd * 0.166), bh = Math.round(Ht * 0.190);
-        x.add(CV.S('datebox', 'round', {
-          x: bx, y: by, w: bw, h: bh, color: '#ffffff', radius: Math.round(Wd * 0.006),
-          bw: Math.max(2, Math.round(Wd * 0.0042)), bc: t.accent,
-          shadow: '0 2px 0 rgba(232,102,60,.25)'
-        }));
-        x.add(CV.T('dline1', '2026', {
-          x: bx, y: by + Math.round(bh * 0.10), w: bw, size: Math.round(Wd * 0.052),
-          font: 'heavy', weight: 900, ls: .04, color: t.yellow, align: 'center',
-          stroke: Math.round(Wd * 0.0035), strokeColor: '#7a3a20'
-        }));
-        x.add(CV.T('dline2', '10-26', {
-          x: bx, y: by + Math.round(bh * 0.52), w: bw, size: Math.round(Wd * 0.052),
-          font: 'heavy', weight: 900, ls: .04, color: t.yellow, align: 'center',
-          stroke: Math.round(Wd * 0.0035), strokeColor: '#7a3a20'
-        }));
+    /* 15 —— 报纸·现代 */
+    {
+      id: 'paper4', name: '报纸·现代', sub: '无框极简 · 三栏 · 大留白',
+      t: {ink: '#111418',accent: '#2f6bff',paper: '#ffffff'},
+      bg: '#ffffff',
+      paperCfg: {on: false,opacity: 0,noise: 0,scale: 360},
+      fx: [],
+      dark: false,
+      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#111418' },
+      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.05,bodyY: 0.245,bodySize: 0.0115,bodyFont: 'bold',bodyColor: '#b8bcc4',cols: 3,gap: 0.03,rule: 'rgba(17,20,24,.10)',bodyH: 0.7,rounds: 5,mast: {text: 'AI 日报 · DAILY',x: 0.05,y: 0.03,w: 0.6,size: 0.04,font: 'bold',color: '#111418',ls: 0.12},lines: [{x: 0.05,y: 0.096,w: 0.9,h: 2,color: '#111418'}],dateBox: {x: 0.78,y: 0.028,w: 0.17,h: 0.05,fill: '#2f6bff',border: 0,borderColor: '#2f6bff',text: '#ffffff',size: 0.022,radius: 0.004},accent: '#2f6bff',logo: 0.26,logoX: 0.1,logoY: 0.33,titleX: 0.43,titleY: 0.41,titleW: 0.53,titleSize: 0.068,titleColor: '#111418',titleStroke: 0.0028,titleStrokeColor: '#ffffff','titleStroke2':0.0012,'titleStroke2Color':'#111418'})
+    },
 
-        /* 报头：深海军蓝超粗 */
-        x.top(CV.T('mast', 'AI 日报 | 第 561 期', {
-          x: Math.round(Wd * 0.262), y: Math.round(Ht * 0.030), w: Math.round(Wd * 0.70),
-          size: Math.round(Wd * 0.066), font: 'heavy', weight: 900, ls: -.01, color: t.ink, align: 'left'
-        }));
-
-        /* 贴纸鲸鱼（白色厚边） */
-        var ic = find(L, 'icon');
-        var isz = Math.round(Wd * 0.30);
-        if (ic) merge(ic, {
-          x: Math.round(Wd * 0.135), y: Math.round(Ht * 0.335), w: isz, h: isz,
-          filter: CV.dieCut(Math.round(Wd * 0.0075), '#ffffff', Math.round(Wd * 0.004))
-        });
-
-        /* 主标题：黄字黑边 */
-        var ti = find(L, 'title');
-        if (ti) merge(ti, {
-          x: Math.round(Wd * 0.472), y: Math.round(Ht * 0.418), w: Math.round(Wd * 0.505),
-          size: Math.round(Wd * 0.070), font: 'heavy', weight: 900, lh: 1.10, ls: 0,
-          color: t.yellow, align: 'left',
-          stroke: Math.max(2, Math.round(Wd * 0.0075)), strokeColor: '#14100a',
-          stroke2: Math.max(1, Math.round(Wd * 0.0028)), stroke2Color: '#ffffff'
-        });
-
-        ['kicker', 'series', 'date', 'sub', 'foot', 'footline', 'rule'].forEach(function (r) {
-          var l = find(L, r); if (l) l.opacity = 0;
-        });
-      }
+    /* 15 —— 报纸·复古 */
+    {
+      id: 'paper5', name: '报纸·复古', sub: '牛皮纸 · 粗框 · 双栏 + 侧题',
+      t: {ink: '#2a2016',accent: '#9b5b2a',paper: '#e8dcc0'},
+      bg: '#e8dcc0',
+      paperCfg: {on: true,opacity: 20,noise: 26,scale: 300},
+      fx: ['paper','grain'],
+      dark: false,
+      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f3c445' },
+      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.038,bodyY: 0.25,bodySize: 0.0104,bodyFont: 'serif',bodyColor: '#8d7c60',cols: 4,gap: 0.016,rule: 'rgba(42,32,22,.22)',bodyH: 0.7,rounds: 4,mast: {text: 'AI 日报',center: true,y: 0.032,size: 0.062,font: 'serif',color: '#2a2016',ls: 0.1},lines: [{x: 0.038,y: 0.12,w: 0.924,h: 4,color: '#2a2016'},{x: 0.038,y: 0.128,w: 0.924,h: 1,color: '#2a2016',opacity: 0.6}],dateBox: {x: 0.038,y: 0.142,w: 0.19,h: 0.05,fill: '#2a2016',border: 0,borderColor: '#2a2016',text: '#e8dcc0',size: 0.02,radius: 0},sidebar: ['头条','模型','资本'],accent: '#9b5b2a',logo: 0.27,logoX: 0.13,logoY: 0.36,titleX: 0.46,titleY: 0.43,titleW: 0.5,titleSize: 0.068,titleColor: '#f3c445',titleStroke: 0.0072,titleStrokeColor: '#241a12'})
     },
 
     /* 16 —— 技术编辑部 ------------------------------------ */
@@ -1186,6 +1167,124 @@
   }
 
   /* ============================ 组装 ============================ */
+  CV.NEWS = [
+    'Claude 追着中国人杀，封禁中国账号',
+    '奥特曼、马斯克、达里奥的爱恨情仇',
+    '龙王归来，Gemini 4 Carbon 震撼发布',
+    'DeepSeek R1 发布，英伟达股价暴跌',
+    'Seedance 2.0 发布，视频模型进入新阶段',
+    'GPT Image 2.0 发布，生图文字不再是难题',
+    'Kimi K3 发布，2.8 万亿参数开源模型逼近闭源',
+    'DeepSeek V4.1 Flash 10-17 发布，大模型斩杀线',
+    'Claude Opus 5.5 发布，代码与视频能力眩晕瘫坐',
+    'OpenAI 一口气发布 700 多篇数学论文',
+    'Manus 被仅退款',
+    'Zcode 免费帮全人类备份数据',
+    'Muse 爆火，个人 Agent 时代来临'
+  ];
+  CV.npTail = ['本条已核对来源。', '影响面：开发者生态与算力供给。', '可信度：官方公告。',
+    '观察：价格与开源节奏同时加速。', '相关：模型能力与成本曲线。'];
+  /* 生成报纸正文：标题用 [[ ]] 高亮，后面跟短句，形成密排效果 */
+  CV.npText = function (rounds) {
+    var s = '', N = CV.NEWS, T = CV.npTail;
+    for (var k = 0; k < (rounds || 3); k++) {
+      for (var i = 0; i < N.length; i++) {
+        s += '[[' + N[i] + ']] ' + T[(k + i) % T.length] + '　';
+      }
+    }
+    return s;
+  };
+
+  /* 报纸背景工厂：variant 决定纸色 / 栏数 / 报头位置 / 装饰 */
+  CV.npVariant = function (o) {
+    return function (x) {
+      var t = x.t, L = x.L, lay = x.layout;
+      var Wd = x.W, Ht = x.H, k = Wd / 1160;
+      var body = CV.npText(o.rounds || 3);
+
+      /* 正文：多栏密排，铺满整页（报纸肌理） */
+      x.add(CV.T('npbody', body, {
+        x: Math.round(Wd * o.pad), y: Math.round(Ht * o.bodyY),
+        w: Math.round(Wd * (1 - o.pad * 2)),
+        size: Math.round(Wd * o.bodySize), font: o.bodyFont, weight: 400,
+        lh: o.bodyLh || 1.42, ls: .01, color: o.bodyColor,
+        cols: o.cols, gap: Math.round(Wd * o.gap), rule: o.rule,
+        maxH: Math.round(Ht * o.bodyH), align: 'justify'
+      }));
+
+      if (lay === 'poster') return;
+
+      /* 报头区 */
+      if (o.mast) {
+        if (o.mast.center) {
+          x.top(CV.T('mast', o.mast.text, {
+            x: Math.round(Wd * o.pad), y: Math.round(Ht * o.mast.y), w: Math.round(Wd * (1 - o.pad * 2)),
+            size: Math.round(Wd * o.mast.size), font: o.mast.font, weight: 900,
+            ls: o.mast.ls || 0, color: o.mast.color, align: 'center'
+          }));
+        } else {
+          x.top(CV.T('mast', o.mast.text, {
+            x: Math.round(Wd * o.mast.x), y: Math.round(Ht * o.mast.y), w: Math.round(Wd * o.mast.w),
+            size: Math.round(Wd * o.mast.size), font: o.mast.font, weight: 900,
+            ls: o.mast.ls || 0, color: o.mast.color, align: 'left'
+          }));
+        }
+      }
+      /* 分隔线 */
+      (o.lines || []).forEach(function (ln, i) {
+        x.add(CV.S('npline' + i, 'bar', {
+          x: Math.round(Wd * ln.x), y: Math.round(Ht * ln.y), w: Math.round(Wd * ln.w),
+          h: Math.max(1, Math.round((ln.h || 1) * k)), color: ln.color, opacity: ln.opacity == null ? 1 : ln.opacity
+        }));
+      });
+      /* 日期块 */
+      if (o.dateBox) {
+        var b = o.dateBox;
+        x.add(CV.S('nobox', 'round', {
+          x: Math.round(Wd * b.x), y: Math.round(Ht * b.y), w: Math.round(Wd * b.w), h: Math.round(Ht * b.h),
+          color: b.fill, radius: Math.round(Wd * (b.radius || 0.006)),
+          bw: Math.max(1, Math.round(Wd * (b.border || 0))), bc: b.borderColor || b.fill,
+          shadow: b.shadow || ''
+        }));
+        x.add(CV.T('nod1', x.c.date || '', {
+          x: Math.round(Wd * b.x), y: Math.round(Ht * (b.y + b.h * 0.10)), w: Math.round(Wd * b.w),
+          size: Math.round(Wd * b.size), font: 'mono', weight: 900, ls: 0,
+          color: b.text, align: 'center'
+        }));
+      }
+      /* 侧栏小标题（复古款用） */
+      (o.sidebar || []).forEach(function (sb, i) {
+        x.add(CV.T('npsb' + i, sb, {
+          x: Math.round(Wd * o.pad), y: Math.round(Ht * (0.20 + i * 0.055)),
+          w: Math.round(Wd * 0.16), size: Math.round(Wd * 0.0125), font: o.bodyFont,
+          weight: 900, color: o.accent, ls: .04, upper: true
+        }));
+      });
+
+      /* 封面主元素 */
+      var isz = Math.round(Wd * (o.logo || 0.28));
+      var ic = find(L, 'icon');
+      if (ic && o.logo) merge(ic, {
+        x: Math.round(Wd * (o.logoX || 0.13)), y: Math.round(Ht * (o.logoY || 0.34)), w: isz, h: isz,
+        filter: CV.dieCut(Math.round(Wd * 0.0075), '#ffffff', Math.round(Wd * 0.004))
+      });
+      var ti = find(L, 'title');
+      if (ti) merge(ti, {
+        x: Math.round(Wd * (o.titleX || 0.47)), y: Math.round(Ht * (o.titleY || 0.42)),
+        w: Math.round(Wd * (o.titleW || 0.50)),
+        size: Math.round(Wd * (o.titleSize || 0.070)), font: 'heavy', weight: 900,
+        lh: 1.10, ls: 0, color: o.titleColor, align: 'left', fit: true, maxH: Math.round(Ht * 0.30),
+        stroke: Math.max(2, Math.round(Wd * o.titleStroke)),
+        strokeColor: o.titleStrokeColor || '#14100a',
+        stroke2: Math.max(1, Math.round(Wd * (o.titleStroke2 || 0.0028))),
+        stroke2Color: o.titleStroke2Color || '#ffffff'
+      });
+      ['kicker', 'series', 'date', 'sub', 'foot', 'footline', 'rule'].forEach(function (r) {
+        var l = find(L, r); if (l) l.opacity = 0;
+      });
+    };
+  };
+
   CV.PRESET_VERSION = 'p23';
 
   CV.styleById = function (id) {
