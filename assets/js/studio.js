@@ -194,7 +194,7 @@
   };
   App.setBgImage = function (obj) {
     if (obj === null) delete App.doc.bgImage;
-    else App.doc.bgImage = Object.assign({ fit: 'cover', blur: 0, dim: 0 }, App.doc.bgImage || {}, obj);
+    else App.doc.bgImage = Object.assign({ fit: 'cover', blur: 0, dim: 0, x: 0, y: 0, w: 100, h: 100, opacity: 100, fade: { dir: 'none', strength: 45 } }, App.doc.bgImage || {}, obj);
     App.apply();
     App.commit();
   };
@@ -1178,7 +1178,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f26';
+  App.BUILD = '20261029-f27';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
