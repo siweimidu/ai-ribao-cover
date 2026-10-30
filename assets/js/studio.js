@@ -894,6 +894,17 @@
     });
     App.suppress = true; App.apply(); App.suppress = false;
   };
+  /* 实时旋转：只改内联 transform，零重绘零落盘（跟手） */
+  App.rotateLive = function (deg) {
+    var set = App.selSet();
+    set.forEach(function (l) {
+      l.rot = deg;
+      var el = App.map[l.id];
+      if (el) el.style.transform = deg ? 'rotate(' + deg + 'deg)' : '';
+    });
+    if (App.drawSel) App.drawSel();
+  };
+
   App.rotateSelTo = function (deg) {
     App.selSet().forEach(function (l) { l.rot = deg; });
     App.apply(); App.commit();
@@ -1188,7 +1199,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f29';
+  App.BUILD = '20261029-f30';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
