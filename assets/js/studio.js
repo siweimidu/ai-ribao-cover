@@ -115,12 +115,14 @@
     if (window.Panels) Panels.syncHist();
   };
   App.undo = function () {
+    if (!App.hist || App.hist.length < 2) { App.toast('没有可撤销的步骤'); return false; }
     if (App.hi <= 0) return;
     App.hi--; App.doc = JSON.parse(App.hist[App.hi]); App.sel = null; App.apply(); saveLocal();
     if (window.Panels) Panels.syncHist();
     App.toast('已撤销');
   };
   App.redo = function () {
+    if (!App.future || !App.future.length) { App.toast('没有可重做的步骤'); return false; }
     if (App.hi >= App.hist.length - 1) return;
     App.hi++; App.doc = JSON.parse(App.hist[App.hi]); App.sel = null; App.apply(); saveLocal();
     if (window.Panels) Panels.syncHist();
