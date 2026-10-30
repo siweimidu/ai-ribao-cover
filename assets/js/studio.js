@@ -183,6 +183,40 @@
   };
 
   /* 纸纹实时预览：拖滑块时只改 fx 的内联样式，零重绘 */
+  /* 背景：纯色 / 渐变（实时预览，松手才进撤销栈） */
+  App.setBg = function (css, commit) {
+    App.doc.bg = css;
+    if (App.root) App.root.style.background = css;
+    if (commit) App.commit();
+  };
+  App.gradientCss = function (a, b, angle) {
+    return 'linear-gradient(' + angle + 'deg,' + a + ' 0%,' + b + ' 100%)';
+  };
+  App.setBgImage = function (obj) {
+    if (obj === null) delete App.doc.bgImage;
+    else App.doc.bgImage = Object.assign({ fit: 'cover', blur: 0, dim: 0 }, App.doc.bgImage || {}, obj);
+    App.apply();
+    App.commit();
+  };
+  /* 上传图片 -> 压缩到 1920 宽以内，存 dataURL */
+  App.readImageFile = function (file, cb) {
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var maxW = 1920, sc = Math.min(1, maxW / img.naturalWidth);
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * sc);
+        c.height = Math.round(img.naturalHeight * sc);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        try { cb(c.toDataURL('image/jpeg', 0.86)); } catch (e) { cb(fr.result); }
+      };
+      img.onerror = function () { cb(fr.result); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  };
+
   App.paperLive = function () {
     var root = App.root;
     if (!root) return;
@@ -1144,7 +1178,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f25';
+  App.BUILD = '20261029-f26';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
