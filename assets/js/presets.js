@@ -602,51 +602,85 @@
       }
     },
 
-    /* 15 —— 真报纸头版 ------------------------------------ */
+    /* 15 —— 真报纸头版（按白鸦原图 1872x1053 比例复刻） -------- */
     {
-      id: 'newspaper', name: '真报纸', sub: '灵感港 · 报头 / 多栏 / 密排',
-      t: { ink: '#1e1a16', ink2: '#6f6558', accent: '#b3261e', bgSolid: '#efe7d6' },
-      bg: 'radial-gradient(120% 100% at 30% 0%,#f8f2e4 0%,#efe7d6 48%,#e3d8c1 100%)',
-      fx: ['paper', 'wrinkle', 'grain', 'vignette'], dark: false,
-      title: { font: 'serif', size: 96, lh: 1.04, ls: .01, color: '#1e1a16' },
+      id: 'newspaper', name: '真报纸', sub: '报头 · 七栏密排 · 贴纸鲸',
+      t: { ink: '#1b2a4a', ink2: '#8f8a80', accent: '#e8663c', paper: '#f8f5ee', yellow: '#f5c33b' },
+      bg: '#f8f5ee',
+      paperCfg: { on: true, opacity: 10, noise: 14, scale: 360 },
+      fx: ['paper'],
+      dark: false,
+      title: { font: 'heavy', size: 83, weight: 900, lh: 1.05, ls: 0, color: '#f5c33b',
+               stroke: 9, strokeColor: '#14100a', stroke2: 3, stroke2Color: '#ffffff' },
       decor: function (x) {
-        var t = x.t, L = x.L;
-        if (x.layout === 'split') return;
-        x.add(CV.S('r1', 'bar', { x: 48, y: 96, w: W - 96, h: 3, color: t.ink }));
-        x.add(CV.S('r2', 'bar', { x: 48, y: 102, w: W - 96, h: 1, color: t.ink, opacity: .65 }));
-        x.add(CV.S('tag', 'rect', { x: 48, y: 30, w: 132, h: 30, color: t.accent }));
-        x.add(CV.S('r3', 'bar', { x: 48, y: 424, w: W - 96, h: 1, color: t.ink, opacity: .5 }));
-        x.add(CV.T('mast', 'AI   日   报', {
-          x: 196, y: 16, w: 620, size: 42, font: 'serif', weight: 700, ls: .14,
-          color: t.ink, align: 'left'
+        var t = x.t, L = x.L, lay = x.layout;
+        var Wd = x.W, Ht = x.H;
+
+        /* 七栏假文字（铺满下半页，作为报纸正文肌理） */
+        var filler = '';
+        var seed = ['模型发布与产品更新带来新一轮算力需求，创作者需要更快的判断路径。',
+          '本期共收录 22 条资讯，全部经人工核对来源，标注可信度与影响面。',
+          '资本动向与开源生态同步变化，值得关注的并不只有参数规模。',
+          '为便于二次创作，每条都附带可引用的关键数据与时间点。'];
+        for (var i = 0; i < 90; i++) filler += seed[i % seed.length] + '　';
+        x.add(CV.T('cols', filler, {
+          x: Math.round(Wd * 0.022), y: Math.round(Ht * 0.20), w: Math.round(Wd * 0.956),
+          size: Math.round(Wd * 0.0105), font: 'serif', weight: 400, lh: 1.46, ls: .01,
+          color: '#a8a29a', cols: 7, gap: Math.round(Wd * 0.011), rule: 'rgba(27,42,74,.14)',
+          maxH: Math.round(Ht * 0.755), align: 'justify'
         }));
-        x.add(CV.T('issue', '第 561 期 · 2026.10.28', {
-          x: 830, y: 40, w: 282, size: 13, font: 'mono', ls: .1, color: t.ink2, align: 'right'
+
+        if (lay === 'poster') return;
+
+        /* 日期块：白底 + 橙色粗边 + 暖黄数字 */
+        var bx = Math.round(Wd * 0.080), by = Math.round(Ht * 0.028);
+        var bw = Math.round(Wd * 0.166), bh = Math.round(Ht * 0.190);
+        x.add(CV.S('datebox', 'round', {
+          x: bx, y: by, w: bw, h: bh, color: '#ffffff', radius: Math.round(Wd * 0.006),
+          bw: Math.max(2, Math.round(Wd * 0.0042)), bc: t.accent,
+          shadow: '0 2px 0 rgba(232,102,60,.25)'
         }));
-        var body = (x.c.sub || '') + '　' + (x.c.foot || '') + '　' + (x.c.kicker || '') + '　' +
-          '每日精选 AI 前沿动态，覆盖模型发布、产品更新、算力与资本动向，为创作者提供可直接使用的选题与判读。　' +
-          (x.c.sub || '') + '　' + (x.c.foot || '') + '　' + (x.c.kicker || '') + '　' +
-          '本期共收录 22 条资讯，全部经人工核对来源，标注可信度与影响面，便于二次创作时引用。';
-        x.add(CV.T('body', body, {
-          x: 48, y: 442, w: W - 96, size: 12.5, font: 'serif', weight: 400, lh: 1.82,
-          ls: .015, color: '#3a332b', cols: 3, gap: 30, rule: 'rgba(30,26,22,.28)', maxH: 206
+        x.add(CV.T('dline1', '2026', {
+          x: bx, y: by + Math.round(bh * 0.10), w: bw, size: Math.round(Wd * 0.052),
+          font: 'heavy', weight: 900, ls: .04, color: t.yellow, align: 'center',
+          stroke: Math.round(Wd * 0.0035), strokeColor: '#7a3a20'
         }));
-        var ti = find(L, 'title');
-        if (ti) merge(ti, { x: 48, y: 128, w: 900, size: 92, align: 'left' });
-        var k = find(L, 'kicker');
-        if (k) merge(k, { x: 48, y: 72, w: 400, size: 12, color: t.ink2, ls: .1 });
-        var s = find(L, 'series');
-        if (s) merge(s, { x: 48, y: 32, w: 150, size: 13, font: 'mono', color: '#fdf6e8', ls: .06, align: 'center' });
-        var d = find(L, 'date');
-        if (d) merge(d, { opacity: 0 });
-        var sb = find(L, 'sub');
-        if (sb) merge(sb, { x: 48, y: 340, w: 780, size: 17, lh: 1.6, color: '#4a4238' });
-        var f = find(L, 'foot');
-        if (f) merge(f, { x: 48, y: 656, w: 620, size: 11, color: t.ink2, ls: .1 });
+        x.add(CV.T('dline2', '10-26', {
+          x: bx, y: by + Math.round(bh * 0.52), w: bw, size: Math.round(Wd * 0.052),
+          font: 'heavy', weight: 900, ls: .04, color: t.yellow, align: 'center',
+          stroke: Math.round(Wd * 0.0035), strokeColor: '#7a3a20'
+        }));
+
+        /* 报头：深海军蓝超粗 */
+        x.top(CV.T('mast', 'AI 日报 | 第 561 期', {
+          x: Math.round(Wd * 0.262), y: Math.round(Ht * 0.030), w: Math.round(Wd * 0.70),
+          size: Math.round(Wd * 0.066), font: 'heavy', weight: 900, ls: -.01, color: t.ink, align: 'left'
+        }));
+
+        /* 贴纸鲸鱼（白色厚边） */
         var ic = find(L, 'icon');
-        if (ic) merge(ic, { x: 940, y: 128, w: 172, h: 172 });
+        var isz = Math.round(Wd * 0.30);
+        if (ic) merge(ic, {
+          x: Math.round(Wd * 0.135), y: Math.round(Ht * 0.335), w: isz, h: isz,
+          filter: CV.dieCut(Math.round(Wd * 0.0075), '#ffffff', Math.round(Wd * 0.004))
+        });
+
+        /* 主标题：黄字黑边 */
+        var ti = find(L, 'title');
+        if (ti) merge(ti, {
+          x: Math.round(Wd * 0.472), y: Math.round(Ht * 0.418), w: Math.round(Wd * 0.505),
+          size: Math.round(Wd * 0.070), font: 'heavy', weight: 900, lh: 1.10, ls: 0,
+          color: t.yellow, align: 'left',
+          stroke: Math.max(2, Math.round(Wd * 0.0075)), strokeColor: '#14100a',
+          stroke2: Math.max(1, Math.round(Wd * 0.0028)), stroke2Color: '#ffffff'
+        });
+
+        ['kicker', 'series', 'date', 'sub', 'foot', 'footline', 'rule'].forEach(function (r) {
+          var l = find(L, r); if (l) l.opacity = 0;
+        });
       }
     },
+
     /* 16 —— 技术编辑部 ------------------------------------ */
     {
       id: 'editorial', name: '技术编辑部', sub: '小小小名 · 规格表与细密标注',
