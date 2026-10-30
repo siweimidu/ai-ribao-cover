@@ -914,7 +914,7 @@
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.367), w: Math.round(Wd * 0.56),
           size: Math.round(Wd * 0.075), font: 'heavy', weight: 900, lh: 1.04, ls: 0,
-          color: brand, fit: false, maxH: 0
+          color: brand, fit: false, maxH: 0, stroke: 2.2 * (Wd / 1160), strokeColor: 'rgba(255,255,255,.34)'
         });
 
         /* 日期（实测：右边缘 95.1%W, 顶部 15%H, 90px@1600） */
@@ -1107,7 +1107,7 @@
     merge(find(L, 'foot'), p.foot);
     var under = [];
     var addU = function (o) { under.push(o); return o; };
-    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: W, H: H, p: p, brand: (window.App && App.doc && App.doc.brand) || null, bgOverride: null };
+    var ctx = { t: t, c: c, add: addU, top: add, L: L, layout: lay, W: (RT && RT.w) || W, H: (RT && RT.h) || H, p: p, brand: (window.App && App.doc && App.doc.brand) || null, bgOverride: null };
     if (LO.tall) tallDecor(p, ctx);
     else if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
