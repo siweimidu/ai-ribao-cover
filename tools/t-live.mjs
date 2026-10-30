@@ -23,6 +23,11 @@ const hasPaper = await page.evaluate("!!document.querySelector('.cv-fx.paper')")
 ok('纸纹默认关闭（不注入）', !hasPaper, 'hasPaper=' + hasPaper);
 
 // 2 拖动不透明度滑块 → 立刻改变 fx 的 opacity（不需要松手）
+/* 打开纸纹再测实时（纸纹默认关） */
+await page.click('#paperSwitch');
+await new Promise(r => setTimeout(r, 500));
+ok('手动打开后出现纸纹层', await page.evaluate("!!document.querySelector('.cv-fx.paper')"));
+
 const r0 = JSON.parse(await page.evaluate(function () {
   var e = document.querySelector('.cv-fx.paper');
   return JSON.stringify({ op: parseFloat(getComputedStyle(e).opacity), size: getComputedStyle(e).backgroundSize });
