@@ -494,6 +494,7 @@
   /* ---------- 画布：纸纹 / 背景 ---------- */
   var paperRefs = {};
   function buildCanvasPane() {
+    setTimeout(function () { bindRangeFills(document); }, 0);
     var p = $('#paneCanvas');
     if (!p) return;
     p.innerHTML = '';
@@ -567,7 +568,7 @@
     g2.appendChild(restore);
 
     /* ---- 渐变 ---- */
-    var gl = el('label'); gl.appendChild(el('span', null, '渐变'));
+    var gl = el('label', 'seclabel'); gl.appendChild(el('span', null, '渐变'));
     g2.appendChild(gl);
     var grads = [
       ['柔和', ['#f4f1ff', '#e6e9ff', '#f7e9f2']],
@@ -581,7 +582,6 @@
       b.type = 'button';
       b.style.background = 'linear-gradient(135deg,' + g[1][0] + ',' + g[1][1] + ',' + g[1][2] + ')';
       b.style.color = (g[0] === '墨黑') ? '#fff' : '#333';
-      b.style.border = '1px solid rgba(0,0,0,.08)';
       b.addEventListener('click', function () {
         App.setBg('linear-gradient(135deg,' + g[1][0] + ' 0%,' + g[1][1] + ' 55%,' + g[1][2] + ' 100%)', true);
         App.toast('背景：' + g[0] + '渐变', 'ok');
@@ -592,13 +592,12 @@
 
     /* ---- 自定义纯色 ---- */
     var cl = el('div', 'field');
-    var clb = el('label'); clb.appendChild(el('span', null, '自定义底色'));
+    var clb = el('label', 'seclabel'); clb.appendChild(el('span', null, '自定义底色'));
     cl.appendChild(clb);
     var crow = el('div', 'chiprow');
     var cIn = document.createElement('input');
     cIn.type = 'color';
     cIn.value = '#eef2ff';
-    cIn.style.width = '46px'; cIn.style.height = '30px'; cIn.style.padding = '0'; cIn.style.border = '0';
     cIn.addEventListener('input', function () { App.setBg(cIn.value, false); });
     cIn.addEventListener('change', function () { App.setBg(cIn.value, true); });
     crow.appendChild(cIn);
@@ -609,17 +608,14 @@
 
     /* ---- 自定义渐变 ---- */
     var gl2 = el('div', 'field');
-    var glb = el('label'); glb.appendChild(el('span', null, '自定义渐变'));
+    var glb = el('label', 'seclabel'); glb.appendChild(el('span', null, '自定义渐变'));
     var gv = el('span', 'hint', '135°');
     glb.appendChild(gv);
     gl2.appendChild(glb);
     var g2row = el('div', 'chiprow');
     var c1 = document.createElement('input'); c1.type = 'color'; c1.value = '#e8f0ff';
     var c2 = document.createElement('input'); c2.type = 'color'; c2.value = '#f8ecf3';
-    [c1, c2].forEach(function (x) {
-      x.style.width = '46px'; x.style.height = '30px'; x.style.padding = '0'; x.style.border = '0';
-      g2row.appendChild(x);
-    });
+    [c1, c2].forEach(function (x) { g2row.appendChild(x); });
     var ang = document.createElement('input');
     ang.type = 'range'; ang.min = 0; ang.max = 360; ang.step = 5; ang.value = 135;
     ang.style.flex = '1';
@@ -638,7 +634,7 @@
     g2.appendChild(gl2);
 
     /* ---- 上传背景图 ---- */
-    var up = el('button', 'btn');
+    var up = el('button', 'btn primary');
     up.textContent = '上传背景图…';
     up.style.width = '100%'; up.style.marginTop = '6px'; up.style.justifyContent = 'center';
     var bgFile = document.createElement('input');
@@ -690,7 +686,7 @@
         g2.appendChild(f3);
       });
       /* 图片区域 */
-      var rl = el('label'); rl.appendChild(el('span', null, '图片区域'));
+      var rl = el('label', 'seclabel'); rl.appendChild(el('span', null, '图片区域'));
       g2.appendChild(rl);
       var rrow = el('div', 'chiprow');
       [['全屏', 0, 0, 100, 100], ['右半', 50, 0, 50, 100], ['左半', 0, 0, 50, 100],
@@ -704,7 +700,7 @@
       g2.appendChild(rrow);
 
       /* 渐变遮罩 */
-      var fl = el('label'); fl.appendChild(el('span', null, '渐变遮罩'));
+      var fl = el('label', 'seclabel'); fl.appendChild(el('span', null, '渐变遮罩'));
       g2.appendChild(fl);
       var frow = el('div', 'chiprow');
       [['无', 'none'], ['左淡', 'left'], ['右淡', 'right'], ['上淡', 'top'], ['下淡', 'bottom'], ['四周', 'radial']].forEach(function (o) {
@@ -751,7 +747,7 @@
       opf.appendChild(owrap);
       g2.appendChild(opf);
 
-      var rm = el('button', 'btn');
+      var rm = el('button', 'btn danger');
       rm.textContent = '移除背景图';
       rm.style.width = '100%'; rm.style.marginTop = '6px'; rm.style.justifyContent = 'center';
       rm.addEventListener('click', function () { App.setBgImage(null); App.toast('已移除背景图'); });
@@ -798,6 +794,7 @@
   }
 
   function syncCanvas() {
+    setTimeout(function () { bindRangeFills(document); }, 0);
     var d = App.doc;
     var sw = $('#paperSwitch');
     if (sw) sw.classList.toggle('on', !(d.paper && d.paper.on === false));
@@ -949,6 +946,23 @@
     return out;
   }
 
+  /* 滑块填充色：把 --p 写成 0-100% */
+  function syncRangeFill(r) {
+    var mn = parseFloat(r.min || 0), mx = parseFloat(r.max || 100);
+    var p = ((parseFloat(r.value || 0) - mn) / (mx - mn)) * 100;
+    r.style.setProperty('--p', p.toFixed(1) + '%');
+  }
+  function bindRangeFills(root) {
+    [].forEach.call((root || document).querySelectorAll('input[type=range]'), function (r) {
+      if (!r.__fill) {
+        r.__fill = true;
+        r.addEventListener('input', function () { syncRangeFill(r); });
+      }
+      syncRangeFill(r);
+    });
+  }
+  window.bindRangeFills = bindRangeFills;
+
   /* ---------- 属性面板：事件委托（重绘也不会丢 handler） ---------- */
   function mountPanelDelegation() {
     var pane = $('#paneProps');
@@ -975,6 +989,7 @@
 
   /* ---------- 检查器 ---------- */
   function syncInspector() {
+    setTimeout(function () { bindRangeFills(document); }, 0);
     var p = $('#paneProps');
     if (!p) return;
     var l = App.selLayer();
