@@ -101,6 +101,6 @@
 /* 双击可编辑 */
 
 /* 自定义背景图 */
-.cv-bgimg{position:absolute;inset:-60px;background-position:center center;background-repeat:no-repeat;pointer-events:none}
-.cv-bgdim{position:absolute;inset:0;pointer-events:none}
+.cv-bgimg{position:absolute;left:0;top:0;width:100%;height:100%;background-position:center center;background-repeat:no-repeat;pointer-events:none}
+.cv-bgdim{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 /* bg-image */
