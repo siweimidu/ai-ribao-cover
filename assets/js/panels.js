@@ -936,9 +936,12 @@
     var v4 = el('span', 'val', Math.round(l.rot || 0) + '°');
     r4.addEventListener('input', function () {
       v4.textContent = r4.value + '°'; h4.textContent = r4.value + '°';
-      App.rotateSelTo(parseFloat(r4.value));
+      App.rotateLive(parseFloat(r4.value));       /* 只改 transform，跟手 */
     });
-    r4.addEventListener('change', function () { App.commit(); });
+    r4.addEventListener('change', function () {
+      App.commit();                                /* 松手才落盘 */
+      if (window.Panels) Panels.syncInspector();
+    });
     wrap4.appendChild(r4); wrap4.appendChild(v4);
     f4.appendChild(wrap4);
     rb.appendChild(f4);
