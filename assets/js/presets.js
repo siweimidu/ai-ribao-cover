@@ -1288,7 +1288,7 @@
     return {
       v: CV.VERSION, pv: CV.PRESET_VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
-      paper: p.paperCfg || { on: false, opacity: 80, noise: 60, scale: 260 },
+      paper: { on: false, opacity: (p.paperCfg && p.paperCfg.opacity) || 80, noise: (p.paperCfg && p.paperCfg.noise) || 60, scale: (p.paperCfg && p.paperCfg.scale) || 260 },
       tokens: CV.clone(t), content: c,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
