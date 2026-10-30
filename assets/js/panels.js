@@ -565,6 +565,137 @@
       App.apply(); App.commit();
     });
     g2.appendChild(restore);
+
+    /* ---- 渐变 ---- */
+    var gl = el('label'); gl.appendChild(el('span', null, '渐变'));
+    g2.appendChild(gl);
+    var grads = [
+      ['柔和', ['#f4f1ff', '#e6e9ff', '#f7e9f2']],
+      ['冷蓝', ['#eef4ff', '#dbe6ff', '#f0f4ff']],
+      ['暖米', ['#fdf4ec', '#f8e8d8', '#fbf1e6']],
+      ['墨黑', ['#1b1e24', '#2a2f38', '#14161a']]
+    ];
+    var grow = el('div', 'chiprow');
+    grads.forEach(function (g) {
+      var b = el('button', '', g[0]);
+      b.type = 'button';
+      b.style.background = 'linear-gradient(135deg,' + g[1][0] + ',' + g[1][1] + ',' + g[1][2] + ')';
+      b.style.color = (g[0] === '墨黑') ? '#fff' : '#333';
+      b.style.border = '1px solid rgba(0,0,0,.08)';
+      b.addEventListener('click', function () {
+        App.setBg('linear-gradient(135deg,' + g[1][0] + ' 0%,' + g[1][1] + ' 55%,' + g[1][2] + ' 100%)', true);
+        App.toast('背景：' + g[0] + '渐变', 'ok');
+      });
+      grow.appendChild(b);
+    });
+    g2.appendChild(grow);
+
+    /* ---- 自定义纯色 ---- */
+    var cl = el('div', 'field');
+    var clb = el('label'); clb.appendChild(el('span', null, '自定义底色'));
+    cl.appendChild(clb);
+    var crow = el('div', 'chiprow');
+    var cIn = document.createElement('input');
+    cIn.type = 'color';
+    cIn.value = '#eef2ff';
+    cIn.style.width = '46px'; cIn.style.height = '30px'; cIn.style.padding = '0'; cIn.style.border = '0';
+    cIn.addEventListener('input', function () { App.setBg(cIn.value, false); });
+    cIn.addEventListener('change', function () { App.setBg(cIn.value, true); });
+    crow.appendChild(cIn);
+    var cHint = el('span', 'hint', '直接调色');
+    crow.appendChild(cHint);
+    cl.appendChild(crow);
+    g2.appendChild(cl);
+
+    /* ---- 自定义渐变 ---- */
+    var gl2 = el('div', 'field');
+    var glb = el('label'); glb.appendChild(el('span', null, '自定义渐变'));
+    var gv = el('span', 'hint', '135°');
+    glb.appendChild(gv);
+    gl2.appendChild(glb);
+    var g2row = el('div', 'chiprow');
+    var c1 = document.createElement('input'); c1.type = 'color'; c1.value = '#e8f0ff';
+    var c2 = document.createElement('input'); c2.type = 'color'; c2.value = '#f8ecf3';
+    [c1, c2].forEach(function (x) {
+      x.style.width = '46px'; x.style.height = '30px'; x.style.padding = '0'; x.style.border = '0';
+      g2row.appendChild(x);
+    });
+    var ang = document.createElement('input');
+    ang.type = 'range'; ang.min = 0; ang.max = 360; ang.step = 5; ang.value = 135;
+    ang.style.flex = '1';
+    g2row.appendChild(ang);
+    var applyGrad = function (commit) {
+      gv.textContent = ang.value + '°';
+      App.setBg(App.gradientCss(c1.value, c2.value, ang.value), commit);
+    };
+    ang.addEventListener('input', function () { applyGrad(false); });
+    ang.addEventListener('change', function () { applyGrad(true); });
+    c1.addEventListener('input', function () { applyGrad(false); });
+    c1.addEventListener('change', function () { applyGrad(true); });
+    c2.addEventListener('input', function () { applyGrad(false); });
+    c2.addEventListener('change', function () { applyGrad(true); });
+    gl2.appendChild(g2row);
+    g2.appendChild(gl2);
+
+    /* ---- 上传背景图 ---- */
+    var up = el('button', 'btn');
+    up.textContent = '上传背景图…';
+    up.style.width = '100%'; up.style.marginTop = '6px'; up.style.justifyContent = 'center';
+    var bgFile = document.createElement('input');
+    bgFile.type = 'file';
+    bgFile.accept = 'image/*';
+    bgFile.style.display = 'none';
+    up.addEventListener('click', function () { bgFile.click(); });
+    bgFile.addEventListener('change', function () {
+      var f = bgFile.files && bgFile.files[0];
+      if (!f) return;
+      App.readImageFile(f, function (data) {
+        App.setBgImage({ src: data });
+        App.toast('背景图已设置（可调模糊/压暗）', 'ok');
+      });
+    });
+    g2.appendChild(up);
+    g2.appendChild(bgFile);
+
+    var bgI = (window.App && App.doc && App.doc.bgImage) || null;
+    if (bgI && bgI.src) {
+      var fits = el('div', 'chiprow');
+      [['铺满', 'cover'], ['完整', 'contain']].forEach(function (o) {
+        var b = el('button', (bgI.fit || 'cover') === o[1] ? 'on' : '', o[0]);
+        b.type = 'button';
+        b.addEventListener('click', function () { App.setBgImage({ fit: o[1] }); });
+        fits.appendChild(b);
+      });
+      g2.appendChild(fits);
+      [['模糊', 'blur', 0, 30], ['压暗', 'dim', 0, 85]].forEach(function (o) {
+        var f3 = el('div', 'field');
+        var lb = el('label');
+        lb.appendChild(el('span', null, o[0]));
+        var hv = el('span', 'hint', (bgI[o[1]] || 0) + (o[1] === 'blur' ? 'px' : '%'));
+        lb.appendChild(hv);
+        f3.appendChild(lb);
+        var wrap3 = el('div', 'slider');
+        var r3 = document.createElement('input');
+        r3.type = 'range'; r3.min = o[2]; r3.max = o[3]; r3.step = 1;
+        r3.value = bgI[o[1]] || 0;
+        r3.addEventListener('input', function () {
+          hv.textContent = r3.value + (o[1] === 'blur' ? 'px' : '%');
+        });
+        r3.addEventListener('change', function () {
+          var o2 = {}; o2[o[1]] = parseInt(r3.value, 10);
+          App.setBgImage(o2);
+        });
+        wrap3.appendChild(r3);
+        f3.appendChild(wrap3);
+        g2.appendChild(f3);
+      });
+      var rm = el('button', 'btn');
+      rm.textContent = '移除背景图';
+      rm.style.width = '100%'; rm.style.marginTop = '6px'; rm.style.justifyContent = 'center';
+      rm.addEventListener('click', function () { App.setBgImage(null); App.toast('已移除背景图'); });
+      g2.appendChild(rm);
+    }
+
     p.appendChild(g2);
 
     /* 吸附 & 参考线 */
