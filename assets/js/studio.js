@@ -259,6 +259,10 @@
     App.fitZoom();
     drawSel();
     if (App.syncBrand) requestAnimationFrame(function () { App.syncBrand(); });
+    (function () {
+      var bs = document.getElementById('brandSub');
+      if (bs && CV.STYLES) bs.textContent = 'COVER STUDIO · ' + CV.STYLES.length + ' STYLES';
+    })();
     if (window.Panels) {
       if (!App.suppress) Panels.syncInspector();
       Panels.syncLayers();
@@ -1197,7 +1201,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f32';
+  App.BUILD = '20261029-f33';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
