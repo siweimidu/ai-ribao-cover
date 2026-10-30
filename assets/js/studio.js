@@ -240,23 +240,10 @@
     var pk = App.iconSet();
     var set = pk.list;
     if (!set.length) { App.gridArrange(cols, gap); return; }
-    var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
-    n = Math.max(1, Math.min(n, set.length));
-    var rows = Math.ceil(set.length / n);
-    var M = 64, availW = App.doc.w - M * 2, availH = App.doc.h - M * 2;
-    var colW = Math.max(24, (availW - gap * (n - 1)) / n);
-    var rowH = Math.max(24, (availH - gap * (rows - 1)) / rows);
-    set.forEach(function (l, i) {
-      var el = App.map[l.id]; if (!el) return;
-      var h = l.type === 'text' ? el.offsetHeight : (l.h || 0);
-      var w = l.w || 0;
-      var c = i % n, r = Math.floor(i / n);
-      var cellX = M + c * (colW + gap), cellY = M + r * (rowH + gap);
-      var x = cellX + (w <= colW ? (colW - w) / 2 : 0);
-      var y = cellY + (h <= rowH ? (rowH - h) / 2 : 0);
-      l.x = Math.round(Math.max(M, Math.min(x, App.doc.w - M - Math.min(w, availW))));
-      l.y = Math.round(Math.max(M, Math.min(y, App.doc.h - M - Math.min(h, availH))));
-      el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
+    App.gridPlace(set, cols, gap);
+    set.forEach(function (l) {
+      var el = App.map[l.id];
+      if (el) { el.style.left = l.x + 'px'; el.style.top = l.y + 'px'; }
     });
     if (App.drawSel) App.drawSel();
   };
@@ -835,6 +822,39 @@
     return { list: [], from: 'none' };
   };
 
+  /* 网格落位：以选中图标的「原始包围盒中心」为锚点，不强制挪到画布正中 */
+  App.gridPlace = function (set, cols, gap) {
+    gap = gap == null ? 32 : gap;
+    var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
+    n = Math.max(1, Math.min(n || 1, set.length));
+    var rows = Math.ceil(set.length / n);
+    var items = set.map(function (l) {
+      var el = App.map[l.id];
+      var h = l.type === 'text' ? (el ? el.offsetHeight : 0) : (l.h || 0);
+      return { l: l, w: l.w || 0, h: h };
+    });
+    var cw = 0, ch = 0;
+    items.forEach(function (it) { cw = Math.max(cw, it.w); ch = Math.max(ch, it.h); });
+    var cellW = cw + gap, cellH = ch + gap;
+    var totalW = n * cellW - gap, totalH = rows * cellH - gap;
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    items.forEach(function (it) {
+      x0 = Math.min(x0, it.l.x); y0 = Math.min(y0, it.l.y);
+      x1 = Math.max(x1, it.l.x + it.w); y1 = Math.max(y1, it.l.y + it.h);
+    });
+    var bxc = (x0 + x1) / 2, byc = (y0 + y1) / 2;
+    var ox = bxc - totalW / 2, oy = byc - totalH / 2;
+    var M = 64;
+    if (totalW <= App.doc.w - M * 2) ox = Math.max(M, Math.min(ox, App.doc.w - M - totalW));
+    if (totalH <= App.doc.h - M * 2) oy = Math.max(M, Math.min(oy, App.doc.h - M - totalH));
+    items.forEach(function (it, i) {
+      var c = i % n, r = Math.floor(i / n);
+      it.l.x = Math.round(ox + c * cellW + (cw - it.w) / 2);
+      it.l.y = Math.round(oy + r * cellH + (ch - it.h) / 2);
+    });
+    return { n: n, rows: rows };
+  };
+
   App.gridArrange = function (cols, gap) {
     var pick = App.iconSet();
     if (!pick.list.length) { App.toast('画布上没有图标可排布', 'err'); return; }
@@ -845,31 +865,9 @@
     } else if (set.length < App.selSet().length) {
       App.toast('只排图标：忽略 ' + (App.selSet().length - set.length) + ' 个非图标图层');
     }
-    gap = gap == null ? 32 : gap;
-    var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
-    n = Math.max(1, Math.min(n, set.length));
-    var rows = Math.ceil(set.length / n);
-    try { console.log('[grid] n=' + n + ' rows=' + rows + ' set=' + set.length + ' gap=' + gap); } catch (e) { }
-    var M = 64;                                   /* 设计边距 */
-    var availW = App.doc.w - M * 2;
-    var availH = App.doc.h - M * 2;
-    /* 关键：格子按画布均分，而不是按最宽的元素 —— 否则一张全宽色带就会把整张网格推出画布 */
-    var colW = Math.max(24, (availW - gap * (n - 1)) / n);
-    var rowH = Math.max(24, (availH - gap * (rows - 1)) / rows);
-    set.forEach(function (l, i) {
-      var el2 = App.map[l.id];
-      var h = l.type === 'text' ? (el2 ? el2.offsetHeight : 0) : (l.h || 0);
-      var w = l.w || 0;
-      var c = i % n, r = Math.floor(i / n);
-      var cellX = M + c * (colW + gap);
-      var cellY = M + r * (rowH + gap);
-      var x = cellX + (w <= colW ? (colW - w) / 2 : 0);
-      var y = cellY + (h <= rowH ? (rowH - h) / 2 : 0);
-      l.x = Math.round(Math.max(M, Math.min(x, App.doc.w - M - Math.min(w, availW))));
-      l.y = Math.round(Math.max(M, Math.min(y, App.doc.h - M - Math.min(h, availH))));
-    });
+    var r = App.gridPlace(set, cols, gap);
     App.apply(); App.commit();
-    App.toast('已排成 ' + n + ' 列 × ' + rows + ' 行（' + set.length + ' 个图层）', 'ok');
+    App.toast('已排成 ' + r.n + ' 列 × ' + r.rows + ' 行（' + set.length + ' 个图标，位置沿用原处）', 'ok');
   };
   App.scaleSelTo = function (pct) {
     var set = App.selSet(); if (!set.length) return;
@@ -1199,7 +1197,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f30';
+  App.BUILD = '20261029-f31';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
