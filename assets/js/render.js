@@ -189,6 +189,7 @@
     else if (l.type === 'shape') applyShape(el, l, doc);
     else applyRaw(el, l, doc);
     el.style.display = l.hidden ? 'none' : '';
+    el.style.filter = l.filter || '';
   };
 
   CV.makeEl = function (l, doc, edit) {
