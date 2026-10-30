@@ -218,7 +218,7 @@
       });
       grid.appendChild(b);
     });
-    p.appendChild(group('风格预设 · 11 套', grid));
+    p.appendChild(group('风格预设 · ' + CV.STYLES.length + ' 套', grid));
 
     var lays = el('div', 'layouts');
     lays.id = 'layoutGrid';
@@ -844,7 +844,7 @@
 
     var gb = el('div');
     var n1 = el('div', 'note');
-    n1.textContent = '把<strong>图标</strong>整齐排成网格，自动居中。选中里没有图标时，作用于画布上全部图标';
+    n1.textContent = '把图标整齐排成网格，自动居中（选中的非图标图层会自动跳过）';
     n1.style.marginBottom = '8px';
     gb.appendChild(n1);
     var f1 = el('div', 'field');
