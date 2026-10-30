@@ -603,64 +603,14 @@
     },
 
     /* 15 —— 报纸·经典 */
-    {
-      id: 'paper1', name: '报纸·经典', sub: '大报 · 七栏密排 · 橙框日期',
-      t: {ink: '#1b2a4a',accent: '#e8663c',paper: '#f8f5ee'},
-      bg: '#f8f5ee',
-      paperCfg: {on: true,opacity: 10,noise: 12,scale: 360},
-      fx: ['paper'],
-      dark: false,
-      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f5c33b' },
-      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.022,bodyY: 0.2,bodySize: 0.0105,bodyFont: 'serif',bodyColor: '#a8a29a',cols: 7,gap: 0.011,rule: 'rgba(27,42,74,.14)',bodyH: 0.755,rounds: 3,mast: {text: 'AI 日报',center: true,y: 0.03,size: 0.068,font: 'heavy',color: '#1b2a4a',ls: 0.06},lines: [{x: 0.022,y: 0.128,w: 0.956,h: 2.2,color: '#1b2a4a'},{x: 0.022,y: 0.133,w: 0.956,h: 1,color: '#1b2a4a',opacity: 0.5}],dateBox: {x: 0.8,y: 0.03,w: 0.155,h: 0.075,fill: '#ffffff',border: 0.0042,borderColor: '#e8663c',text: '#e8663c',size: 0.03,radius: 0.006},accent: '#e8663c',logo: 0.28,logoX: 0.13,logoY: 0.34,titleX: 0.47,titleY: 0.42,titleW: 0.5,titleSize: 0.07,titleColor: '#f5c33b',titleStroke: 0.0075,titleStrokeColor: '#14100a'})
-    },
 
     /* 15 —— 报纸·华尔街 */
-    {
-      id: 'paper2', name: '报纸·华尔街', sub: '窄栏 · 米黄纸 · 细线分栏',
-      t: {ink: '#22201c',accent: '#8c6d3f',paper: '#f4ead6'},
-      bg: '#f4ead6',
-      paperCfg: {on: true,opacity: 14,noise: 16,scale: 320},
-      fx: ['paper'],
-      dark: false,
-      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f2c14e' },
-      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.03,bodyY: 0.215,bodySize: 0.0102,bodyFont: 'serif',bodyColor: '#9c8f78',cols: 6,gap: 0.014,rule: 'rgba(34,32,28,.18)',bodyH: 0.745,rounds: 4,mast: {text: 'AI 日报',x: 0.03,y: 0.028,w: 0.55,size: 0.058,font: 'serif',color: '#22201c',ls: 0.02},lines: [{x: 0.03,y: 0.112,w: 0.94,h: 3,color: '#22201c'}],dateBox: {x: 0.795,y: 0.03,w: 0.175,h: 0.062,fill: 'transparent',border: 0.003,borderColor: '#8c6d3f',text: '#8c6d3f',size: 0.026,radius: 0.002},accent: '#8c6d3f',logo: 0.26,logoX: 0.14,logoY: 0.35,titleX: 0.46,titleY: 0.44,titleW: 0.5,titleSize: 0.066,titleColor: '#f2c14e',titleStroke: 0.007,titleStrokeColor: '#1a1712'})
-    },
 
     /* 15 —— 报纸·泰晤士 */
-    {
-      id: 'paper3', name: '报纸·泰晤士', sub: '衬线报头 · 双线 · 五栏',
-      t: {ink: '#141414',accent: '#8d1f1f',paper: '#fbf9f4'},
-      bg: '#fbf9f4',
-      paperCfg: {on: true,opacity: 6,noise: 10,scale: 380},
-      fx: ['paper'],
-      dark: false,
-      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f4c33f' },
-      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.034,bodyY: 0.235,bodySize: 0.0108,bodyFont: 'serif',bodyColor: '#a8a49c',cols: 5,gap: 0.018,rule: 'rgba(20,20,20,.20)',bodyH: 0.73,rounds: 4,mast: {text: 'THE AI  TIMES',center: true,y: 0.026,size: 0.05,font: 'serif',color: '#141414',ls: 0.16},lines: [{x: 0.034,y: 0.098,w: 0.932,h: 1,color: '#141414'},{x: 0.034,y: 0.104,w: 0.932,h: 1,color: '#141414'},{x: 0.034,y: 0.11,w: 0.932,h: 2,color: '#141414'}],dateBox: {x: 0.034,y: 0.135,w: 0.2,h: 0.045,fill: 'transparent',border: 0,borderColor: '#141414',text: '#8d1f1f',size: 0.02,radius: 0},accent: '#8d1f1f',logo: 0.27,logoX: 0.12,logoY: 0.36,titleX: 0.45,titleY: 0.43,titleW: 0.51,titleSize: 0.072,titleColor: '#f4c33f',titleStroke: 0.0068,titleStrokeColor: '#101010'})
-    },
 
     /* 15 —— 报纸·现代 */
-    {
-      id: 'paper4', name: '报纸·现代', sub: '无框极简 · 三栏 · 大留白',
-      t: {ink: '#111418',accent: '#2f6bff',paper: '#ffffff'},
-      bg: '#ffffff',
-      paperCfg: {on: false,opacity: 0,noise: 0,scale: 360},
-      fx: [],
-      dark: false,
-      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#111418' },
-      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.05,bodyY: 0.245,bodySize: 0.0115,bodyFont: 'bold',bodyColor: '#b8bcc4',cols: 3,gap: 0.03,rule: 'rgba(17,20,24,.10)',bodyH: 0.7,rounds: 5,mast: {text: 'AI 日报 · DAILY',x: 0.05,y: 0.03,w: 0.6,size: 0.04,font: 'bold',color: '#111418',ls: 0.12},lines: [{x: 0.05,y: 0.096,w: 0.9,h: 2,color: '#111418'}],dateBox: {x: 0.78,y: 0.028,w: 0.17,h: 0.05,fill: '#2f6bff',border: 0,borderColor: '#2f6bff',text: '#ffffff',size: 0.022,radius: 0.004},accent: '#2f6bff',logo: 0.26,logoX: 0.1,logoY: 0.33,titleX: 0.43,titleY: 0.41,titleW: 0.53,titleSize: 0.068,titleColor: '#111418',titleStroke: 0.0028,titleStrokeColor: '#ffffff','titleStroke2':0.0012,'titleStroke2Color':'#111418'})
-    },
 
     /* 15 —— 报纸·复古 */
-    {
-      id: 'paper5', name: '报纸·复古', sub: '牛皮纸 · 粗框 · 双栏 + 侧题',
-      t: {ink: '#2a2016',accent: '#9b5b2a',paper: '#e8dcc0'},
-      bg: '#e8dcc0',
-      paperCfg: {on: true,opacity: 20,noise: 26,scale: 300},
-      fx: ['paper','grain'],
-      dark: false,
-      title: { font: 'heavy', size: 84, weight: 900, lh: 1.06, ls: 0, color: '#f3c445' },
-      decor: (function (c) { return function (x) { return CV.npVariant(c)(x); }; })({pad: 0.038,bodyY: 0.25,bodySize: 0.0104,bodyFont: 'serif',bodyColor: '#8d7c60',cols: 4,gap: 0.016,rule: 'rgba(42,32,22,.22)',bodyH: 0.7,rounds: 4,mast: {text: 'AI 日报',center: true,y: 0.032,size: 0.062,font: 'serif',color: '#2a2016',ls: 0.1},lines: [{x: 0.038,y: 0.12,w: 0.924,h: 4,color: '#2a2016'},{x: 0.038,y: 0.128,w: 0.924,h: 1,color: '#2a2016',opacity: 0.6}],dateBox: {x: 0.038,y: 0.142,w: 0.19,h: 0.05,fill: '#2a2016',border: 0,borderColor: '#2a2016',text: '#e8dcc0',size: 0.02,radius: 0},sidebar: ['头条','模型','资本'],accent: '#9b5b2a',logo: 0.27,logoX: 0.13,logoY: 0.36,titleX: 0.46,titleY: 0.43,titleW: 0.5,titleSize: 0.068,titleColor: '#f3c445',titleStroke: 0.0072,titleStrokeColor: '#241a12'})
-    },
 
     /* 16 —— 技术编辑部 ------------------------------------ */
     {
@@ -1283,6 +1233,14 @@
         var l = find(L, r); if (l) l.opacity = 0;
       });
     };
+  };
+
+  CV.npHTML = function (rounds) {
+    var s = '', N = CV.NEWS, T = CV.npTail;
+    for (var k = 0; k < (rounds || 16); k++) {
+      for (var i = 0; i < N.length; i++) s += '<b>' + N[i] + '</b> ' + T[(k + i) % T.length] + ' ';
+    }
+    return s;
   };
 
   CV.PRESET_VERSION = 'p23';
