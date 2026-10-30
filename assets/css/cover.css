@@ -1,3 +1,9 @@
+/* Inter —— 拉丁 grotesque（橘鸦等风格的标题用） */
+@font-face{font-family:"CV-Inter";src:url("../font/Inter-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"CV-Inter";src:url("../font/Inter-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"CV-Inter";src:url("../font/Inter-Black.woff2") format("woff2");font-weight:900;font-display:swap}
+.ff-inter{font-family:"CV-Inter","Inter","Helvetica Neue",system-ui,sans-serif}
+
 /* 思源黑体（Noto Sans SC）Bold —— 小心鸦风格标题用 */
 @font-face{
   font-family:"CV-Noto";
