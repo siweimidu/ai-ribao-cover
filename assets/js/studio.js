@@ -1144,7 +1144,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f22';
+  App.BUILD = '20261029-f23';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
@@ -1163,6 +1163,16 @@
     var doc = App.loadLocal();
     if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent(), 'land');
     if (!doc.ratio) doc.ratio = 'land';
+    /* 版式升级：老存档按当前预设自动重排，避免看到过期布局 */
+    var prevPv = doc.pv;
+    if (doc.style && prevPv && prevPv !== CV.PRESET_VERSION && CV.styleById(doc.style)) {
+      var cc = doc.content || CV.defaultContent();
+      var fresh = CV.compose(doc.style, doc.layout || 'hero', cc, doc.ratio || 'land');
+      fresh.brand = doc.brand;
+      fresh.id = doc.id;
+      doc = fresh;
+      setTimeout(function () { App.toast('版式已升级到 ' + CV.PRESET_VERSION + '（text 内容保留）', 'ok'); }, 600);
+    }
     doc.paper = Object.assign({ on: false, opacity: 80, noise: 60, scale: 260 }, doc.paper || {});
     if (doc.paper.on !== true) doc.paper.on = false;
     App.doc = doc;
