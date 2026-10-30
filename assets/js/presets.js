@@ -1027,7 +1027,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.345), w: Math.round(Wd * 0.515),
-          size: Math.round(Wd * 0.0578), font: 'inter', weight: 700, lh: 1.04, ls: -.028,
+          size: Math.round(Wd * 0.0578), font: pickFont(c.title), weight: 700, lh: 1.04, ls: -.028,
           color: t.ink, align: 'left', fit: false, maxH: 0
         });
 
@@ -1036,7 +1036,7 @@
         var line2 = (c.kicker || c.sub || '');
         if (sb) merge(sb, {
           x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.527), w: Math.round(Wd * 0.30),
-          text: line2, size: Math.round(Wd * 0.0715), font: 'inter', weight: 700, lh: 1.10,
+          text: line2, size: Math.round(Wd * 0.0715), font: pickFont(line2), weight: 700, lh: 1.10,
           ls: -.02, color: brand, opacity: 1, maxH: 0
         });
         x.add(CV.S('hili', 'bar', {
@@ -1079,7 +1079,86 @@
         });
         ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
-    }
+    },
+
+    /* 25 —— 橘鸦·中文：中文副标黑字 + 细下划线 ------------------ */
+    {
+      id: 'juya_cn', name: '橘鸦·中文', sub: '橘鸦Juya · 中文副标黑字',
+      t: { ink: '#101114', ink2: '#6b7280', brand: '#4285f4' },
+      bg: 'linear-gradient(180deg,#ffffff 0%,#f7f9fc 58%,#f2f6fd 100%)',
+      paperCfg: { on: false, opacity: 8, noise: 10, scale: 360 },
+      fx: [], dark: false,
+      title: { font: 'inter', size: 67, weight: 700, lh: 1.04, ls: -.028, color: '#101114', fit: false, maxH: 0 },
+      decor: function (x) {
+        var t = x.t, L = x.L, lay = x.layout, c = x.c;
+        var Wd = x.W, Ht = x.H;
+        var brand = x.brand || t.brand;
+        var cjk = /[\u3400-\u9fff]/.test(String(c.title || '') + String(c.kicker || ''));
+        x.bgOverride = 'linear-gradient(180deg,#ffffff 0%,' + CV.tint(brand, 0.955) + ' 55%,' + CV.tint(brand, 0.91) + ' 100%)';
+
+        var se = find(L, 'series');
+        if (se) merge(se, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.068), w: Math.round(Wd * 0.45),
+          text: (c.date || '') + (c.badge ? '   ·   ' + c.badge : ''),
+          size: Math.round(Wd * 0.0475), font: 'mono', weight: 400, ls: .06, color: brand, opacity: 1
+        });
+
+        var ti = find(L, 'title');
+        if (ti) merge(ti, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.345), w: Math.round(Wd * 0.515),
+          size: Math.round(Wd * 0.0578), font: pickFont(c.title), weight: 700, lh: 1.04, ls: -.028,
+          color: t.ink, align: 'left', fit: false, maxH: 0
+        });
+
+        var line2 = (c.kicker || c.sub || '');
+        var sb = find(L, 'sub');
+        if (sb) merge(sb, {
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.527), w: Math.round(Wd * 0.46),
+          text: line2, size: Math.round(Wd * 0.0715), font: pickFont(line2),
+          weight: cjk ? 900 : 700, lh: 1.10, ls: cjk ? -.01 : -.028,
+          color: t.ink, opacity: 1, maxH: 0
+        });
+
+        /* 细下划线：宽度按字符数估算，贴住第二行 */
+        var estW = Math.min(Wd * 0.46, Math.max(Wd * 0.10, String(line2).length * Wd * (cjk ? 0.0731 : 0.0621)));
+        x.add(CV.S('ul2', 'bar', {
+          x: Math.round(Wd * 0.0695), y: Math.round(Ht * 0.667), w: Math.round(estW),
+          h: Math.max(2, Math.round(Wd * 0.0018)), color: t.ink, opacity: .8, radius: 0
+        }));
+
+        var pool = (CV.JUYA_POOL || []).slice();
+        var main = c.icon || 'OpenAI/ChatGPT#symbol-color';
+        var extra = String(c.icons || '').split(/[,\n]/).map(function (s) { return s.trim(); }).filter(Boolean);
+        var want = 1 + extra.length;
+        var n = extra.length ? (want <= 3 ? 3 : (want === 4 ? 4 : (want <= 6 ? 6 : 9))) : 6;
+        var ids = [main].concat(extra);
+        for (var i = 0; i < pool.length && ids.length < n; i++) if (pool[i] !== main) ids.push(pool[i]);
+        var grid = n === 9 ? [3, 3] : (n === 6 ? [3, 2] : (n === 4 ? [2, 2] : [3, 1]));
+        var d = Math.round(Wd * 0.125), gap = Math.round(Wd * 0.0106);
+        var gx = Math.round(Wd * 0.628);
+        var totalH = grid[1] * d + (grid[1] - 1) * gap;
+        var gy = Math.round(Ht * 0.524 - totalH / 2);
+        for (var k = 0; k < n; k++) {
+          var col = k % grid[0], row = Math.floor(k / grid[0]);
+          var cx = gx + col * (d + gap), cy = gy + row * (d + gap);
+          x.add(CV.S('ring' + k, 'circle', {
+            x: cx, y: cy, w: d, h: d, color: '#ffffff', radius: 999,
+            bw: Math.max(2, Math.round(Wd * 0.0025)), bc: k === 0 ? brand : '#101114'
+          }));
+          x.add(CV.I('ringicon' + k, ids[k] || main, {
+            x: cx + Math.round(d * 0.22), y: cy + Math.round(d * 0.22),
+            w: Math.round(d * 0.56), h: Math.round(d * 0.56)
+          }));
+        }
+        var ic = find(L, 'icon');
+        if (ic) merge(ic, {
+          x: gx + Math.round(d * 0.22), y: gy + Math.round(d * 0.22),
+          w: Math.round(d * 0.56), h: Math.round(d * 0.56)
+        });
+        ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    },
+
 
   ];
 
@@ -1326,6 +1405,9 @@
       });
     };
   };
+
+  /* 有中日韩字符就用思源黑体，否则用 Inter */
+  function pickFont(s) { return /[\u3400-\u9fff\u3040-\u30ff]/.test(String(s || '')) ? 'noto' : 'inter'; }
 
   CV.npHTML = function (rounds) {
     var s = '', N = CV.NEWS, T = CV.npTail;
