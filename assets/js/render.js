@@ -331,7 +331,11 @@
     var pn = doc.paper && doc.paper.noise != null ? doc.paper.noise : 60;
     var ps = doc.paper && doc.paper.scale != null ? doc.paper.scale : 260;
     /* 纸纹开关打开时，无论风格有没有声明，都注入纸纤维 / 颗粒 / 褶皱 */
-    var list = fx.slice();
+    /* 纸纹开关是权威：关闭时连风格自带的 paper/grain/wrinkle 一起关掉 */
+    var list = fx.filter(function (n) {
+      if (!paperOn && (n === 'paper' || n === 'grain' || n === 'wrinkle')) return false;
+      return true;
+    });
     if (paperOn) {
       ['paper', 'grain', 'wrinkle'].forEach(function (n) { if (list.indexOf(n) < 0) list.push(n); });
     }
