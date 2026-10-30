@@ -898,14 +898,14 @@
         x.add(CV.S('pill', 'round', { x: Math.round(Wd * 0.826), y: Math.round(Ht * 0.0556), w: pw, h: ph, color: brand, radius: 999 }));
         x.add(CV.T('pilltext', 'AI 快讯', {
           x: Math.round(Wd * 0.826), y: Math.round(Ht * 0.0556 + ph * 0.24), w: pw,
-          size: Math.round(Wd * 0.0138), font: 'bold', weight: 700, color: '#ffffff', align: 'center', ls: .01
+          size: Math.round(Wd * 0.0138), font: 'noto', weight: 700, color: '#ffffff', align: 'center', ls: .01
         }));
 
         /* focus 行（实测：x 40%W, y 29.8%H, 30px@1600） */
         var k = find(L, 'kicker');
         if (k) merge(k, {
           x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.298), w: Math.round(Wd * 0.55),
-          size: Math.round(Wd * 0.0188), font: 'bold', weight: 700, ls: .06,
+          size: Math.round(Wd * 0.0188), font: 'noto', weight: 700, ls: .06,
           color: CV.tint(brand, 0.18), upper: false
         });
 
@@ -913,7 +913,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, {
           x: Math.round(Wd * 0.40), y: Math.round(Ht * 0.367), w: Math.round(Wd * 0.56),
-          size: Math.round(Wd * 0.075), font: 'heavy', weight: 900, lh: 1.04, ls: 0,
+          size: Math.round(Wd * 0.075), font: 'noto', weight: 700, lh: 1.04, ls: 0,
           color: brand, fit: false, maxH: 0, stroke: 2.2 * (Wd / 1160), strokeColor: 'rgba(255,255,255,.34)'
         });
 
