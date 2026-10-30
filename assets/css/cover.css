@@ -1,3 +1,11 @@
+/* 思源黑体（Noto Sans SC）Bold —— 小心鸦风格标题用 */
+@font-face{
+  font-family:"CV-Noto";
+  src:url("../font/NotoSansSC-Bold.woff2") format("woff2");
+  font-weight:700;font-style:normal;font-display:swap;
+}
+.ff-noto{font-family:"CV-Noto","Noto Sans SC","MiSans",system-ui,sans-serif}
+
 /* ==========================================================================
    封面渲染层（编辑器 / 静态渲染页 / 出图 共用的唯一画布样式）
    ========================================================================== */
