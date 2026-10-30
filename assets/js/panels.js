@@ -468,6 +468,32 @@
       ]
     },
     {
+      g: '报纸版式', items: [
+        ['报头', function (t) {
+          return CV.T('mast', 'AI 日报 | 第 561 期', {
+            x: 64, y: 22, w: 900, size: 62, font: 'heavy', weight: 900, ls: .02, lh: 1.1, color: t.ink
+          });
+        }],
+        ['日期框', function (t) {
+          return [
+            CV.S('datebox', 'round', { x: 64, y: 116, w: 152, h: 72, color: '#ffffff', radius: 4, bw: 3, bc: t.accent }),
+            CV.T('datetxt', '2026\n10-28', {
+              x: 64, y: 126, w: 152, size: 22, font: 'mono', weight: 900, align: 'center', lh: 1.3, color: t.accent
+            })
+          ];
+        }],
+        ['正文栏', function (t) {
+          return CV.T('npcols', CV.npText ? CV.npText(4) : '正文…', {
+            x: 64, y: 210, w: 1032, size: 12, font: 'serif', weight: 400, lh: 1.46, ls: .01,
+            color: '#a8a29a', cols: 7, gap: 14, rule: 'rgba(0,0,0,.16)', maxH: 430, align: 'justify'
+          });
+        }],
+        ['栏线', function (t) {
+          return CV.S('colrule', 'bar', { x: 64, y: 200, w: 1032, h: 2, color: t.ink, opacity: .55, radius: 0 });
+        }]
+      ]
+    },
+    {
       g: '新闻页', items: [
         ['眉标', function (t) { return CV.T('kicker', 'SECTION / 眉标', { x: 64, y: 40, w: 420, size: 11, font: 'mono', ls: .3, color: t.accent }); }],
         ['强调条', function (t) { return CV.T('hl', '一句话强调，压住版面', { x: 64, y: 556, w: 660, size: 26, font: 'heavy', color: t.accent }); }],
@@ -502,7 +528,8 @@
         b.appendChild(plus); b.appendChild(n);
         b.addEventListener('click', function () {
           var t = App.doc.tokens || {};
-          App.addLayer(it[1](t), true);
+          var made = it[1](t);
+          (Array.isArray(made) ? made : [made]).forEach(function (l) { App.addLayer(l, true); });
           App.commit();
           App.toast('已添加「' + it[0] + '」');
         });
