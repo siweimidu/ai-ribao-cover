@@ -1026,8 +1026,8 @@
         /* 行1：品牌名（黑） */
         var ti = find(L, 'title');
         if (ti) merge(ti, {
-          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.360), w: Math.round(Wd * 0.52),
-          size: Math.round(Wd * 0.064), font: 'bahn', weight: 700, lh: 1.06, ls: -.01,
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.345), w: Math.round(Wd * 0.515),
+          size: Math.round(Wd * 0.0578), font: 'inter', weight: 700, lh: 1.04, ls: -.028,
           color: t.ink, align: 'left', fit: false, maxH: 0
         });
 
@@ -1035,33 +1035,35 @@
         var sb = find(L, 'sub');
         var line2 = (c.kicker || c.sub || '');
         if (sb) merge(sb, {
-          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.545), w: Math.round(Wd * 0.46),
-          text: line2, size: Math.round(Wd * 0.072), font: 'bahn', weight: 700, lh: 1.12,
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.527), w: Math.round(Wd * 0.30),
+          text: line2, size: Math.round(Wd * 0.0715), font: 'inter', weight: 700, lh: 1.10,
           ls: -.02, color: brand, opacity: 1, maxH: 0
         });
         x.add(CV.S('hili', 'bar', {
-          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.664), w: Math.round(Wd * 0.235),
+          x: Math.round(Wd * 0.0688), y: Math.round(Ht * 0.645), w: Math.round(Wd * 0.269),
           h: Math.round(Ht * 0.024), color: brand, opacity: .22, radius: 2
         }));
 
         /* 右侧图标圆阵：9 / 6 / 4 / 3 */
         var pool = (CV.JUYA_POOL || []).slice();
         var main = c.icon || 'OpenAI/ChatGPT#symbol-color';
-        var n = 9;
-        var ids = [main];
+        var extra = String(c.icons || '').split(/[,\n]/).map(function (s) { return s.trim(); }).filter(Boolean);
+        var want = 1 + extra.length;
+        var n = extra.length ? (want <= 3 ? 3 : (want === 4 ? 4 : (want <= 6 ? 6 : 9))) : 9;
+        var ids = [main].concat(extra);
         for (var i = 0; i < pool.length && ids.length < n; i++) if (pool[i] !== main) ids.push(pool[i]);
         var grid = n === 9 ? [3, 3] : (n === 6 ? [3, 2] : (n === 4 ? [2, 2] : [3, 1]));
-        var d = Math.round(Wd * 0.112);
-        var gap = Math.round(Wd * 0.0095);
-        var gx = Math.round(Wd * 0.625);
+        var d = Math.round(Wd * 0.125);
+        var gap = Math.round(Wd * 0.0106);
+        var gx = Math.round(Wd * 0.628);
         var totalH = grid[1] * d + (grid[1] - 1) * gap;
-        var gy = Math.round(Ht * 0.5 - totalH / 2);
+        var gy = Math.round(Ht * 0.524 - totalH / 2);
         for (var k = 0; k < n; k++) {
           var col = k % grid[0], row = Math.floor(k / grid[0]);
           var cx = gx + col * (d + gap), cy = gy + row * (d + gap);
           x.add(CV.S('ring' + k, 'circle', {
             x: cx, y: cy, w: d, h: d, color: '#ffffff', radius: 999,
-            bw: Math.max(2, Math.round(Wd * 0.0028)), bc: k === 0 ? brand : '#101114'
+            bw: Math.max(2, Math.round(Wd * 0.0025)), bc: k === 0 ? brand : '#101114'
           }));
           x.add(CV.I('ringicon' + k, ids[k] || main, {
             x: cx + Math.round(d * 0.22), y: cy + Math.round(d * 0.22),
