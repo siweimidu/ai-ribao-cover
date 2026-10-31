@@ -92,14 +92,19 @@
 
   /* 屏幕像素 → 设计单位：用图层自身渲染宽反推，内容被缩放也不会偏 */
   function screenToDoc(el, l) {
+    /* 与 style 写入严格互逆：style = M.x(l.x)，屏幕 = style * stageScale */
     try {
-      var s0 = stageScale();                 /* 屏幕 px / 文档 px */
-      var ow = el.offsetWidth, oh = el.offsetHeight;   /* 布局尺寸，不受 rotate/scale 影响 */
-      if (s0 > 0 && ow > 2 && l.w > 2) return l.w / (ow * s0);   /* 母版单位 / 屏幕 px */
-      if (s0 > 0 && oh > 2 && (l.h || 0) > 2) return l.h / (oh * s0);
+      var M = CV.metrics(App.doc);
+      var s = stageScale();
+      if (s > 0 && M.k > 0) {
+        var y0 = (l && l.y) || 0;
+        var dyDoc = Math.abs(M.y(y0 + 1) - M.y(y0)) || M.k;   /* y 方向是分段线性，取局部斜率 */
+        return { x: 1 / (M.k * s), y: 1 / (dyDoc * s) };
+      }
     } catch (e) { }
-    var s = stageScale();
-    return s > 0 ? 1 / s : 1;
+    var s2 = stageScale();
+    var k2 = s2 > 0 ? 1 / s2 : 1;
+    return { x: k2, y: k2 };
   }
   App.screenToDoc = screenToDoc;
 
@@ -249,9 +254,10 @@
     var set = pk.list;
     if (!set.length) { App.gridArrange(cols, gap); return; }
     App.gridPlace(set, cols, gap);
+    var ML = CV.metrics(App.doc);
     set.forEach(function (l) {
       var el = App.map[l.id];
-      if (el) { el.style.left = l.x + 'px'; el.style.top = l.y + 'px'; }
+      if (el) { el.style.left = ML.x(l.x) + 'px'; el.style.top = ML.y(l.y) + 'px'; }
     });
     if (App.drawSel) App.drawSel();
   };
@@ -624,17 +630,18 @@
       }
     }
     function move(ev) {
-      var dx = (ev.clientX - sx) * z, dy = (ev.clientY - sy) * z;
+      var dx = (ev.clientX - sx) * z.x, dy = (ev.clientY - sy) * z.y;
       if (!moved && Math.abs(dx) + Math.abs(dy) < 1.5) return;
       moved = true;
       document.body.classList.add('cv-dragging');
       if (group) {
+        var MG = CV.metrics(App.doc);
         group.forEach(function (g) {
           var L = App.getLayer(g.id);
           if (!L) return;
-          L.x = Math.round(g.x + dx); L.y = Math.round(g.y + dy);
+          L.x = g.x + dx; L.y = g.y + dy;
           var e2 = App.map[g.id];
-          if (e2) { e2.style.left = L.x + 'px'; e2.style.top = L.y + 'px'; }
+          if (e2) { e2.style.left = MG.x(L.x) + 'px'; e2.style.top = MG.y(L.y) + 'px'; }
         });
         drawSel();
         return;
@@ -643,7 +650,8 @@
       var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 吸附默认关：要跟手 */
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
       l.x = nx; l.y = ny;
-      el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
+      var M1 = CV.metrics(App.doc);
+      el.style.left = M1.x(l.x) + 'px'; el.style.top = M1.y(l.y) + 'px';
       drawSel();
     }
     function up() {
@@ -1005,8 +1013,9 @@
       l.h = Math.max(8, Math.round(b.h * k));
       var el = App.map[l.id];
       if (el) {
-        el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
-        el.style.width = l.w + 'px'; el.style.height = l.h + 'px';
+        var MC = CV.metrics(App.doc);
+        el.style.left = MC.x(l.x) + 'px'; el.style.top = MC.y(l.y) + 'px';
+        el.style.width = MC.w(l.w) + 'px'; el.style.height = MC.w(l.h) + 'px';
       }
     });
     if (App.drawSel) App.drawSel();
@@ -1407,7 +1416,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f51';
+  App.BUILD = '20261029-f52';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
