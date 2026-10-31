@@ -1254,6 +1254,37 @@
     if (k.length >= 8) k = k.slice(0, 4) + '-' + k.slice(4, 6) + '-' + k.slice(6, 8);
     return (k || 'cover') + '_' + App.doc.style + '_' + App.doc.layout;
   };
+  /* 只导出「信息底纹」这一层，得到纯背景 PNG */
+  App.exportBgPattern = function (scale) {
+    scale = scale || 2;
+    var id = App.doc.bgPattern;
+    if (!id) { App.toast('先在「画布 → 背景」里选一个信息底纹', 'err'); return; }
+    if (!CV.bgPatternById(id)) { App.toast('底纹标识无效：' + id, 'err'); return; }
+    if (App.locked) return;
+    App.locked = true;
+    App.toast('正在导出底纹…', 'wait');
+    var doc = {
+      w: App.doc.w, h: App.doc.h, master: App.doc.master, ratio: App.doc.ratio,
+      bg: '#ffffff', fx: [], layers: [], dark: false, tokens: {}, content: {},
+      bgPattern: id
+    };
+    fetch('api/render', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc: doc, name: 'bg-' + id, scale: scale })
+    }).then(function (r) {
+      if (r.status === 404 || (r.headers.get('content-type') || '').indexOf('json') < 0) throw new Error('no-render-api');
+      return r.json();
+    }).then(function (j) {
+      App.locked = false;
+      if (j.ok) { App.toast('底纹已导出 ' + j.name, 'ok', j.size); if (window.Panels && Panels.showShot) Panels.showShot(j.url + '?t=' + Date.now(), j); }
+      else App.toast('导出失败：' + (j.error || '未知'), 'err');
+    }).catch(function (err) {
+      App.locked = false;
+      App.toast(err.message === 'no-render-api' ? '静态托管模式不支持服务端出图，请本地运行' : ('导出失败：' + err.message), 'err');
+    });
+  };
+
   App.exportPng = function (scale) {
     scale = scale || 2;
     if (App.locked) return;
@@ -1449,7 +1480,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f54';
+  App.BUILD = '20261029-f56';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
