@@ -3,6 +3,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, OUT, MIME, sendJson, sendFile, findFont, ensureDirs, renderDoc, aiConfig, promptTemplate } from './core.mjs';
+import { build as buildBundle, isStale as bundleStale } from './bundle.mjs';
 
 function body(req) {
   return new Promise((resolve, reject) => {
@@ -15,7 +16,11 @@ function body(req) {
 
 export function createServer() {
   ensureDirs();
-  const server = http.createServer(async (req, res) => {
+  try { const r = buildBundle(false); if (r.built) console.log('[bundle] ' + (r.bytes / 1024).toFixed(1) + ' KB'); } catch (e) { }
+
+const server = http.createServer(async (req, res) => {
+  /* 开发态：源文件改了就自动重新打包 */
+  try { if (bundleStale()) { const r = buildBundle(false); if (r.built) console.log('[bundle rebuilt] ' + (r.bytes / 1024).toFixed(1) + ' KB'); } } catch (e) { }
     const u = new URL(req.url, 'http://127.0.0.1');
     let p = decodeURIComponent(u.pathname);
 
