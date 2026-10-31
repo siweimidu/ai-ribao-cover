@@ -498,3 +498,6 @@ label.seclabel,.field > label.seclabel,.group > label.seclabel{
 }
 label.seclabel .hint{float:right;font-family:var(--font-mono);font-size:10.5px;font-weight:600;
   color:var(--primary);background:var(--accent);border-radius:6px;padding:1px 6px}
+
+/* 图标精灵（一次请求渲染 114 个品牌） */
+.ictile .isp{display:block;width:100%;height:100%;pointer-events:none}
