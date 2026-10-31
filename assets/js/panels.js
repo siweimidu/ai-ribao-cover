@@ -287,6 +287,36 @@
   function variantURL(id, v, dark) { return CV.iconSrc(id + '#' + v, dark); }
   function tileBg(v) { return /white/.test(v) ? '#151517' : '#ffffff'; }
 
+  /* 出图面板：追加「导出当前底纹」 */
+  function mountBgExport() {
+    var pane = document.getElementById('paneExport');
+    if (!pane || pane.__bgbtn) return;
+    pane.__bgbtn = true;
+    var box = document.createElement('div');
+    box.className = 'group';
+    var h = document.createElement('div');
+    h.className = 'group-h';
+    var t = document.createElement('span');
+    t.className = 'group-t';
+    t.textContent = '信息底纹';
+    h.appendChild(t);
+    box.appendChild(h);
+    var tip = document.createElement('p');
+    tip.className = 'empty';
+    tip.textContent = '只导出当前选中的信息底纹（纯背景，不含任何文字图层）';
+    tip.style.padding = '0 0 8px';
+    box.appendChild(tip);
+    var b = document.createElement('button');
+    b.className = 'btn primary';
+    b.type = 'button';
+    b.textContent = '导出当前底纹';
+    b.style.width = '100%';
+    b.style.justifyContent = 'center';
+    b.addEventListener('click', function () { App.exportBgPattern(2); });
+    box.appendChild(b);
+    pane.appendChild(box);
+  }
+
   function buildIconPane() {
     var p = $('#paneIcons');
     p.innerHTML = '';
@@ -1759,6 +1789,7 @@
     buildContentPane();
     buildStylePane();
     buildIconPane();
+    mountBgExport();
     if (!SPRITE) loadSprite();
     buildTextPane();
     buildCanvasPane();
