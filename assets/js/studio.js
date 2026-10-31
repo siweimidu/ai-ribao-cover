@@ -834,6 +834,73 @@
   };
 
   /* 网格落位：以选中图标的「原始包围盒中心」为锚点，不强制挪到画布正中 */
+  /* 图标圆阵：等径圆整齐堆叠，圆环可用各自品牌色 */
+  App.__ringOpts = { gap: 4, brand: true };
+  App.circleCluster = function (mode) {
+    var pick = App.iconSet();
+    if (!pick.list.length) { App.toast('画布上没有图标', 'err'); return; }
+    var set = pick.list;
+    var total = set.length;
+    var n = mode === 'auto' || !mode ? total : Math.min(total, parseInt(mode, 10));
+    var grid;
+    if (n <= 1) grid = [1, 1];
+    else if (n === 2) grid = [2, 1];
+    else if (n === 3) grid = [3, 1];
+    else if (n === 4) grid = [2, 2];
+    else if (n <= 6) grid = [3, 2];
+    else if (n <= 8) grid = [4, 2];
+    else grid = [3, 3];
+
+    var gap = App.__ringOpts.gap == null ? 4 : App.__ringOpts.gap;   /* 百分比 of 直径 */
+    var d = 0;
+    /* 已有圆环时沿用它的直径，避免反复排布把图标越缩越小 */
+    set.forEach(function (l) {
+      var old = App.doc.layers.filter(function (r) { return r.role === 'cring_' + l.id; })[0];
+      if (old && old.w > d) d = old.w;
+    });
+    if (!d) set.forEach(function (l) { d = Math.max(d, l.clusterD || l.w || 0); });
+    if (!d) d = Math.round(App.doc.w * 0.125);
+    var gpx = Math.round(d * gap / 100);
+
+    /* 锚点：图标原包围盒中心（沿用原位置） */
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    set.forEach(function (l) {
+      x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
+      x1 = Math.max(x1, l.x + (l.w || d)); y1 = Math.max(y1, l.y + (l.h || d));
+    });
+    var totalW = grid[0] * d + (grid[0] - 1) * gpx;
+    var totalH = grid[1] * d + (grid[1] - 1) * gpx;
+    var ox = Math.round((x0 + x1) / 2 - totalW / 2);
+    var oy = Math.round((y0 + y1) / 2 - totalH / 2);
+
+    /* 先删旧环 */
+    App.doc.layers = App.doc.layers.filter(function (l) { return String(l.role).indexOf('cring_') !== 0; });
+
+    set.forEach(function (l, i) {
+      var col = i % grid[0], row = Math.floor(i / grid[0]);
+      var cx = ox + col * (d + gpx), cy = oy + row * (d + gpx);
+      l.x = cx; l.y = cy; l.w = d; l.h = d;
+      var el = App.map[l.id];
+      var brand = '#101114';
+      if (App.__ringOpts.brand && el) {
+        try { brand = CV.brandColorOf(el) || '#101114'; } catch (e) { }
+      }
+      var ring = CV.S('cring_' + l.id, 'circle', {
+        x: cx, y: cy, w: d, h: d, color: '#ffffff', radius: 999,
+        bw: Math.max(2, Math.round(d * 0.028)), bc: brand
+      });
+      var at = App.doc.layers.indexOf(l);
+      App.doc.layers.splice(at, 0, ring);       /* 环插在图标之前（下面） */
+      /* 图标缩到圆的 56% 并居中 */
+      var pad = Math.round(d * 0.22);
+      l.w = Math.round(d * 0.56); l.h = l.w;
+      l.x = cx + pad; l.y = cy + pad;
+      l.circleHost = 1;
+    });
+    App.apply(); App.commit();
+    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标）', 'ok');
+  };
+
   App.gridPlace = function (set, cols, gap) {
     gap = gap == null ? 32 : gap;
     var n = cols === 'auto' ? Math.ceil(Math.sqrt(set.length)) : parseInt(cols, 10);
