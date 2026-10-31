@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:46:02.675Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:53:30.500Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -4955,9 +4955,9 @@
         return;
       }
       var nx = ox + dx, ny = oy + dy;
-      var sn = (ev.altKey || (App.doc.snap && App.doc.snap.on === false)) ? null : snapPos(nx, ny, l);
+      var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 吸附默认关：要跟手 */
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
-      l.x = Math.round(nx); l.y = Math.round(ny);
+      l.x = nx; l.y = ny;
       el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
       drawSel();
     }
@@ -5722,7 +5722,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f50';
+  App.BUILD = '20261029-f51';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
