@@ -1407,7 +1407,7 @@
     if (!p) return;
     p.innerHTML = '';
     var bar = el('div', 'lyrbar');
-    [['清空全部', 'all', '删除画布上所有图层（可撤销）'], ['清空图标', 'icon', '只删图标图层，保留文字与装饰']].forEach(function (o) {
+    [['清空全部', 'all', '删除画布上所有图层（可撤销）'], ['清空图标', 'icon', '只删图标图层，保留文字与装饰'], ['清空文字', 'text', '只删文字层，保留图标、形状和背景底纹']].forEach(function (o) {
       var b = el('button', 'btn sm', o[0]);
       b.type = 'button';
       b.title = o[2];
