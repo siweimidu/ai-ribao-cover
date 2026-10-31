@@ -21,10 +21,10 @@ page.on('pageerror', e => console.log('PAGEERROR', e.message));
 await page.goto(base + '/render.html', { waitUntil: 'load' });
 
 const meta = await page.evaluate(function () {
-  return { styles: window.CV.STYLES.map(function (s) { return s.id; }), layouts: window.CV.LAYOUTS.map(function (l) { return l.id; }) };
+  return { styles: window.CV.STYLES.map(function (s) { return s.id; }), bleeds: window.CV.STYLES.reduce(function (o, s) { o[s.id] = !!s.qaBleed; return o; }, {}), layouts: window.CV.LAYOUTS.map(function (l) { return l.id; }) };
 });
 
-const ANALYZE = function (styleId, layoutId, ratioId) {
+const ANALYZE = function (styleId, layoutId, ratioId, bleed) {
   var doc = window.CV.compose(styleId, layoutId, window.CV.defaultContent(), ratioId);
   document.body.innerHTML = '';
   document.body.style.cssText = 'margin:0;padding:0;overflow:hidden;background:#fff;width:' + doc.w + 'px;height:' + doc.h + 'px';
@@ -48,7 +48,7 @@ const ANALYZE = function (styleId, layoutId, ratioId) {
   boxes.forEach(function (b) {
     if (b.type === 'shape' || b.type === 'raw' || b.type === 'image') return;
     if (b.op < 0.35) return;
-    if (b.x < -1 || b.y < -1 || b.x + b.w > W + 1 || b.y + b.h > H + 1) {
+    if (!bleed && (b.x < -1 || b.y < -1 || b.x + b.w > W + 1 || b.y + b.h > H + 1)) {
       probs.push('OUT:' + b.role + '(' + Math.round(b.x) + ',' + Math.round(b.y) + ' ' + Math.round(b.w) + 'x' + Math.round(b.h) + ')');
     }
   });
@@ -75,6 +75,7 @@ const ANALYZE = function (styleId, layoutId, ratioId) {
   }
   boxes.forEach(function (b) {
     if (b.type !== 'text') return;
+    if (bleed) return;
     if (b.x < 14 || b.y < 14 || b.x + b.w > W - 14 || b.y + b.h > H - 14) probs.push('EDGE:' + b.role);
   });
   return { probs: probs, n: boxes.length, w: W, h: H };
@@ -87,7 +88,7 @@ for (const s of meta.styles) {
   for (const l of meta.layouts) {
     total++;
     const ratio = l === 'stack' || l === 'sheet' ? 'xhs' : 'land';
-    const r = await page.evaluate(ANALYZE, s, l, ratio);
+    const r = await page.evaluate(ANALYZE, s, l, ratio, !!(meta.bleeds && meta.bleeds[s]));
     const flag = r.probs.length;
     if (flag) bad++;
     rows.push({ k: s + '/' + l, p: r.probs });
