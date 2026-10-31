@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T09:41:40.231Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T10:07:36.908Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -3641,7 +3641,7 @@
     if (!p) return;
     p.innerHTML = '';
     var bar = el('div', 'lyrbar');
-    [['清空全部', 'all', '删除画布上所有图层（可撤销）'], ['清空图标', 'icon', '只删图标图层，保留文字与装饰']].forEach(function (o) {
+    [['清空全部', 'all', '删除画布上所有图层（可撤销）'], ['清空图标', 'icon', '只删图标图层，保留文字与装饰'], ['清空文字', 'text', '只删文字层，保留图标、形状和背景底纹']].forEach(function (o) {
       var b = el('button', 'btn sm', o[0]);
       b.type = 'button';
       b.title = o[2];
@@ -5506,7 +5506,9 @@
   App.clearLayers = function (mode) {
     var before = App.doc.layers.length;
     App.doc.layers = App.doc.layers.filter(function (l) {
-      return mode === 'icon' ? l.type !== 'icon' : false;
+      if (mode === 'icon') return l.type !== 'icon';
+      if (mode === 'text') return l.type !== 'text';
+      return false;
     });
     var removed = before - App.doc.layers.length;
     if (!removed) { App.toast(mode === 'icon' ? '没有图标可清空' : '画布已经是空的', 'err'); return; }
@@ -5514,7 +5516,8 @@
     App.multi = [];
     App.apply();
     App.commit();
-    App.toast((mode === 'icon' ? '已清空 ' + removed + ' 个图标' : '已清空全部 ' + removed + ' 个图层') + ' · Ctrl+Z 可撤销', 'ok');
+    var what = mode === 'icon' ? '图标' : (mode === 'text' ? '文字（背景底纹保留）' : '全部');
+    App.toast('已清空 ' + removed + ' 个' + what + '图层 · Ctrl+Z 可撤销', 'ok');
   };
 
   App.removeSel = function () {
@@ -5762,7 +5765,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f53';
+  App.BUILD = '20261029-f54';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
