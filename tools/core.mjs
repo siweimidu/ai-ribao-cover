@@ -42,19 +42,33 @@ export function sendJson(res, code, obj) {
   res.end(b);
 }
 
-export function sendFile(res, abs, extraHeaders) {
+import zlib from 'node:zlib';
+
+export function sendFile(req, res, abs, extraHeaders) {
   fs.stat(abs, (err, st) => {
     if (err || !st.isFile()) { res.writeHead(404); res.end('not found'); return; }
     const ext = path.extname(abs).toLowerCase();
     var noCache = /\.(html|css|js|mjs|json)$/i.test(ext);
     const h = Object.assign({
-      'Content-Type': MIME[ext] || 'application/octet-stream',
-      'Content-Length': st.size
+      'Content-Type': MIME[ext] || 'application/octet-stream'
     }, extraHeaders || {});
+    const textLike = /\.(html|css|js|mjs|json|svg)$/i.test(ext);
+    const ae = String((req && req.headers && req.headers['accept-encoding']) || '');
+    const big = st.size > 1024;
+    let enc = null;
+    if (textLike && big) {
+      if (/br/.test(ae)) enc = 'br';
+      else if (/gzip/.test(ae)) enc = 'gzip';
+    }
+    if (enc) { h['Content-Encoding'] = enc; h['Vary'] = 'Accept-Encoding'; }
+    else h['Content-Length'] = st.size;
     if (noCache) { h['Cache-Control'] = 'no-store, must-revalidate'; h['Pragma'] = 'no-cache'; h['Expires'] = '0'; }
     else if (/\.(png|jpg|jpeg|webp|woff2?|svg)$/i.test(ext)) { h['Cache-Control'] = 'public, max-age=31536000, immutable'; }
     res.writeHead(200, h);
-    fs.createReadStream(abs).pipe(res);
+    const src = fs.createReadStream(abs);
+    if (!enc) { src.pipe(res); return; }
+    const z = enc === 'br' ? zlib.createBrotliCompress({ params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 6 } }) : zlib.createGzip({ level: 6 });
+    src.pipe(z).pipe(res);
   });
 }
 
