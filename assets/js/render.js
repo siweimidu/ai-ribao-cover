@@ -171,6 +171,77 @@
     ov.style.opacity = l.dim || 0;
   }
 
+  /* ============ 雷达图：数据驱动，完全可编辑 ============ */
+  CV.radarDefault = function () {
+    return {
+      axes: [{ label: '前端', value: 60.33 }, { label: '后端', value: 55.34 }, { label: '算法', value: 79.79 },
+             { label: '研究', value: 85.07 }, { label: '数据', value: 69.81 }],
+      max: 100, rings: 4,
+      color: '#c8001f', fill: '#c8001f', fillAlpha: 0.18,
+      grid: '#cfcfcf', labelColor: '#16110e', valueColor: '#c8001f',
+      labelSize: 34, valueSize: 30, valueItalic: true, font: 'heavy'
+    };
+  };
+
+  CV.radarSvg = function (cfg) {
+    var c = Object.assign(CV.radarDefault(), cfg || {});
+    var n = Math.max(3, c.axes.length);
+    var S = 1000, cx = S / 2, cy = S / 2 + 20, R = 300;
+    var max = c.max > 0 ? c.max : 100;
+    function pt(i, k) {
+      var a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k];
+    }
+    function poly(k) {
+      var o = [];
+      for (var i = 0; i < n; i++) { var p = pt(i, k); o.push(p[0].toFixed(1) + ',' + p[1].toFixed(1)); }
+      return o.join(' ');
+    }
+    var s = '<svg viewBox="0 0 ' + S + ' ' + S + '" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">';
+    /* 网格环 */
+    for (var r = c.rings; r >= 1; r--) {
+      s += '<polygon points="' + poly(r / c.rings) + '" fill="none" stroke="' + c.grid + '" stroke-width="1.6"/>';
+    }
+    /* 轴线 */
+    for (var i = 0; i < n; i++) {
+      var p = pt(i, 1);
+      s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '" stroke="' + c.grid + '" stroke-width="1.6"/>';
+    }
+    /* 数据多边形 */
+    var dp = [];
+    for (var i2 = 0; i2 < n; i2++) {
+      var v = Math.max(0, Math.min(max, Number(c.axes[i2].value) || 0));
+      var q = pt(i2, v / max);
+      dp.push(q[0].toFixed(1) + ',' + q[1].toFixed(1));
+    }
+    s += '<polygon points="' + dp.join(' ') + '" fill="' + c.fill + '" fill-opacity="' + c.fillAlpha + '" stroke="' + c.color + '" stroke-width="6" stroke-linejoin="round"/>';
+    /* 标签与数值 */
+    for (var i3 = 0; i3 < n; i3++) {
+      var a3 = -Math.PI / 2 + (i3 * 2 * Math.PI) / n;
+      var lx = cx + Math.cos(a3) * (R + 120), ly = cy + Math.sin(a3) * (R + 110);
+      var anchor = Math.abs(Math.cos(a3)) < 0.25 ? 'middle' : (Math.cos(a3) > 0 ? 'start' : 'end');
+      var dy = Math.sin(a3) < -0.5 ? -60 : (Math.sin(a3) > 0.5 ? 70 : 0);
+      s += '<text x="' + lx.toFixed(1) + '" y="' + (ly + dy).toFixed(1) + '" text-anchor="' + anchor + '" ' +
+        'style="font-family:var(--cv-font,' + "MiSans" + ');font-weight:' + (c.font === 'heavy' ? 900 : 700) + ';font-size:' + c.labelSize + 'px;fill:' + c.labelColor + '">' + CV.esc(c.axes[i3].label) + '</text>';
+      s += '<text x="' + lx.toFixed(1) + '" y="' + (ly + dy + c.labelSize + 10).toFixed(1) + '" text-anchor="' + anchor + '" ' +
+        'style="font-family:var(--cv-font,' + "MiSans" + ');font-weight:800;font-style:' + (c.valueItalic ? 'italic' : 'normal') + ';font-size:' + c.valueSize + 'px;fill:' + c.valueColor + '">' + Number(c.axes[i3].value).toFixed(2) + '</text>';
+    }
+    s += '</svg>';
+    return s;
+  };
+
+  function applyRadar(el, l, doc) {
+    var M = CV.metrics(doc);
+    el.className = 'cv-el cv-radar';
+    el.style.left = M.x(l.x) + 'px'; el.style.top = M.y(l.y) + 'px';
+    el.style.width = M.w(l.w) + 'px'; el.style.height = M.h(l.h || l.w) + 'px';
+    el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
+    el.style.pointerEvents = 'none';
+    var html = CV.radarSvg(l.radar || {});
+    if (el.__rb !== html) { el.innerHTML = html; el.__rb = html; }
+  }
+
   function applyRaw(el, l, doc) {
     var M = CV.metrics(doc);
     el.className = 'cv-el cv-raw';
@@ -187,6 +258,7 @@
     else if (l.type === 'text') applyText(el, l, doc);
     else if (l.type === 'icon') applyIcon(el, l, doc);
     else if (l.type === 'shape') applyShape(el, l, doc);
+    else if (l.type === 'radar') applyRadar(el, l, doc);
     else applyRaw(el, l, doc);
     el.style.display = l.hidden ? 'none' : '';
     el.style.filter = l.filter || '';
@@ -194,7 +266,9 @@
 
   CV.makeEl = function (l, doc, edit) {
     var el;
-    if (l.type === 'image') {
+    if (l.type === 'radar') {
+      el = document.createElement('div');
+    } else if (l.type === 'image') {
       el = document.createElement('div');
       var im = document.createElement('img');
       im.draggable = false;
