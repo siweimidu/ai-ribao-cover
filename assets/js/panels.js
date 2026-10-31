@@ -313,45 +313,6 @@
   function buildIconPane() {
     var p = $('#paneIcons');
     p.innerHTML = '';
-    /* 圆阵排列 */
-    var g5 = el('div', 'group');
-    var h5 = el('div', 'group-h');
-    h5.appendChild(el('span', 'group-t', '圆阵排列'));
-    g5.appendChild(h5);
-    var c5r = el('div', 'chiprow');
-    [['3', 3], ['4', 4], ['6', 6], ['9', 9], ['自动', 'auto']].forEach(function (o) {
-      var b = el('button', '', o[0]);
-      b.type = 'button';
-      b.title = '排成 ' + o[0] + ' 个的圆阵（点一下立即生效）';
-      b.addEventListener('click', function () { App.circleCluster(o[1]); });
-      c5r.appendChild(b);
-    });
-    g5.appendChild(c5r);
-    var f5 = el('div', 'field');
-    f5.style.marginTop = '8px';
-    var l5 = el('label');
-    l5.appendChild(el('span', null, '圆间距'));
-    var v5 = el('span', 'hint', (App.__ringOpts ? App.__ringOpts.gap : 4) + '%');
-    l5.appendChild(v5);
-    f5.appendChild(l5);
-    var w5 = el('div', 'slider');
-    var r5 = document.createElement('input');
-    r5.type = 'range'; r5.min = 0; r5.max = 24; r5.step = 1; r5.value = App.__ringOpts ? App.__ringOpts.gap : 4;
-    r5.addEventListener('input', function () { App.__ringOpts.gap = parseInt(r5.value, 10); v5.textContent = r5.value + '%'; });
-    w5.appendChild(r5);
-    f5.appendChild(w5);
-    g5.appendChild(f5);
-    var tl5 = el('div', 'toggleline');
-    tl5.appendChild(el('span', null, '按品牌色描边'));
-    var sw5 = el('button', (App.__ringOpts && App.__ringOpts.brand) ? 'switch on' : 'switch');
-    sw5.type = 'button';
-    sw5.addEventListener('click', function () {
-      App.__ringOpts.brand = !App.__ringOpts.brand;
-      sw5.classList.toggle('on', App.__ringOpts.brand);
-    });
-    tl5.appendChild(sw5);
-    g5.appendChild(tl5);
-    p.appendChild(g5);
 
     var sc = el('div', 'icsearch');
     sc.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
@@ -947,6 +908,65 @@
   /* ---------- 选中后的：对齐 / 网格排列 / 缩放 / 旋转 ---------- */
   var gCols = 'auto', gGap = 32;
 
+  /* ---------- 圆阵工具（属性面板） ---------- */
+  function clusterTools() {
+    var out = [];
+    var c = App.__cluster;
+    var gb = el('div');
+    var tipn = el('p', 'empty', c ? ('当前 ' + c.cols + ' × ' + c.rows + '，直径 ' + Math.round(c.d) + 'px') : '先选图标，点一个网格即可排布');
+    tipn.style.padding = '0 0 8px';
+    gb.appendChild(tipn);
+
+    var gr = el('div', 'chiprow');
+    App.CLUSTER_GRIDS.forEach(function (g) {
+      var on = c && c.cols === g[0] && c.rows === g[1];
+      var b = el('button', on ? 'on' : '', g[0] + '×' + g[1]);
+      b.type = 'button';
+      b.addEventListener('click', function () { App.circleCluster(g); });
+      gr.appendChild(b);
+    });
+    var au = el('button', '', '自动');
+    au.type = 'button';
+    au.addEventListener('click', function () { App.circleCluster('auto'); });
+    gr.appendChild(au);
+    gb.appendChild(gr);
+
+    [['圆间距', 0, 30, App.__ringOpts.gap, '%', function (v) { App.clusterGapLive(v); }, function () { App.__ringOpts.gap = +this.value; App.commit(); }],
+     ['整体缩放', 40, 200, 100, '%', function (v) { App.clusterScale(v); }, function () { App.commit(); }],
+     ['整体旋转', -180, 180, 0, '°', function (v) { App.clusterRotate(v); }, function () { App.commit(); }]
+    ].forEach(function (o) {
+      var f = el('div', 'field');
+      f.style.marginTop = '10px';
+      var lb = el('label');
+      lb.appendChild(el('span', null, o[0]));
+      var hv = el('span', 'hint', o[3] + o[4]);
+      lb.appendChild(hv);
+      f.appendChild(lb);
+      var wr = el('div', 'slider');
+      var r = document.createElement('input');
+      r.type = 'range'; r.min = o[1]; r.max = o[2]; r.step = 1; r.value = o[3];
+      r.addEventListener('input', function () { hv.textContent = r.value + o[4]; o[5](parseInt(r.value, 10)); });
+      r.addEventListener('change', function () { hv.textContent = r.value + o[4]; (o[6] || function () { App.commit(); }).call(r); if (window.Panels) Panels.syncInspector(); });
+      wr.appendChild(r);
+      f.appendChild(wr);
+      gb.appendChild(f);
+    });
+
+    var tl = el('div', 'toggleline');
+    tl.appendChild(el('span', null, '按品牌色描边'));
+    var sw = el('button', App.__ringOpts.brand ? 'switch on' : 'switch');
+    sw.type = 'button';
+    sw.addEventListener('click', function () {
+      App.__ringOpts.brand = !App.__ringOpts.brand;
+      sw.classList.toggle('on', App.__ringOpts.brand);
+      if (App.__cluster) App.circleCluster([App.__cluster.cols, App.__cluster.rows]);
+    });
+    tl.appendChild(sw);
+    gb.appendChild(tl);
+    out.push(group('圆阵排列', gb));
+    return out;
+  }
+
   function selectionTools(l) {
     var out = [];
 
@@ -1136,6 +1156,7 @@
       p.appendChild(mk);
       /* 未选中时也保留对齐 / 网格排列：没有选择就作用于全部图层 */
       selectionTools({ rot: 0 }).forEach(function (g) { p.appendChild(g); });
+      clusterTools().forEach(function (g) { p.appendChild(g); });
       return;
     }
     var patch = function (o) {
@@ -1276,6 +1297,7 @@
     pos.appendChild(r2);
     p.appendChild(group('位置与尺寸', pos));
     selectionTools(l).forEach(function (g) { p.appendChild(g); });
+      clusterTools().forEach(function (g) { p.appendChild(g); });
 
     var ops = el('div', 'row');
     ops.style.flexWrap = 'wrap';
