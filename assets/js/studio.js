@@ -582,9 +582,16 @@
   function startDrag(e, el, l) {
     var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = screenToDoc(el, l);
     /* 命中已多选的图层时，整组一起拖 */
-    var group = null;
+    var group = null, fromCluster = false;
     if (App.multi.length > 1 && App.multi.indexOf(l.id) > -1) {
       group = App.selSet().map(function (x) { return { id: x.id, x: x.x, y: x.y }; });
+    } else if (App.clusterIds) {
+      var cids = App.clusterIds();
+      if (cids.length > 1 && cids.indexOf(l.id) > -1) {
+        fromCluster = true;
+        group = cids.map(function (id) { return App.getLayer(id); })
+          .filter(Boolean).map(function (x) { return { id: x.id, x: x.x, y: x.y }; });
+      }
     }
     function move(ev) {
       var dx = (ev.clientX - sx) * z, dy = (ev.clientY - sy) * z;
@@ -615,7 +622,7 @@
       document.body.classList.remove('cv-dragging');
       showGuides([]);
       if (moved) {
-        if (group) { App.apply(); App.toast('已移动 ' + group.length + ' 个图层'); }
+        if (group) { App.apply(); if (fromCluster && App.refreshClusterBase) App.refreshClusterBase(); App.toast('已移动 ' + group.length + ' 个图层'); }
         App.commit();
         if (window.Panels) Panels.syncInspector();
       }
@@ -920,6 +927,26 @@
     };
     App.apply(); App.commit();
     App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标）', 'ok');
+  };
+
+  /* 圆阵成员 id（圆环 + 对应图标） */
+  App.clusterIds = function () {
+    return clusterMembers().map(function (l) { return l.id; });
+  };
+  /* 拖动后刷新基点，保证后续缩放/旋转仍然以新位置为中心 */
+  App.refreshClusterBase = function () {
+    var c = App.__cluster; if (!c) return;
+    var mem = clusterMembers();
+    if (!mem.length) { App.__cluster = null; return; }
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    mem.forEach(function (l) {
+      x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
+      x1 = Math.max(x1, l.x + (l.w || 0)); y1 = Math.max(y1, l.y + (l.h || l.w || 0));
+    });
+    c.cx = (x0 + x1) / 2; c.cy = (y0 + y1) / 2;
+    c.base = mem.map(function (l) {
+      return { id: l.id, x: l.x, y: l.y, w: l.w, h: l.h || l.w, rot: l.rot || 0 };
+    });
   };
 
   /* 同步缩放（跟手，不重绘） */
@@ -1345,7 +1372,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f44';
+  App.BUILD = '20261029-f45';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
