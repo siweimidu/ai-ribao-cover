@@ -923,6 +923,15 @@
   };
 
   /* 同步缩放（跟手，不重绘） */
+  /* 雷达图实时预览：只重画这一张 SVG */
+  App.radarLive = function (l) {
+    var el = App.map[l.id];
+    if (!el) return;
+    var html = CV.radarSvg(l.radar || {});
+    el.innerHTML = html;
+    el.__rb = html;
+  };
+
   App.clusterScale = function (pct) {
     var c = App.__cluster; if (!c) return;
     var k = pct / 100;
@@ -1336,7 +1345,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f39';
+  App.BUILD = '20261029-f44';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
