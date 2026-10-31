@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:12:21.024Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:46:02.675Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -4408,9 +4408,10 @@
   /* 屏幕像素 → 设计单位：用图层自身渲染宽反推，内容被缩放也不会偏 */
   function screenToDoc(el, l) {
     try {
-      var r = el.getBoundingClientRect();
-      if (r.width > 2 && l.w > 2) return l.w / r.width;
-      if (r.height > 2 && (l.h || 0) > 2) return l.h / r.height;
+      var s0 = stageScale();                 /* 屏幕 px / 文档 px */
+      var ow = el.offsetWidth, oh = el.offsetHeight;   /* 布局尺寸，不受 rotate/scale 影响 */
+      if (s0 > 0 && ow > 2 && l.w > 2) return l.w / (ow * s0);   /* 母版单位 / 屏幕 px */
+      if (s0 > 0 && oh > 2 && (l.h || 0) > 2) return l.h / (oh * s0);
     } catch (e) { }
     var s = stageScale();
     return s > 0 ? 1 / s : 1;
@@ -5721,7 +5722,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f49';
+  App.BUILD = '20261029-f50';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
