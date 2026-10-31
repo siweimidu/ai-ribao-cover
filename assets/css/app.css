@@ -501,3 +501,8 @@ label.seclabel .hint{float:right;font-family:var(--font-mono);font-size:10.5px;f
 
 /* 图标精灵（一次请求渲染 114 个品牌） */
 .ictile .isp{display:block;width:100%;height:100%;pointer-events:none}
+
+/* 顶栏按钮统一高度，抵消 .btn.primary 的 margin-top */
+.topbar .btn,.topbar .btn.primary,.topbar .btn.icon{height:31px;margin-top:0;border-radius:9px;font-size:12.5px}
+.topbar .btn{padding:0 12px}
+.topbar .btn.icon{width:31px;padding:0}
