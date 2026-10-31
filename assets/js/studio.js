@@ -873,8 +873,13 @@
     var ox = Math.round((x0 + x1) / 2 - totalW / 2);
     var oy = Math.round((y0 + y1) / 2 - totalH / 2);
 
-    /* 先删旧环 */
-    App.doc.layers = App.doc.layers.filter(function (l) { return String(l.role).indexOf('cring_') !== 0; });
+    /* 先删旧环：本功能自己的 cring_ 以及风格自带的装饰圆 ring0/ring1… */
+    App.doc.layers = App.doc.layers.filter(function (l) {
+      var r = String(l.role);
+      if (r.indexOf('cring_') === 0) return false;
+      if (/^ring\d+$/.test(r)) return false;      /* 橘鸦等风格里的装饰圆 */
+      return true;
+    });
 
     set.forEach(function (l, i) {
       var col = i % grid[0], row = Math.floor(i / grid[0]);
@@ -898,7 +903,7 @@
       l.circleHost = 1;
     });
     App.apply(); App.commit();
-    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标）', 'ok');
+    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标' + (pick.from === 'all' ? '，未选中则作用于全部' : '') + '）', 'ok');
   };
 
   App.gridPlace = function (set, cols, gap) {
