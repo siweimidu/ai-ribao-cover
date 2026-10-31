@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:06:08.631Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:07:54.099Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -766,7 +766,7 @@
         var ti = find(L, 'title');
         if (ti) merge(ti, lay === 'poster' ? { size: 118 } : { x: 46, y: 118, w: cw - 96, size: 118, maxH: 420 });
         var ic = find(L, 'icon');
-        if (ic) merge(ic, lay === 'poster' ? { x: W / 2 - 54, y: 24, w: 108, h: 108 } : { x: cw + 96, y: 578, w: 176, h: 176, opacity: .9 });
+        if (ic) merge(ic, lay === 'poster' ? { x: W / 2 - 54, y: 24, w: 108, h: 108 } : { x: cw + 40, y: 562, w: 150, h: 150, opacity: .9 });
         var sb = find(L, 'sub');
         if (sb) merge(sb, { x: 46, y: 566, w: cw - 130, size: 22, color: '#3a332b' });
         var k = find(L, 'kicker');
@@ -777,6 +777,7 @@
         if (f) merge(f, { x: 46, y: 652, w: 620, size: 12, color: t.ink2 });
         var r = find(L, 'rule');
         if (r) merge(r, { x: 46, y: 110, w: 74, h: 6, color: t.accent });
+        var d0 = find(L, 'date'); if (d0) d0.opacity = 0;    /* 撕纸版不用日期层 */
       }
     },
     /* 13 —— 黑鸦：贴纸描边 --------------------------------- */
