@@ -508,6 +508,11 @@
       ]
     },
     {
+      g: '图表', items: [
+        ['雷达图', function (t) { return CV.RADAR('radar', null, { x: 320, y: 120, w: 420, h: 420 }); }]
+      ]
+    },
+    {
       g: '报纸版式', items: [
         ['报头', function (t) {
           return CV.T('mast', 'AI 日报 | 第 561 期', {
@@ -909,6 +914,86 @@
   var gCols = 'auto', gGap = 32;
 
   /* ---------- 圆阵工具（属性面板） ---------- */
+  /* ---------- 雷达图编辑器（数据/颜色/字号全可改） ---------- */
+  function radarTools(l) {
+    var out = [];
+    var c = l.radar || (l.radar = CV.radarDefault());
+    var gb = el('div');
+
+    c.axes.forEach(function (ax, i) {
+      var row = el('div', 'field');
+      row.style.display = 'flex';
+      row.style.gap = '6px';
+      row.style.alignItems = 'center';
+      var li = document.createElement('input');
+      li.type = 'text'; li.value = ax.label;
+      li.style.flex = '1';
+      li.addEventListener('input', function () { ax.label = li.value; App.radarLive && App.radarLive(l); });
+      li.addEventListener('change', function () { App.commit(); });
+      var vi = document.createElement('input');
+      vi.type = 'number'; vi.step = '0.01'; vi.value = ax.value;
+      vi.style.width = '78px';
+      vi.addEventListener('input', function () { ax.value = parseFloat(vi.value) || 0; App.radarLive && App.radarLive(l); });
+      vi.addEventListener('change', function () { App.commit(); });
+      row.appendChild(li); row.appendChild(vi);
+      gb.appendChild(row);
+    });
+
+    var fm = el('div', 'field');
+    fm.style.marginTop = '10px';
+    var l1 = el('label'); l1.appendChild(el('span', null, '最大值'));
+    fm.appendChild(l1);
+    var mi = document.createElement('input');
+    mi.type = 'number'; mi.min = '1'; mi.value = c.max;
+    mi.style.width = '100%';
+    mi.addEventListener('input', function () { c.max = parseFloat(mi.value) || 100; App.radarLive && App.radarLive(l); });
+    mi.addEventListener('change', function () { App.commit(); });
+    fm.appendChild(mi);
+    gb.appendChild(fm);
+
+    var cr = el('div', 'chiprow');
+    cr.style.marginTop = '10px';
+    [['线色', 'color'], ['填充', 'fill'], ['文字', 'labelColor']].forEach(function (o) {
+      var wrap = el('div');
+      wrap.style.textAlign = 'center';
+      var ci = document.createElement('input');
+      ci.type = 'color'; ci.value = c[o[1]] || '#000000';
+      ci.addEventListener('input', function () {
+        c[o[1]] = ci.value;
+        if (o[1] === 'labelColor') c.valueColor = ci.value;
+        App.radarLive && App.radarLive(l);
+      });
+      ci.addEventListener('change', function () { App.commit(); });
+      wrap.appendChild(ci);
+      var cap = el('span', 'hint', o[0]);
+      cap.style.display = 'block';
+      wrap.appendChild(cap);
+      cr.appendChild(wrap);
+    });
+    gb.appendChild(cr);
+
+    [['标签字号', 'labelSize', 12, 80], ['数值字号', 'valueSize', 12, 80]].forEach(function (o) {
+      var f = el('div', 'field');
+      f.style.marginTop = '10px';
+      var lb = el('label');
+      lb.appendChild(el('span', null, o[0]));
+      var hv = el('span', 'hint', c[o[1]] + 'px');
+      lb.appendChild(hv);
+      f.appendChild(lb);
+      var wr = el('div', 'slider');
+      var r = document.createElement('input');
+      r.type = 'range'; r.min = o[2]; r.max = o[3]; r.step = 1; r.value = c[o[1]];
+      r.addEventListener('input', function () { hv.textContent = r.value + 'px'; c[o[1]] = parseInt(r.value, 10); App.radarLive && App.radarLive(l); });
+      r.addEventListener('change', function () { App.commit(); });
+      wr.appendChild(r);
+      f.appendChild(wr);
+      gb.appendChild(f);
+    });
+
+    out.push(group('雷达图数据', gb));
+    return out;
+  }
+
   function clusterTools() {
     var out = [];
     var c = App.__cluster;
@@ -1157,6 +1242,7 @@
       /* 未选中时也保留对齐 / 网格排列：没有选择就作用于全部图层 */
       selectionTools({ rot: 0 }).forEach(function (g) { p.appendChild(g); });
       clusterTools().forEach(function (g) { p.appendChild(g); });
+      if (l && l.type === 'radar') radarTools(l).forEach(function (g) { p.appendChild(g); });
       return;
     }
     var patch = function (o) {
@@ -1298,6 +1384,7 @@
     p.appendChild(group('位置与尺寸', pos));
     selectionTools(l).forEach(function (g) { p.appendChild(g); });
       clusterTools().forEach(function (g) { p.appendChild(g); });
+      if (l && l.type === 'radar') radarTools(l).forEach(function (g) { p.appendChild(g); });
 
     var ops = el('div', 'row');
     ops.style.flexWrap = 'wrap';
