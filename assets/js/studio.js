@@ -417,22 +417,43 @@
   App.drawGuides = drawGuides;
 
   /* 选中圆阵成员时，返回整组包围盒（让外框包住整组并跟手） */
-  function clusterSelBounds() {
-    var c = App.__cluster;
-    if (!c || !c.base) return null;
-    var sel = App.multi && App.multi.length ? App.multi : (App.sel ? [App.sel] : []);
-    if (!sel.length) return null;
-    var ids = c.base.map(function (b) { return b.id; });
-    var hit = sel.some(function (id) { return ids.indexOf(id) > -1; });
-    if (!hit) return null;
-    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  /* 用成员元素的屏幕矩形换算成覆盖层坐标（覆盖层与画布同为 doc 像素） */
+  function unionRectInStage(ids) {
+    var root = App.root; if (!root) return null;
+    var rr = root.getBoundingClientRect(), s = stageScale() || 1;
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     ids.forEach(function (id) {
-      var l = App.getLayer(id); if (!l) return;
-      x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
-      x1 = Math.max(x1, l.x + (l.w || 0)); y1 = Math.max(y1, l.y + (l.h || l.w || 0));
+      var el = App.map[id]; if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (!r.width && !r.height) return;
+      x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top);
+      x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom);
     });
     if (!isFinite(x0)) return null;
-    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, n: ids.length };
+    return { x: (x0 - rr.left) / s, y: (y0 - rr.top) / s, w: (x1 - x0) / s, h: (y1 - y0) / s };
+  }
+
+  function clusterSelBounds() {
+    /* 只用真实存在的圆阵成员（cring_ 环 + 对应图标）的当前坐标，不用历史 base */
+    var ids = clusterMembers().map(function (l) { return l.id; });
+    if (ids.length < 2) return null;
+    var sel = (App.multi && App.multi.length) ? App.multi : (App.sel ? [App.sel] : []);
+    if (!sel.length) return null;
+    var hit = false;
+    sel.forEach(function (id) { if (ids.indexOf(id) > -1) hit = true; });
+    if (!hit) return null;
+    var b = { x: 1e9, y: 1e9, x2: -1e9, y2: -1e9 };
+    ids.forEach(function (id) {
+      var l = App.getLayer(id); if (!l) return;
+      var e2 = App.map[id];
+      var h = l.type === 'text' ? (e2 ? e2.offsetHeight : l.h || 0) : (l.h || l.w || (e2 ? e2.offsetHeight : 0));
+      b.x = Math.min(b.x, l.x); b.y = Math.min(b.y, l.y);
+      b.x2 = Math.max(b.x2, l.x + (l.w || 0)); b.y2 = Math.max(b.y2, l.y + h);
+    });
+    var ur = unionRectInStage(ids);
+    if (!ur) return null;
+    ur.n = ids.length;
+    return ur;
   }
 
   function drawSel() {
@@ -460,10 +481,11 @@
         b.x = Math.min(b.x, l.x); b.y = Math.min(b.y, l.y);
         b.x2 = Math.max(b.x2, l.x + l.w); b.y2 = Math.max(b.y2, l.y + h);
       });
+      var ur2 = unionRectInStage(set.map(function (l) { return l.id; })) || { x: b.x, y: b.y, w: 0, h: 0 };
       var box = document.createElement('div');
       box.className = 'sel secondary';
-      box.style.left = b.x + 'px'; box.style.top = b.y + 'px';
-      box.style.width = (b.x2 - b.x) + 'px'; box.style.height = (b.y2 - b.y) + 'px';
+      box.style.left = ur2.x + 'px'; box.style.top = ur2.y + 'px';
+      box.style.width = ur2.w + 'px'; box.style.height = ur2.h + 'px';
       var tg = document.createElement('div');
       tg.className = 'tag';
       tg.textContent = set.length + ' 个图层 · Esc 取消';
@@ -969,6 +991,8 @@
 
   /* 圆阵成员 id（圆环 + 对应图标） */
   App.clusterIds = function () {
+    var live = clusterMembers().map(function (l) { return l.id; });
+    if (live.length > 1) return live;
     var c = App.__cluster;
     if (c && c.base && c.base.length) {
       return c.base.map(function (b) { return b.id; }).filter(function (id) { return !!App.getLayer(id); });
@@ -1416,7 +1440,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f52';
+  App.BUILD = '20261029-f53';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
