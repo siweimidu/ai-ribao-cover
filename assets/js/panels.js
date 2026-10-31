@@ -380,6 +380,32 @@
     p.appendChild(list);
   }
 
+  try { window.__VENDORS = VENDORS; } catch (e) { }
+
+  /* 精灵图：一次请求拿到全部 114 个品牌图标（替代 114 次 <img> 请求） */
+  var SPRITE = null;
+  function loadSprite() {
+    fetch('assets/icons/sprite.json', { cache: 'force-cache' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        SPRITE = j;
+        var si2 = document.getElementById('iconSearchInput');
+        if (document.getElementById('iconList')) renderIcons(si2 ? si2.value : '');
+      })
+      .catch(function () { });
+  }
+  function spriteStyle(key) {
+    if (!SPRITE || !SPRITE.map[key]) return null;
+    var c = SPRITE.map[key][0], rr = SPRITE.map[key][1];
+    var numW = SPRITE.w - SPRITE.cell, numH = SPRITE.h - SPRITE.cell;
+    return {
+      backgroundImage: 'url(assets/icons/sprite.png)',
+      backgroundSize: ((SPRITE.w / SPRITE.cell) * 100) + '% auto',
+      backgroundPosition: (numW ? -(c / numW) * 100 : 0).toFixed(2) + '% ' + (numH ? -(rr / numH) * 100 : 0).toFixed(2) + '%',
+      backgroundRepeat: 'no-repeat'
+    };
+  }
+
   function renderIcons(q) {
     var host = $('#iconList');
     if (!host) return;
@@ -399,11 +425,24 @@
       tile.draggable = false;
       tile.style.webkitUserDrag = 'none';
       tile.title = v.vendor + '（' + v.models.length + ' 个模型 · ' + v.total + ' 个图标）';
-      var img = document.createElement('img');
-      img.src = variantURL(v.rep.id, v.rep.variant, App.doc.dark);
-      img.alt = v.vendor;
-      img.draggable = false;
-      tile.appendChild(img);
+      var key = v.rep.id + '#' + v.rep.variant;
+      var ss = spriteStyle(key);
+      if (ss) {
+        var ph = el('i', 'isp');
+        ph.style.backgroundImage = ss.backgroundImage;
+        ph.style.backgroundSize = ss.backgroundSize;
+        ph.style.backgroundPosition = ss.backgroundPosition;
+        ph.style.backgroundRepeat = ss.backgroundRepeat;
+        tile.appendChild(ph);
+      } else {
+        var img = document.createElement('img');
+        img.src = variantURL(v.rep.id, v.rep.variant, App.doc.dark);
+        img.alt = v.vendor;
+        img.draggable = false;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        tile.appendChild(img);
+      }
       tile.appendChild(el('span', 'ibadge', String(v.total)));
       tile.addEventListener('pointerdown', function (e) { startIconDrag(e, v.rep.id + '#' + v.rep.variant); });
       tile.addEventListener('click', function () {
@@ -1610,6 +1649,7 @@
     buildContentPane();
     buildStylePane();
     buildIconPane();
+    if (!SPRITE) loadSprite();
     buildTextPane();
     buildCanvasPane();
     bindAuxSwitches();
