@@ -834,26 +834,39 @@
   };
 
   /* 网格落位：以选中图标的「原始包围盒中心」为锚点，不强制挪到画布正中 */
-  /* 图标圆阵：等径圆整齐堆叠，圆环可用各自品牌色 */
-  App.__ringOpts = { gap: 4, brand: true };
-  App.circleCluster = function (mode) {
+  /* 图标圆阵：等径圆整齐堆叠 + 同步缩放/旋转/间距 */
+  App.__ringOpts = { gap: 8, brand: true };
+  App.__cluster = null;            /* { cols, rows, d, cx, cy, base: [{id,x,y,w,h}] } */
+  App.CLUSTER_GRIDS = [[2, 1], [3, 1], [2, 2], [3, 2], [4, 2], [3, 3], [4, 3], [5, 3]];
+
+  function clusterMembers() {
+    var rings = {}, icons = [];
+    App.doc.layers.forEach(function (l) {
+      var r = String(l.role);
+      if (r.indexOf('cring_') === 0) rings[r.slice(6)] = l;
+    });
+    App.doc.layers.forEach(function (l) {
+      if (l.type === 'icon' && rings[l.id]) icons.push(l);
+    });
+    var all = [];
+    icons.forEach(function (ic) { all.push(rings[ic.id], ic); });
+    return all;
+  }
+
+  App.circleCluster = function (spec) {
     var pick = App.iconSet();
     if (!pick.list.length) { App.toast('画布上没有图标', 'err'); return; }
     var set = pick.list;
     var total = set.length;
-    var n = mode === 'auto' || !mode ? total : Math.min(total, parseInt(mode, 10));
     var grid;
-    if (n <= 1) grid = [1, 1];
-    else if (n === 2) grid = [2, 1];
-    else if (n === 3) grid = [3, 1];
-    else if (n === 4) grid = [2, 2];
-    else if (n <= 6) grid = [3, 2];
-    else if (n <= 8) grid = [4, 2];
-    else grid = [3, 3];
+    if (spec && spec.length === 2) grid = spec;
+    else if (spec === 'auto' || !spec) {
+      var n0 = total;
+      grid = n0 <= 2 ? [2, 1] : (n0 === 3 ? [3, 1] : (n0 === 4 ? [2, 2] : (n0 <= 6 ? [3, 2] : (n0 <= 8 ? [4, 2] : [3, 3]))));
+    } else grid = [parseInt(spec, 10) || 3, Math.ceil(total / (parseInt(spec, 10) || 3))];
 
-    var gap = App.__ringOpts.gap == null ? 4 : App.__ringOpts.gap;   /* 百分比 of 直径 */
+    var gap = App.__ringOpts.gap == null ? 8 : App.__ringOpts.gap;
     var d = 0;
-    /* 已有圆环时沿用它的直径，避免反复排布把图标越缩越小 */
     set.forEach(function (l) {
       var old = App.doc.layers.filter(function (r) { return r.role === 'cring_' + l.id; })[0];
       if (old && old.w > d) d = old.w;
@@ -862,7 +875,6 @@
     if (!d) d = Math.round(App.doc.w * 0.125);
     var gpx = Math.round(d * gap / 100);
 
-    /* 锚点：图标原包围盒中心（沿用原位置） */
     var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     set.forEach(function (l) {
       x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
@@ -873,37 +885,81 @@
     var ox = Math.round((x0 + x1) / 2 - totalW / 2);
     var oy = Math.round((y0 + y1) / 2 - totalH / 2);
 
-    /* 先删旧环：本功能自己的 cring_ 以及风格自带的装饰圆 ring0/ring1… */
     App.doc.layers = App.doc.layers.filter(function (l) {
       var r = String(l.role);
       if (r.indexOf('cring_') === 0) return false;
-      if (/^ring\d+$/.test(r)) return false;      /* 橘鸦等风格里的装饰圆 */
+      if (/^ring\d+$/.test(r)) return false;
       return true;
     });
 
     set.forEach(function (l, i) {
       var col = i % grid[0], row = Math.floor(i / grid[0]);
       var cx = ox + col * (d + gpx), cy = oy + row * (d + gpx);
-      l.x = cx; l.y = cy; l.w = d; l.h = d;
-      var el = App.map[l.id];
       var brand = '#101114';
-      if (App.__ringOpts.brand && el) {
-        try { brand = CV.brandColorOf(el) || '#101114'; } catch (e) { }
-      }
+      var el = App.map[l.id];
+      if (App.__ringOpts.brand && el) { try { brand = CV.brandColorOf(el) || '#101114'; } catch (e) { } }
       var ring = CV.S('cring_' + l.id, 'circle', {
         x: cx, y: cy, w: d, h: d, color: '#ffffff', radius: 999,
         bw: Math.max(2, Math.round(d * 0.028)), bc: brand
       });
       var at = App.doc.layers.indexOf(l);
-      App.doc.layers.splice(at, 0, ring);       /* 环插在图标之前（下面） */
-      /* 图标缩到圆的 56% 并居中 */
+      App.doc.layers.splice(at, 0, ring);
       var pad = Math.round(d * 0.22);
+      l.clusterD = d;
       l.w = Math.round(d * 0.56); l.h = l.w;
       l.x = cx + pad; l.y = cy + pad;
-      l.circleHost = 1;
+      l.rot = 0;
     });
+
+    App.__cluster = {
+      cols: grid[0], rows: grid[1], d: d, gap: gap,
+      cx: ox + totalW / 2, cy: oy + totalH / 2,
+      base: clusterMembers().map(function (l) {
+        return { id: l.id, x: l.x, y: l.y, w: l.w, h: l.h || l.w, rot: l.rot || 0 };
+      })
+    };
     App.apply(); App.commit();
-    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标' + (pick.from === 'all' ? '，未选中则作用于全部' : '') + '）', 'ok');
+    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标）', 'ok');
+  };
+
+  /* 同步缩放（跟手，不重绘） */
+  App.clusterScale = function (pct) {
+    var c = App.__cluster; if (!c) return;
+    var k = pct / 100;
+    c.base.forEach(function (b) {
+      var l = App.getLayer(b.id); if (!l) return;
+      l.x = Math.round(c.cx + (b.x - c.cx) * k);
+      l.y = Math.round(c.cy + (b.y - c.cy) * k);
+      l.w = Math.max(8, Math.round(b.w * k));
+      l.h = Math.max(8, Math.round(b.h * k));
+      var el = App.map[l.id];
+      if (el) {
+        el.style.left = l.x + 'px'; el.style.top = l.y + 'px';
+        el.style.width = l.w + 'px'; el.style.height = l.h + 'px';
+      }
+    });
+    if (App.drawSel) App.drawSel();
+  };
+
+  /* 同步旋转（跟手） */
+  App.clusterRotate = function (deg) {
+    var c = App.__cluster; if (!c) return;
+    c.base.forEach(function (b) {
+      var l = App.getLayer(b.id); if (!l) return;
+      l.rot = deg;
+      var el = App.map[l.id];
+      if (el) el.style.transform = deg ? 'rotate(' + deg + 'deg)' : '';
+    });
+    if (App.drawSel) App.drawSel();
+  };
+
+  /* 同步间距（跟手：按新间距重排一次，不落盘） */
+  App.clusterGapLive = function (gapPct) {
+    if (!App.__cluster) return;
+    var keep = App.__ringOpts.gap;
+    App.__ringOpts.gap = gapPct;
+    App.circleCluster([App.__cluster.cols, App.__cluster.rows]);
+    App.__ringOpts.gap = keep;
   };
 
   App.gridPlace = function (set, cols, gap) {
