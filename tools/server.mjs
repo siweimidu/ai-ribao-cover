@@ -24,7 +24,7 @@ export function createServer() {
       if (p.startsWith('/font/')) {
         const abs = findFont(p.slice(6));
         if (!abs) { res.writeHead(404); res.end('font not found'); return; }
-        return sendFile(res, abs, { 'Cache-Control': 'public, max-age=86400' });
+        return sendFile(req, res, abs, { 'Cache-Control': 'public, max-age=86400' });
       }
 
       /* ---- API ---- */
@@ -83,10 +83,10 @@ export function createServer() {
       if (!abs.startsWith(ROOT)) { res.writeHead(403); res.end('forbidden'); return; }
       if (!fs.existsSync(abs) || fs.statSync(abs).isDirectory()) {
         const idx = path.join(abs, 'index.html');
-        if (fs.existsSync(idx)) return sendFile(res, idx);
+        if (fs.existsSync(idx)) return sendFile(req, res, idx);
         res.writeHead(404); res.end('not found'); return;
       }
-      return sendFile(res, abs);
+      return sendFile(req, res, abs);
     } catch (e) {
       console.error('[500]', p, e);
       try { sendJson(res, 500, { ok: false, error: String(e && e.message || e) }); } catch (e2) { }
