@@ -43,6 +43,18 @@
       color: '#000000', opacity: 1, rot: 0, radius: 0, bw: 0, bc: '#000000', hidden: false
     }, o);
   };
+  CV.esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+  CV.RADAR = function (role, cfg, o) {
+    return CV.assign({
+      id: CV.uid('r'), type: 'radar', role: role || 'radar',
+      x: 240, y: 90, w: 420, h: 420, opacity: 1, rot: 0, hidden: false,
+      radar: Object.assign((window.CV && CV.radarDefault) ? CV.radarDefault() : {}, cfg || {})
+    }, o);
+  };
   CV.IMG = function (role, src, o) {
     return CV.assign({
       id: CV.uid('m'), type: 'image', role: role || 'bg', src: src || '',
