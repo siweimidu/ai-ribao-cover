@@ -52,6 +52,7 @@ export function sendFile(res, abs, extraHeaders) {
       'Content-Length': st.size
     }, extraHeaders || {});
     if (noCache) { h['Cache-Control'] = 'no-store, must-revalidate'; h['Pragma'] = 'no-cache'; h['Expires'] = '0'; }
+    else if (/\.(png|jpg|jpeg|webp|woff2?|svg)$/i.test(ext)) { h['Cache-Control'] = 'public, max-age=31536000, immutable'; }
     res.writeHead(200, h);
     fs.createReadStream(abs).pipe(res);
   });
