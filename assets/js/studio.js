@@ -994,6 +994,7 @@
 
   App.clusterScale = function (pct) {
     var c = App.__cluster; if (!c) return;
+    c.scalePct = pct;
     var k = pct / 100;
     c.base.forEach(function (b) {
       var l = App.getLayer(b.id); if (!l) return;
@@ -1405,7 +1406,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f46';
+  App.BUILD = '20261029-f47';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
