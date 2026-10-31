@@ -910,7 +910,7 @@
 
     /* 23 —— 渐近自由：米色纸 + 巨型贴纸图标 + 黄红两行粗描边标题 ------ */
     {
-      id: 'jianjinziyou', name: '渐近自由', sub: '渐近自由JJZY · 贴纸大字',
+      id: 'jianjinziyou', name: '渐近自由', sub: '渐近自由JJZY · 贴纸大字', qaBleed: true,
       t: { ink: '#14100a', ink2: '#5a5140', paper: '#e9ddc4', yellow: '#f5c33b', red: '#f0555b' },
       bg: '#eae0c8',
       paperCfg: { on: false, opacity: 20, noise: 42, scale: 320 },
@@ -1018,8 +1018,11 @@
 
         if (lay === 'poster') {
           var tp0 = find(L, 'title');
-          if (tp0) merge(tp0, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.16), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.0875), color: t.ink });
-          ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+          if (tp0) merge(tp0, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.09), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.070), color: t.ink, fit: true, maxH: Math.round(Wd * 0.070 * 1.2) });
+          var sp0 = find(L, 'sub');
+          if (sp0) merge(sp0, { x: Math.round(Wd * 0.10), y: Math.round(Ht * 0.24), w: Math.round(Wd * 0.80), align: 'center', size: Math.round(Wd * 0.045) });
+          var icp = find(L, 'icon'); if (icp) icp.opacity = 0;
+          ['kicker', 'date', 'rule', 'foot', 'footline', 'series'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
           return;
         }
 
@@ -1077,10 +1080,7 @@
 
         /* 原来的主图标挪进第一个圆（避免它单独出现在别处） */
         var ic = find(L, 'icon');
-        if (ic) merge(ic, {
-          x: gx + Math.round(d * 0.22), y: gy + Math.round(d * 0.22),
-          w: Math.round(d * 0.56), h: Math.round(d * 0.56)
-        });
+        if (ic) ic.opacity = 0;    /* 圆阵第 1 个圆已经画了主图标 */
         ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
     },
@@ -1159,10 +1159,7 @@
           }));
         }
         var ic = find(L, 'icon');
-        if (ic) merge(ic, {
-          x: gx + Math.round(d * 0.22), y: gy + Math.round(d * 0.22),
-          w: Math.round(d * 0.56), h: Math.round(d * 0.56)
-        });
+        if (ic) ic.opacity = 0;    /* 圆阵第 1 个圆已画主图标 */
         ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
     },
