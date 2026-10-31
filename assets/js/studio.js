@@ -409,10 +409,39 @@
   }
   App.drawGuides = drawGuides;
 
+  /* 选中圆阵成员时，返回整组包围盒（让外框包住整组并跟手） */
+  function clusterSelBounds() {
+    var c = App.__cluster;
+    if (!c || !c.base) return null;
+    var sel = App.multi && App.multi.length ? App.multi : (App.sel ? [App.sel] : []);
+    if (!sel.length) return null;
+    var ids = c.base.map(function (b) { return b.id; });
+    var hit = sel.some(function (id) { return ids.indexOf(id) > -1; });
+    if (!hit) return null;
+    var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    ids.forEach(function (id) {
+      var l = App.getLayer(id); if (!l) return;
+      x0 = Math.min(x0, l.x); y0 = Math.min(y0, l.y);
+      x1 = Math.max(x1, l.x + (l.w || 0)); y1 = Math.max(y1, l.y + (l.h || l.w || 0));
+    });
+    if (!isFinite(x0)) return null;
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0, n: ids.length };
+  }
+
   function drawSel() {
     var host = $('#selLayer');
     if (!host) return;
     host.innerHTML = '';
+    var cb = clusterSelBounds();
+    if (cb) {
+      var b = $('#selBox') || document.createElement('div');
+      b.id = 'selBox';
+      b.className = 'sel';
+      b.style.cssText = 'position:absolute;left:' + cb.x + 'px;top:' + cb.y + 'px;width:' + cb.w + 'px;height:' + cb.h + 'px;pointer-events:none';
+      host.appendChild(b);
+      showSelInfo({ length: cb.n, x: cb.x, y: cb.y, w: cb.w, h: cb.h }, 'cluster');
+      return;
+    }
     var set = App.selSet();
     showSelInfo(set);
     if (!set.length) return;
@@ -931,6 +960,10 @@
 
   /* 圆阵成员 id（圆环 + 对应图标） */
   App.clusterIds = function () {
+    var c = App.__cluster;
+    if (c && c.base && c.base.length) {
+      return c.base.map(function (b) { return b.id; }).filter(function (id) { return !!App.getLayer(id); });
+    }
     return clusterMembers().map(function (l) { return l.id; });
   };
   /* 拖动后刷新基点，保证后续缩放/旋转仍然以新位置为中心 */
@@ -1372,7 +1405,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f45';
+  App.BUILD = '20261029-f46';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
