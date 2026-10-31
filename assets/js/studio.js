@@ -671,7 +671,10 @@
       var nx = ox + dx, ny = oy + dy;
       var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 吸附默认关：要跟手 */
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
-      l.x = nx; l.y = ny;
+      var MWd = (CV.MASTER ? CV.MASTER.w : 1160), MHd = (CV.MASTER ? CV.MASTER.h : 720);
+      var halfW = (l.w || 0) * 0.5, halfH = ((l.type === 'text' ? el.offsetHeight : l.h) || l.w || 0) * 0.5;
+      l.x = Math.min(Math.max(nx, -halfW), MWd - halfW);
+      l.y = Math.min(Math.max(ny, -halfH), MHd - halfH);
       var M1 = CV.metrics(App.doc);
       el.style.left = M1.x(l.x) + 'px'; el.style.top = M1.y(l.y) + 'px';
       drawSel();
@@ -926,7 +929,10 @@
     var set = pick.list;
     var total = set.length;
     var grid;
-    if (spec && spec.length === 2) grid = spec;
+    if (typeof spec === 'number' && isFinite(spec)) {
+      var c0 = Math.max(1, Math.min(spec, total));
+      grid = [c0, Math.ceil(total / c0)];
+    } else if (spec && spec.length === 2) grid = spec;
     else if (spec === 'auto' || !spec) {
       var n0 = total;
       grid = n0 <= 2 ? [2, 1] : (n0 === 3 ? [3, 1] : (n0 === 4 ? [2, 2] : (n0 <= 6 ? [3, 2] : (n0 <= 8 ? [4, 2] : [3, 3]))));
