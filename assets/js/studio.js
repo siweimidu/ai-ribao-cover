@@ -1190,7 +1190,9 @@
   App.clearLayers = function (mode) {
     var before = App.doc.layers.length;
     App.doc.layers = App.doc.layers.filter(function (l) {
-      return mode === 'icon' ? l.type !== 'icon' : false;
+      if (mode === 'icon') return l.type !== 'icon';
+      if (mode === 'text') return l.type !== 'text';
+      return false;
     });
     var removed = before - App.doc.layers.length;
     if (!removed) { App.toast(mode === 'icon' ? '没有图标可清空' : '画布已经是空的', 'err'); return; }
@@ -1198,7 +1200,8 @@
     App.multi = [];
     App.apply();
     App.commit();
-    App.toast((mode === 'icon' ? '已清空 ' + removed + ' 个图标' : '已清空全部 ' + removed + ' 个图层') + ' · Ctrl+Z 可撤销', 'ok');
+    var what = mode === 'icon' ? '图标' : (mode === 'text' ? '文字（背景底纹保留）' : '全部');
+    App.toast('已清空 ' + removed + ' 个' + what + '图层 · Ctrl+Z 可撤销', 'ok');
   };
 
   App.removeSel = function () {
@@ -1446,7 +1449,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f53';
+  App.BUILD = '20261029-f54';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
