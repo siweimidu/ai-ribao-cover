@@ -378,9 +378,9 @@
     var list = el('div', 'iclist');
     list.id = 'iconList';
     p.appendChild(list);
-  }
+    try { window.__VENDORS = VENDORS; } catch (e) { }
 
-  try { window.__VENDORS = VENDORS; } catch (e) { }
+  }
 
   /* 精灵图：一次请求拿到全部 114 个品牌图标（替代 114 次 <img> 请求） */
   var SPRITE = null;
