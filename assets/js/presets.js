@@ -530,8 +530,9 @@
         x.add(CV.R('tear', tearRaw(54), { x: cw - 6, y: 0, w: 54, h: H }));
         if (cw + 380 < W) {
           x.add(CV.R('chart', radarHand(), { x: cw + 46, y: 176, w: 296, h: 296, opacity: .95 }));
-          var labs = [['前端', '60.33', cw + 140, 148], ['后端', '55.34', cw + 316, 250],
-          ['算法', '79.79', cw + 306, 400], ['数据', '69.81', cw + 34, 400], ['研究', '85.07', cw + 140, 496]];
+          var LW = 120, RX = W - LW - 8;   /* 标签盒 120 宽，右缘留 8px */
+          var labs = [['前端', '60.33', cw + 140, 148], ['后端', '55.34', Math.min(cw + 316, RX), 250],
+          ['算法', '79.79', Math.min(cw + 306, RX), 400], ['数据', '69.81', cw + 34, 400], ['研究', '85.07', cw + 140, 496]];
           labs.forEach(function (l, i) {
             x.add(CV.T('lb' + i, l[0], { x: l[2], y: l[3], w: 120, size: 15, font: 'hand', color: '#141210', align: 'center' }));
             x.add(CV.T('lv' + i, l[1], { x: l[2], y: l[3] + 20, w: 120, size: 15, font: 'hand', color: t.accent, align: 'center' }));
@@ -833,9 +834,10 @@
           shadow: '0 22px 44px -26px rgba(120,60,40,.35)'
         }));
 
-        if (lay === 'poster') {
+        if (lay === 'poster') {   /* posterHideSub */
           var icp = find(L, 'icon');
           if (icp) merge(icp, { x: Math.round(Wd / 2 - Wd * 0.0844), y: Math.round(Ht * 0.30), w: Math.round(Wd * 0.169), h: Math.round(Wd * 0.169) });
+          var sb0 = find(L, 'sub'); if (sb0) sb0.opacity = 0;
           var tp = find(L, 'title');
           if (tp) merge(tp, { x: Math.round(Wd * 0.08), y: Math.round(Ht * 0.60), w: Math.round(Wd * 0.84), align: 'center', size: Math.round(Wd * 0.062), color: brand });
           ['date', 'series', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
