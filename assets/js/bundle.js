@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:07:54.099Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T08:12:21.024Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -754,13 +754,13 @@
         x.add(CV.S('shade', 'rect', { x: cw - 44, y: 0, w: 56, h: H, color: 'linear-gradient(to right,rgba(80,64,38,0),rgba(80,64,38,.16))' }));
         x.add(CV.R('tear', tearRaw(54), { x: cw - 6, y: 0, w: 54, h: H }));
         if (cw + 380 < W) {
-          x.add(CV.R('chart', radarHand(), { x: cw + 46, y: 176, w: 296, h: 296, opacity: .95 }));
-          var LW = 120, RX = W - LW - 8;   /* 标签盒 120 宽，右缘留 8px */
-          var labs = [['前端', '60.33', cw + 140, 148], ['后端', '55.34', Math.min(cw + 316, RX), 250],
-          ['算法', '79.79', Math.min(cw + 306, RX), 400], ['数据', '69.81', cw + 34, 400], ['研究', '85.07', cw + 140, 496]];
+          x.add(CV.R('chart', radarHand(), { x: cw + 34, y: 190, w: 236, h: 236, opacity: .95 }));
+          var LW = 112, RX = W - LW - 44;   /* 右内边距 44px，远离画布边缘 */
+          var labs = [['前端', '60.33', cw + 118, 156], ['后端', '55.34', Math.min(cw + 292, RX), 248],
+          ['算法', '79.79', Math.min(cw + 286, RX), 392], ['数据', '69.81', cw + 24, 392], ['研究', '85.07', cw + 118, 500]];
           labs.forEach(function (l, i) {
-            x.add(CV.T('lb' + i, l[0], { x: l[2], y: l[3], w: 120, size: 15, font: 'hand', color: '#141210', align: 'center' }));
-            x.add(CV.T('lv' + i, l[1], { x: l[2], y: l[3] + 20, w: 120, size: 15, font: 'hand', color: t.accent, align: 'center' }));
+            x.add(CV.T('lb' + i, l[0], { x: l[2], y: l[3], w: 112, size: 15, font: 'hand', color: '#141210', align: 'center' }));
+            x.add(CV.T('lv' + i, l[1], { x: l[2], y: l[3] + 20, w: 112, size: 15, font: 'hand', color: t.accent, align: 'center' }));
           });
         }
         var ti = find(L, 'title');
