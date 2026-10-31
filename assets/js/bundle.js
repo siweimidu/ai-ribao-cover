@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T09:19:11.386Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T09:41:40.231Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -2459,29 +2459,6 @@
     p.appendChild(group('版式', lays));
 
 
-    /* 信息底纹 */
-    var bpc = (window.App && App.doc && App.doc.bgPattern) || null;
-    var g4 = el('div', 'group');
-    var h4 = el('div', 'group-h');
-    h4.appendChild(el('span', 'group-t', '信息底纹 · ' + (CV.BG_PATTERNS ? CV.BG_PATTERNS.length : 0) + ' 种'));
-    g4.appendChild(h4);
-    var bgTip = el('p', 'empty', '用真实 AI 资讯铺满画布当背景，纯底纹、无标签');
-    bgTip.style.padding = '0 0 8px';
-    g4.appendChild(bgTip);
-    var prow = el('div', 'chiprow');
-    var noneB = el('button', !bpc ? 'on' : '', '无');
-    noneB.type = 'button';
-    noneB.addEventListener('click', function () { App.setBgPattern(null); App.toast('已关闭信息底纹'); });
-    prow.appendChild(noneB);
-    (CV.BG_PATTERNS || []).forEach(function (bp) {
-      var b = el('button', bpc === bp.id ? 'on' : '', bp.name);
-      b.type = 'button';
-      b.title = bp.name + ' · ' + bp.cols + ' 栏';
-      b.addEventListener('click', function () { App.setBgPattern(bp.id); App.toast('背景底纹：' + bp.name, 'ok'); });
-      prow.appendChild(b);
-    });
-    g4.appendChild(prow);
-    p.appendChild(g4);
 
     var note = el('div', 'note');
     note.innerHTML = '<b>换风格不丢文案</b>：先从「内容」填一次，之后随时切风格/版式，文字会自动带过去。';
@@ -3102,6 +3079,30 @@
       g3.appendChild(line);
     });
     p.appendChild(g3);
+
+    /* 信息底纹 */
+    var bpc = (window.App && App.doc && App.doc.bgPattern) || null;
+    var g4 = el('div', 'group');
+    var h4 = el('div', 'group-h');
+    h4.appendChild(el('span', 'group-t', '信息底纹 · ' + (CV.BG_PATTERNS ? CV.BG_PATTERNS.length : 0) + ' 种'));
+    g4.appendChild(h4);
+    var bgTip = el('p', 'empty', '用真实 AI 资讯铺满画布当背景，纯底纹、无标签');
+    bgTip.style.padding = '0 0 8px';
+    g4.appendChild(bgTip);
+    var prow = el('div', 'chiprow');
+    var noneB = el('button', !bpc ? 'on' : '', '无');
+    noneB.type = 'button';
+    noneB.addEventListener('click', function () { App.setBgPattern(null); App.toast('已关闭信息底纹'); });
+    prow.appendChild(noneB);
+    (CV.BG_PATTERNS || []).forEach(function (bp) {
+      var b = el('button', bpc === bp.id ? 'on' : '', bp.name);
+      b.type = 'button';
+      b.title = bp.name + ' · ' + bp.cols + ' 栏';
+      b.addEventListener('click', function () { App.setBgPattern(bp.id); App.toast('背景底纹：' + bp.name, 'ok'); });
+      prow.appendChild(b);
+    });
+    g4.appendChild(prow);
+    p.appendChild(g4);
 
     var note = el('div', 'note');
     note.innerHTML = '纸纹由三张贴图叠加而成（纸纤维 / 颗粒 / 褶皱）。<b>纹理尺寸</b> 越小颗粒越细。';
@@ -4986,7 +4987,10 @@
       var nx = ox + dx, ny = oy + dy;
       var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 吸附默认关：要跟手 */
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
-      l.x = nx; l.y = ny;
+      var MWd = (CV.MASTER ? CV.MASTER.w : 1160), MHd = (CV.MASTER ? CV.MASTER.h : 720);
+      var halfW = (l.w || 0) * 0.5, halfH = ((l.type === 'text' ? el.offsetHeight : l.h) || l.w || 0) * 0.5;
+      l.x = Math.min(Math.max(nx, -halfW), MWd - halfW);
+      l.y = Math.min(Math.max(ny, -halfH), MHd - halfH);
       var M1 = CV.metrics(App.doc);
       el.style.left = M1.x(l.x) + 'px'; el.style.top = M1.y(l.y) + 'px';
       drawSel();
@@ -5241,7 +5245,10 @@
     var set = pick.list;
     var total = set.length;
     var grid;
-    if (spec && spec.length === 2) grid = spec;
+    if (typeof spec === 'number' && isFinite(spec)) {
+      var c0 = Math.max(1, Math.min(spec, total));
+      grid = [c0, Math.ceil(total / c0)];
+    } else if (spec && spec.length === 2) grid = spec;
     else if (spec === 'auto' || !spec) {
       var n0 = total;
       grid = n0 <= 2 ? [2, 1] : (n0 === 3 ? [3, 1] : (n0 === 4 ? [2, 2] : (n0 <= 6 ? [3, 2] : (n0 <= 8 ? [4, 2] : [3, 3]))));
