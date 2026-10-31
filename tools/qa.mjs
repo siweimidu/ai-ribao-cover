@@ -70,6 +70,7 @@ const ANALYZE = function (styleId, layoutId, ratioId, bleed) {
       if (ix <= 0 || iy <= 0) continue;
       var small = Math.min(a.w * a.h, c.w * c.h);
       var ratio = (ix * iy) / small;
+      if (bleed && (a.type === 'icon' || c.type === 'icon')) continue;   /* 贴纸压字是设计语言 */
       if (ratio > 0.1) probs.push('HIT:' + a.role + '×' + c.role + '(' + Math.round(ratio * 100) + '%)');
     }
   }
