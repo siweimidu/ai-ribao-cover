@@ -110,3 +110,8 @@
 .cv-bgimg{position:absolute;left:0;top:0;width:100%;height:100%;background-position:center center;background-repeat:no-repeat;pointer-events:none}
 .cv-bgdim{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 /* bg-image */
+
+/* MiSans Heavy / Inkfree（来自 cover-studio skill） */
+@font-face{font-family:"CV-Heavy";src:url("../font/MiSans-Heavy.ttf") format("truetype");font-weight:900;font-display:swap}
+@font-face{font-family:"CV-Ink";src:url("../font/Inkfree.ttf") format("truetype");font-weight:400;font-display:swap}
+.ff-ink{font-family:"CV-Ink","Ink Free","Segoe Script",cursive}
