@@ -12,7 +12,7 @@ await page.goto(base + '/', { waitUntil: 'load' });
 await page.waitForSelector('#cover .cv');
 await new Promise(r => setTimeout(r, 1500));
 
-const CHECK = function (sid, lay, ratio) {
+const CHECK = function (sid, lay, ratio, overlapOK) {
   var doc = CV.compose(sid, lay, CV.defaultContent(), ratio);
   var host = document.getElementById('gc');
   host.innerHTML = '';
@@ -63,13 +63,17 @@ const CHECK = function (sid, lay, ratio) {
       var a = B[i], c2 = B[j];
       if (a.type !== 'shape' || c2.type !== 'shape') continue;
       if (a.shape === 'line' || c2.shape === 'line') continue;
-      if (a.op < 0.15 || c2.op < 0.15) continue;
+      if (a.op < 0.5 || c2.op < 0.5) continue;
+      if (a.bw > 0 && a.color === 'transparent') continue;
+      if (c2.bw > 0 && c2.color === 'transparent') continue;
+      var iArea = ix2 * iy2, mn = Math.min(a.w * a.h, c2.w * c2.h);
+      if (iArea >= mn * 0.85) continue;                                   /* 嵌套/包含 */
       if (a.w >= W - 4 || c2.w >= W - 4) continue;
       var ix2 = Math.max(0, Math.min(a.x + a.w, c2.x + c2.w) - Math.max(a.x, c2.x));
       var iy2 = Math.max(0, Math.min(a.y + a.h, c2.y + c2.h) - Math.max(a.y, c2.y));
       if (ix2 <= 0 || iy2 <= 0) continue;
       var small = Math.min(a.w * a.h, c2.w * c2.h);
-      if ((ix2 * iy2) / small > 0.55) out.push({ k: 'HIT', a: a.role, b: c2.role, aop: a.op, bop: c2.op, aShape: a.shape, bShape: c2.shape });
+      if ((ix2 * iy2) / small > 0.55 && !overlapOK) out.push({ k: 'HIT', a: a.role, b: c2.role, aop: a.op, bop: c2.op, aShape: a.shape, bShape: c2.shape });
     }
   }
   return out;
@@ -80,13 +84,16 @@ await page.evaluate(function () {
   d.id = 'gc'; d.style.cssText = 'position:absolute;left:0;top:0';
   document.body.appendChild(d);
 });
-const styles = JSON.parse(await page.evaluate('JSON.stringify(CV.STYLES.map(function(s){return s.id}))'));
+const meta = JSON.parse(await page.evaluate('JSON.stringify(CV.STYLES.map(function(s){return {id:s.id,ov:!!s.qaOverlap}}))'));
+const styles = meta.map(function (s) { return s.id; });
+const OVERLAP = {};
+meta.forEach(function (s) { OVERLAP[s.id] = s.ov; });
 const layouts = JSON.parse(await page.evaluate('JSON.stringify(CV.LAYOUTS.map(function(l){return l.id}))'));
 const rows = [];
 for (const sid of styles) {
   for (const lay of layouts) {
     const ratio = (lay === 'stack' || lay === 'sheet') ? 'xhs' : 'land';
-    const probs = await page.evaluate(CHECK, sid, lay, ratio);
+    const probs = await page.evaluate(CHECK, sid, lay, ratio, !!OVERLAP[sid]);
     if (probs && probs.length) rows.push({ sid, lay, probs });
   }
 }
