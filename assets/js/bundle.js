@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T10:11:15.272Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T10:18:10.282Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -165,6 +165,11 @@
         if (v <= y0) return v * k;
         if (v >= y1) return H - (M.h - v) * k;
         return ty0 + (v - y0) * sy;
+      },
+      iy: function (Y) {                       /* 渲染坐标 -> 文档坐标（y 是分段线性） */
+        if (Y <= ty0) return Y / k;
+        if (Y >= ty1) return M.h - (H - Y) / k;
+        return y0 + (Y - ty0) / sy;
       },
       w: function (v) { return v * k; },
       h: function (v) { return v * k; },
@@ -528,7 +533,7 @@
     },
     /* 3 —— 橘鸦：渐变圆格 ------------------------------ */
     {
-      id: 'matrix', name: '渐变圆格', sub: '橘鸦 · 卡片与图标矩阵',
+      id: 'matrix', name: '渐变圆格', sub: '橘鸦 · 卡片与图标矩阵', qaOverlap: true,
       t: { ink: '#16202e', ink2: '#8b97ab', accent: '#3b6cf0', bgSolid: '#f4f6fd', card: '#ffffff' },
       bg: 'linear-gradient(148deg,#eef3ff 0%,#f4f1fd 48%,#f9f2f7 100%)', fx: [], dark: false,
       title: { font: 'heavy', size: 88 },
@@ -627,7 +632,7 @@
     },
     /* 7 —— 荡殇：暗色杂志 ------------------------------ */
     {
-      id: 'noir', name: '暗色杂志', sub: '荡殇 · 发光与斜体',
+      id: 'noir', name: '暗色杂志', sub: '荡殇 · 发光与斜体', qaOverlap: true,
       t: { ink: '#f3f5f9', ink2: '#8b97ab', accent: '#ff3b30', violet: '#6d5cff', bandInk: '#f3f5f9' },
       bg: 'radial-gradient(130% 105% at 74% 12%,#1b2233 0%,#11151f 44%,#080a0e 100%)',
       fx: ['glow', 'grain', 'scan'], dark: true,
@@ -647,7 +652,7 @@
     },
     /* 8 —— 小明：高对比数据 ---------------------------- */
     {
-      id: 'data', name: '高对比数据', sub: '小小小名 · 图表与硬边',
+      id: 'data', name: '高对比数据', sub: '小小小名 · 图表与硬边', qaOverlap: true,
       t: { ink: '#0a0a0a', ink2: '#7a7a7a', accent: '#e2231a', bgSolid: '#fbfbfa' },
       bg: 'linear-gradient(180deg,#ffffff 0%,#fbfbfa 60%,#f2f2f0 100%)', fx: ['grain'], dark: false,
       title: { font: 'heavy', size: 96, color: '#0a0a0a', lh: .98, ls: -.02 },
@@ -745,7 +750,7 @@
 
     /* 12 —— 荡殇永魔：撕纸拼贴 ----------------------------- */
     {
-      id: 'zine', name: '撕纸拼贴', sub: '荡殇永魔 · 剪纸屑与粗黑对照',
+      id: 'zine', name: '撕纸拼贴', sub: '荡殇永魔 · 剪纸屑与粗黑对照', qaOverlap: true,
       t: { ink: '#141210', ink2: '#6d6459', accent: '#c8102e', blue: '#1c5fd0', bgSolid: '#f7f6f2' },
       bg: 'linear-gradient(168deg,#faf9f5 0%,#f4f2ec 55%,#e9e6dd 100%)',
       fx: ['paper', 'grain'], dark: false,
@@ -901,7 +906,7 @@
 
     /* 17 —— 故障拼贴 ---------------------------------------- */
     {
-      id: 'glitch', name: '故障拼贴', sub: '小小小名 · 深色扫描与错位重影',
+      id: 'glitch', name: '故障拼贴', sub: '小小小名 · 深色扫描与错位重影', qaOverlap: true,
       t: { ink: '#eef2f8', ink2: '#7f8ba0', accent: '#ff2d55', cyan: '#22d3ee', bgSolid: '#0a0c11' },
       bg: 'radial-gradient(120% 100% at 70% 6%,#161b26 0%,#0d1017 52%,#06070b 100%)',
       fx: ['grain', 'scan'], dark: true,
@@ -934,7 +939,7 @@
     },
     /* 18 —— 金色斜体 ---------------------------------------- */
     {
-      id: 'golden', name: '金色斜体', sub: '灵感港 · 描金大标与叠影方块',
+      id: 'golden', name: '金色斜体', sub: '灵感港 · 描金大标与叠影方块', qaOverlap: true,
       t: { ink: '#241f1b', ink2: '#7a6a56', accent: '#c0392b', gold: '#c8a24a', bgSolid: '#efe6d3' },
       bg: 'radial-gradient(125% 105% at 24% 0%,#f7f0df 0%,#ece2cd 50%,#ded1b6 100%)',
       fx: ['paper', 'wrinkle', 'grain'], dark: false,
@@ -993,7 +998,7 @@
     },
     /* 20 —— 衬线矩阵 ---------------------------------------- */
     {
-      id: 'serifgrid', name: '衬线矩阵', sub: '橘鸦 · 衬线西文与 3x3 圆格',
+      id: 'serifgrid', name: '衬线矩阵', sub: '橘鸦 · 衬线西文与 3x3 圆格', qaOverlap: true,
       t: { ink: '#1b2230', ink2: '#7f8ea6', accent: '#3b6cf0', bgSolid: '#f6f8fd', card: '#ffffff' },
       bg: 'linear-gradient(150deg,#eef3ff 0%,#f6f2fc 48%,#fbf3f6 100%)',
       fx: [], dark: false,
@@ -1564,6 +1569,7 @@
      3) 越界元素夹回画布        4) 同一水平线的重复细线去重
      ============================================================ */
   function normalizeGeometry(doc) {
+    var MG = CV.metrics(doc);
     var L = doc.layers.filter(function (l) { return l && !l.hidden; });
     var vis = function (l) { return (l.opacity == null ? 1 : l.opacity) > 0.02; };
     var box = function (l) { return { x: l.x, y: l.y, w: l.w || 0, h: l.h || l.w || 0 }; };
@@ -1621,24 +1627,72 @@
         if (inter(bb, cb) > Math.min(bb.w * bb.h, cb.w * cb.h) * 0.3) b.hidden = true;
       });
     });
+    /* 2c) 渲染坐标越界 -> 用 metrics 逆函数夹回（竖版 y 是分段拉伸的） */
+    L.forEach(function (l) {
+      if (!vis(l)) return;
+      var rx = MG.x(l.x), ry = MG.y(l.y);
+      var rw = MG.w(l.w || 0), rh = MG.h(l.h || l.w || 0);
+      if (rw >= doc.w - 4 && rh >= doc.h - 4) return;               /* 满幅底板 */
+      if (rw > doc.w) { l.w = Math.round(doc.w / MG.k); rw = doc.w; }
+      if (rh > doc.h) { var hh = Math.round(doc.h / MG.k); l.h = hh; rh = doc.h; }
+      if (rx + rw > doc.w + 2) {
+        l.x = Math.round((doc.w - rw) / MG.k);
+        if (l.x < 0) l.x = 0;
+      }
+      if (ry + rh > doc.h + 2) {
+        var ny = MG.iy(doc.h - rh);
+        l.y = Math.round(Math.max(0, ny));
+      }
+      if (MG.x(l.x) < -2) l.x = 0;
+      if (MG.y(l.y) < -2) l.y = 0;
+    });
+
+    /* 3a) 文字比画布还宽 -> 收窄（fit 会自动缩字号） */
+    L.forEach(function (l) {
+      if (l.type !== 'text' || !vis(l)) return;
+      var maxW = doc.w - 24;
+      if ((l.w || 0) > maxW) l.w = maxW;
+      if ((l.x || 0) < 12) l.x = 12;
+      if (l.x + l.w > doc.w - 12) l.x = Math.max(12, doc.w - 12 - l.w);
+    });
+
     /* 3) 越界夹回画布（形状/图标/文字） */
     L.forEach(function (l) {
       if (l.type !== 'shape' && l.type !== 'icon' && l.type !== 'text') return;
       if (!vis(l)) return;
       var W2 = doc.w, H2 = doc.h;
       if ((l.w || 0) >= W2 - 4 && (l.h || 0) >= H2 - 4) return;   /* 满幅底板不夹 */
-      var x2 = l.x + (l.w || 0), y2 = l.y + (l.h || l.w || 0);
-      if (l.x < -2 || x2 > W2 + 2) {
-        var over = Math.max(-l.x, x2 - W2);
-        if (over > (l.w || 0) * 0.6) { l.hidden = true; return; }   /* 大半在画布外，直接不要 */
-        l.x = Math.min(Math.max(l.x, 0), Math.max(0, W2 - (l.w || 0)));
+      /* 旋转后的实际外框 */
+      var bw0 = l.w || 0, bh0 = l.h || l.w || 0;
+      var rad = (l.rot || 0) * Math.PI / 180;
+      var aw = Math.abs(bw0 * Math.cos(rad)) + Math.abs(bh0 * Math.sin(rad));
+      var ah = Math.abs(bw0 * Math.sin(rad)) + Math.abs(bh0 * Math.cos(rad));
+      var padX = (aw - bw0) / 2, padY = (ah - bh0) / 2;
+      var x2 = l.x - padX + aw, y2 = l.y - padY + ah;
+      var minX = padX, maxX = W2 - aw + padX;
+      var minY = padY, maxY = H2 - ah + padY;
+      if (l.x < minX - 2 || x2 > W2 + 2) {
+        if (aw > W2 * 1.25) { l.hidden = true; return; }            /* 远超画布，装饰性出血直接不要 */
+        l.x = Math.min(Math.max(l.x, minX), Math.max(minX, maxX));
       }
-      if (l.y < -2 || y2 > H2 + 2) {
-        var overY = Math.max(-l.y, y2 - H2);
-        if (overY > (l.h || l.w || 0) * 0.6) { l.hidden = true; return; }
-        l.y = Math.min(Math.max(l.y, 0), Math.max(0, H2 - (l.h || l.w || 0)));
+      if (l.y < minY - 2 || y2 > H2 + 2) {
+        if (ah > H2 * 1.25) { l.hidden = true; return; }
+        l.y = Math.min(Math.max(l.y, minY), Math.max(minY, maxY));
       }
     });
+    /* 3b) 装饰形状比画布还大 -> 按画布等比缩小（竖版套用横版坐标的兜底） */
+    L.forEach(function (l) {
+      if (l.type !== 'shape' || !vis(l)) return;
+      var bw = l.w || 0, bh = l.h || bw;
+      if (bw <= doc.w * 1.02 && bh <= doc.h * 1.02) return;
+      if (bw >= doc.w * 1.6 || bh >= doc.h * 1.6) { l.hidden = true; return; }
+      var s2 = Math.min(doc.w / bw, doc.h / bh) * 0.98;
+      var nw = Math.round(bw * s2), nh = Math.round(bh * s2);
+      l.x = Math.round(l.x + (bw - nw) / 2);
+      l.y = Math.round(l.y + (bh - nh) / 2);
+      l.w = nw; l.h = nh;
+    });
+
     /* 4) 同 y 的重复横线去重 */
     var lines = L.filter(function (l) {
       return l.type === 'shape' && !l.hidden && vis(l) && (l.h || 0) <= 2 && (l.w || 0) >= 200;
@@ -6201,7 +6255,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f70';
+  App.BUILD = '20261029-f71';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
