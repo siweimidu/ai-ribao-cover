@@ -1585,7 +1585,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f66';
+  App.BUILD = '20261029-f67';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
