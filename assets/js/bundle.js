@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:19:44.055Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:29:23.809Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -6080,7 +6080,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f59';
+  App.BUILD = '20261029-f60';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
