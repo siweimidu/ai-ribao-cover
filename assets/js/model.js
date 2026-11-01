@@ -34,7 +34,7 @@
   CV.I = function (role, icon, o) {
     return CV.assign({
       id: CV.uid('i'), type: 'icon', role: role, icon: icon || '', x: 700, y: 180, w: 360, h: 360,
-      tint: 'none', pad: 0, opacity: 1, rot: 0, radius: 0, shadow: '', hidden: false
+      tint: 'none', pad: 0, opacity: 1, rot: 0, radius: 0, shadow: '', hidden: false, blend: ''
     }, o);
   };
   CV.S = function (role, shape, o) {
