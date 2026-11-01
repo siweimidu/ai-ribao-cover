@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T10:18:10.282Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T11:19:57.870Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -404,7 +404,7 @@
       var t = x.t;
       x.add(CV.S('t1', 'rect', { x: 0, y: 0, w: 14, h: TH, color: t.accent, opacity: .9 }));
       x.add(CV.S('t2', 'bar', { x: TM + 10, y: 700, w: 280, h: 14, color: t.yellow, rot: -1.2, radius: 8, opacity: .85 }));
-      x.add(CV.S('t3', 'blob', { x: TW - 260, y: 900, w: 320, h: 260, color: t.accent, opacity: .06, rot: 8 }));
+      x.add(CV.S('t3', 'blob', { x: TW - 300, y: 780, w: 280, h: 230, color: t.accent, opacity: .06, rot: 8 }));
     },
     newspaper: function (x) {
       var t = x.t;
@@ -514,7 +514,7 @@
         x.add(CV.S('f1', 'rect', { x: 20, y: 20, w: W - 40, h: H - 40, color: 'transparent', bw: 3, bc: t.ink, opacity: .92 }));
         x.add(CV.S('f2', 'rect', { x: 29, y: 29, w: W - 58, h: H - 58, color: 'transparent', bw: 1, bc: t.ink, opacity: .5 }));
         if (x.layout === 'poster') {
-          x.add(CV.S('r0', 'bar', { x: W / 2 - 30, y: 206, w: 60, h: 5, color: t.accent }));
+          x.add(CV.S('r0', 'bar', { x: W / 2 - 30, y: 236, w: 60, h: 5, color: t.accent }));
           return;
         }
         x.add(CV.S('tag', 'rect', { x: M - 2, y: 34, w: 158, h: 34, color: t.accent }));
@@ -555,7 +555,7 @@
             x.add(CV.I('mi' + mi, MAT[mi], { x: mx + 14, y: my + 14, w: 44, h: 44, opacity: .88 }));
           }
         }
-        x.add(CV.S('line1', 'line', { x: M, y: 120, w: 620, h: 1, color: t.ink, opacity: .12 }));
+        x.add(CV.S('line1', 'line', { x: M, y: x.layout === 'poster' ? 96 : 120, w: 620, h: 1, color: t.ink, opacity: .12 }));
       }
     },
     /* 4 —— JJZY：纸质涂鸦 ------------------------------ */
@@ -1568,6 +1568,66 @@
      1) 图标在圆内必须同心      2) 悬空细线不许压图标/文字
      3) 越界元素夹回画布        4) 同一水平线的重复细线去重
      ============================================================ */
+  /* 竖版兜底：横版坐标套到竖版时，把越界/互压的装饰重新分配 */
+  function tallFallback(doc) {
+    if (doc.w >= doc.h) return;                       /* 只处理竖版（w<h） */
+    var L = doc.layers.filter(function (l) { return l && !l.hidden; });
+    var vis = function (l) { return (l.opacity == null ? 1 : l.opacity) > 0.02; };
+    var M = CV.metrics(doc);
+    var W2 = doc.w, H2 = doc.h;
+    /* 装饰形状（非满幅）：按渲染坐标夹进画布，且不允许互相压盖 */
+    var deco = L.filter(function (l) {
+      if (l.type !== 'shape' || !vis(l)) return false;
+      if (Math.min(l.w || 0, l.h || l.w || 0) <= 3) return false;        /* 细线跳过 */
+      var rw = M.w(l.w || 0), rh = M.h(l.h || l.w || 0);
+      return !(rw >= W2 - 8 && rh >= H2 - 8);
+    });
+    deco.forEach(function (l) {
+      var rw = M.w(l.w || 0), rh = M.h(l.h || l.w || 0);
+      /* 横版通栏装饰在竖版放不下 -> 直接隐藏，别硬塞 */
+      if (rw > W2 * 0.98 && rh > H2 * 0.98) { l.hidden = true; return; }
+      if (rw > W2) { l.w = Math.round(W2 / M.k); rw = W2; }
+      if (rh > H2) { var hh = Math.round(H2 / M.k); l.h = hh; rh = H2; }
+      var rx = M.x(l.x), ry = M.y(l.y);
+      if (rx + rw > W2 + 2 || ry + rh > H2 + 2) {
+        /* 越界超过自身 40% -> 隐藏；否则夹回 */
+        var overX = (rx + rw) - W2, overY = (ry + rh) - H2;
+        if (overX > rw * 0.4 || overY > rh * 0.4 || rx < -rw * 0.4 || ry < -rh * 0.4) { l.hidden = true; return; }
+        if (rx + rw > W2) l.x = Math.round(Math.max(0, (W2 - rw) / M.k));
+        if (ry + rh > H2) l.y = Math.round(Math.max(0, M.iy(H2 - rh)));
+        if (M.x(l.x) < 0) l.x = 0;
+        if (M.y(l.y) < 0) l.y = 0;
+      }
+    });
+    /* 最后兜底：任何仍越界的非满幅形状直接隐藏 */
+    L.forEach(function (l) {
+      if (l.hidden || l.type !== 'shape') return;
+      if (!vis(l)) return;
+      var rw = M.w(l.w || 0), rh = M.h(l.h || l.w || 0);
+      if (rw >= W2 - 8 && rh >= H2 - 8) return;
+      var rx = M.x(l.x), ry = M.y(l.y);
+      if (rx < -2 || ry < -2 || rx + rw > W2 + 2 || ry + rh > H2 + 2) l.hidden = true;
+    });
+    doc.layers = doc.layers.filter(function (l) { return !l.hidden; });
+    /* 两两压盖超过 60% -> 把后者（面积小的）挪到右下空白，或降低透明度 */
+    for (var i = 0; i < deco.length; i++) {
+      for (var j = i + 1; j < deco.length; j++) {
+        var a = deco[i], b = deco[j];
+        if (!vis(a) || !vis(b)) continue;
+        var ax = M.x(a.x), ay = M.y(a.y), aw = M.w(a.w || 0), ah = M.h(a.h || a.w || 0);
+        var bx = M.x(b.x), by = M.y(b.y), bw = M.w(b.w || 0), bh = M.h(b.h || b.w || 0);
+        var ix = Math.max(0, Math.min(ax + aw, bx + bw) - Math.max(ax, bx));
+        var iy = Math.max(0, Math.min(ay + ah, by + bh) - Math.max(ay, by));
+        if (ix <= 0 || iy <= 0) continue;
+        var small = Math.min(aw * ah, bw * bh);
+        if ((ix * iy) / small <= 0.6) continue;
+        /* 小的那个降为装饰透明度，避免视觉打架 */
+        var smaller = (aw * ah) <= (bw * bh) ? a : b;
+        smaller.opacity = Math.min(smaller.opacity == null ? 1 : smaller.opacity, 0.18);
+      }
+    }
+  }
+
   function normalizeGeometry(doc) {
     var MG = CV.metrics(doc);
     var L = doc.layers.filter(function (l) { return l && !l.hidden; });
@@ -1937,10 +1997,12 @@
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
     var __doc = {
-      w: RT.w, h: RT.h,
+      w: RT.w, h: RT.h, master: MAST,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
-    try { normalizeGeometry(__doc); } catch (e) { }
+    try { normalizeGeometry(__doc); } catch (e) { if (window.console) console.error('[normalize]', e); }
+    try { tallFallback(__doc); } catch (e) { if (window.console) console.error('[tallFallback]', e); }
+    try { normalizeGeometry(__doc); } catch (e) { }   /* 第二遍：容器挪动后重新对齐图标 */
     return {
       v: CV.VERSION, pv: CV.PRESET_VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
