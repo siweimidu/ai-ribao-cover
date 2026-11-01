@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:40:23.978Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:45:01.637Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -37,7 +37,7 @@
   CV.I = function (role, icon, o) {
     return CV.assign({
       id: CV.uid('i'), type: 'icon', role: role, icon: icon || '', x: 700, y: 180, w: 360, h: 360,
-      tint: 'none', pad: 0, opacity: 1, rot: 0, radius: 0, shadow: '', hidden: false
+      tint: 'none', pad: 0, opacity: 1, rot: 0, radius: 0, shadow: '', hidden: false, blend: ''
     }, o);
   };
   CV.S = function (role, shape, o) {
@@ -1414,11 +1414,11 @@
         var hero = find(L, 'icon');   /* hero_icon_transparent */
         if (hero) {
           var hk = String(hero.icon || '');
-          if (hk.indexOf('#appicon') > -1 || hk.indexOf('#tile-') > -1) {
-            hero.icon = hk.replace(/#appicon|#tile-light|#tile-dark|#symbol-color/, '#symbol-trans-color');
+          if (hk.indexOf('#appicon') > -1 || hk.indexOf('#tile-') > -1 || hk.indexOf('#symbol-color') > -1) {
+            hero.icon = hk.replace(/#appicon|#tile-light|#tile-dark|#symbol-color/, '#symbol-trans-color');   /* 白底变体统一换透明 */
           }
         }
-        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
+        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), blend: 'multiply', filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
           stroke: k(9), strokeColor: '#151515', stroke2: k(4), stroke2Color: '#ffffff', fit: true, maxH: k(600), align: 'left' });
@@ -1837,6 +1837,7 @@
     el.style.letterSpacing = (l.ls || 0) + 'em';
     el.style.textAlign = l.align || 'left';
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.mixBlendMode = l.blend || '';
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.maxHeight = l.maxH ? M.fs(l.maxH) + 'px' : '';
     var sh = [];
@@ -1890,6 +1891,7 @@
     el.style.width = M.w(l.w) + 'px';
     el.style.height = M.h(l.h || l.w) + 'px';
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.mixBlendMode = l.blend || '';
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.borderRadius = l.radius ? M.k * l.radius + 'px' : '';
     var tint = l.tint === 'mono' ? 'brightness(0)' : l.tint === 'invert' ? 'brightness(0) invert(1)' : '';
@@ -6083,7 +6085,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f63';
+  App.BUILD = '20261029-f64';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
