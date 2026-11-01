@@ -1167,6 +1167,78 @@
       }
     },
 
+,
+
+    /* 26 —— 报纸版式（cover-studio press） */
+    {
+      id: 'press', name: '报纸版式', sub: 'cover-studio · 票据日期 + 巨型图标',
+      t: { ink: '#14100a', orange: '#e8612a', yellow: '#ffc21a', navy: '#1f2c4e' },
+      bg: '#efe9dc', paperCfg: { on: false, opacity: 10, noise: 12, scale: 360 }, fx: [], dark: false,
+      title: { font: 'heavy', size: 96, weight: 900, lh: 1.06, ls: -.02, color: '#ffc21a', fit: true, maxH: 600,
+               stroke: 9, strokeColor: '#151515', stroke2: 4, stroke2Color: '#ffffff' },
+      decor: function (x) {
+        var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
+        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var iss = CV.todayIssue();
+        x.add(CV.S('edge', 'round', { x: 0, y: 0, w: Wd, h: Ht, color: '#fbf7ee', radius: 0, bw: k(24), bc: '#fbf7ee' }));
+        x.add(CV.S('edge2', 'round', { x: k(24), y: k(24), w: Wd - k(48), h: Ht - k(48), color: 'transparent', radius: 0, bw: k(2), bc: 'rgba(45,34,20,.28)' }));
+        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(308), h: k(190), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
+        var se = find(L, 'series');
+        if (se) merge(se, { x: k(64), y: k(74), w: k(308), size: k(62), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: iss.date, rot: -3.5, opacity: 1 });
+        var da = find(L, 'date');
+        if (da) merge(da, { x: k(64), y: k(152), w: k(308), size: k(30), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: '第 ' + iss.issue + ' 期', rot: -3.5, opacity: 1 });
+        var mast = find(L, 'kicker');
+        if (mast) merge(mast, { x: k(430), y: k(16), w: k(800), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
+        var hero = find(L, 'icon');
+        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
+          stroke: k(9), strokeColor: '#151515', stroke2: k(4), stroke2Color: '#ffffff', fit: true, maxH: k(600), align: 'left' });
+        var ft = find(L, 'foot');
+        if (ft) merge(ft, { x: k(76), y: Ht - k(74), w: k(900), size: k(22), font: 'bold', ls: .08, color: '#243252', opacity: 1 });
+        ['sub', 'rule', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    },
+
+    /* 27 —— 简报版式（cover-studio swiss） */
+    {
+      id: 'swiss2', name: '简报版式', sub: 'cover-studio · 品牌名 + 九宫圆阵',
+      t: { ink: '#101114', orange: '#e8612a', navy: '#1f2c4e' },
+      bg: '#ffffff', paperCfg: { on: false, opacity: 0, noise: 0, scale: 360 }, fx: [], dark: false,
+      title: { font: 'heavy', size: 96, weight: 900, lh: 1.02, ls: -.03, color: '#101114', fit: true, maxH: 170 },
+      decor: function (x) {
+        var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
+        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var main = c.icon || 'DeepSeek/DeepSeek#symbol-color';
+        var ring = CV.ringColorFor(main);
+        var tone = (ring === '#000000') ? '#5a5a5a' : ring;
+        x.bgOverride = 'radial-gradient(88% 88% at 50% 50%,#ffffff 0%,#ffffff 44%,rgba(255,255,255,0) 100%),' +
+          'linear-gradient(45deg,' + CV.tint(tone, 0.60) + ' 0%,' + CV.tint(tone, 0.88) + ' 24%,#ffffff 50%,#ffffff 62%,' +
+          CV.tint(tone, 0.89) + ' 78%,' + CV.tint(tone, 0.66) + ' 100%)';
+        var iss = CV.todayIssue();
+        var lines = String(c.title || '').split('\n');
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: k(112), y: k(330), w: k(1040), size: k(150), font: 'heavy', weight: 900, lh: 1.02, ls: -.03, color: t.ink, text: (lines[0] || '').trim(), fit: true, maxH: k(170) });
+        var pr = find(L, 'sub');
+        if (pr) merge(pr, { x: k(112), y: k(505), w: k(1040), size: k(150), font: 'heavy', weight: 900, lh: 1.02, ls: -.03, color: tone, text: (lines.slice(1).join(' ') || String(c.kicker || '')).trim(), fit: true, maxH: k(170), opacity: 1 });
+        x.add(CV.S('hili', 'bar', { x: k(114), y: k(680), w: k(420), h: k(26), color: tone, opacity: .22, radius: k(3) }));
+        var mast = find(L, 'kicker');
+        if (mast) merge(mast, { x: k(460), y: k(20), w: k(760), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
+        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(260), h: k(140), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
+        var se2 = find(L, 'series');
+        if (se2) merge(se2, { x: k(64), y: k(56), w: k(260), size: k(48), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: iss.date, rot: -3.5, opacity: 1 });
+        var d = k(190), gap = Math.round(d * 0.06);
+        var gx = Wd - k(48) - (3 * d + 2 * gap);
+        var gy = Math.round(Ht / 2 - (3 * d + 2 * gap) / 2);
+        var pool = [main].concat((CV.JUYA_POOL || []).filter(function (p) { return p !== main; }).slice(0, 8));
+        for (var i2 = 0; i2 < 9; i2++) {
+          var cx2 = gx + (i2 % 3) * (d + gap), cy2 = gy + Math.floor(i2 / 3) * (d + gap);
+          x.add(CV.S('ring' + i2, 'circle', { x: cx2, y: cy2, w: d, h: d, color: '#ffffff', radius: 999, bw: Math.max(2, Math.round(d * 0.028)), bc: CV.ringColorFor(pool[i2] || main) }));
+          x.add(CV.I('ricon' + i2, pool[i2] || main, { x: cx2 + Math.round(d * 0.23), y: cy2 + Math.round(d * 0.23), w: Math.round(d * 0.54), h: Math.round(d * 0.54) }));
+        }
+        ['icon', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    }
 
   ];
 
@@ -1426,6 +1498,19 @@
   };
 
   CV.JUYA_POOL = ['Anthropic/Claude#symbol-color','Anthropic/Anthropic#symbol-color','Google/Gemini#symbol-color','DeepSeek/DeepSeek#symbol-color','月之暗面/Kimi#symbol-color','智谱 AI/ChatGLM#symbol-color','MiniMax/MiniMax#symbol-color','xAI/Grok#symbol-color','xAI/Cursor#symbol-color'];
+
+  CV.ICON_COLORS = {'OpenAI/OpenAI#symbol-color':'#000000','Anthropic/Claude#symbol-color':'#c15f3c','Google/Gemini#symbol-color':'#2f6bff','DeepSeek/DeepSeek#symbol-color':'#4d6bfe','月之暗面/Kimi#symbol-color':'#000000','智谱 AI/ChatGLM#symbol-color':'#2f62ff','MiniMax/MiniMax#symbol-color':'#ff4d6a','xAI/Grok#symbol-color':'#000000','Anthropic/Anthropic#symbol-color':'#c15f3c','xAI/Cursor#symbol-color':'#000000'};
+  CV.ringColorFor = function (ic) { return CV.ICON_COLORS[ic] || '#1f6bff'; };
+  /* 日期 / 期号：2026-10-01 为第 1 期，每过一天 +1（Asia/Shanghai） */
+  CV.todayIssue = function () {
+    var now = new Date(Date.now() + 8 * 3600 * 1000);
+    var y = now.getUTCFullYear(), m = now.getUTCMonth() + 1, d = now.getUTCDate();
+    var base = Date.UTC(2026, 9, 1);
+    var cur = Date.UTC(y, m - 1, d);
+    var issue = Math.max(1, Math.round((cur - base) / 86400000) + 1);
+    var mm = ('0' + m).slice(-2), dd = ('0' + d).slice(-2);
+    return { date: y + '.' + mm + '.' + dd, issue: issue };
+  };
 
   CV.PRESET_VERSION = 'p23';
 
