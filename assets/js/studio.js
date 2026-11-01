@@ -923,6 +923,19 @@
     return all;
   }
 
+  /* cover-studio skill 的 1–9 圆阵几何（单位：直径倍数） */
+  var CV_PATTERNS = {
+    1: [[0, 0]], 2: [[0, 0], [1, 0]],
+    3: [[-0.537, -0.31], [0.537, -0.31], [0, 0.62]],
+    4: [[0, 0], [1, 0], [0, 1], [1, 1]],
+    5: [[0, 0], [1, 0], [0.5, 1], [0, 2], [1, 2]],
+    6: [[0, 0], [1, 0], [0, 1], [1, 1], [0, 2], [1, 2]],
+    7: [[0, 0], [1, 0], [2, 0], [1, 1], [0, 2], [1, 2], [2, 2]],
+    8: [[0, 0], [1, 0], [2, 0], [0.5, 1], [1.5, 1], [0, 2], [1, 2], [2, 2]],
+    9: [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+  };
+  var CV_DIAM = { 1: 0.151, 2: 0.157, 3: 0.163, 4: 0.163, 5: 0.133, 6: 0.124, 7: 0.112, 8: 0.106, 9: 0.115 };
+
   App.circleCluster = function (spec) {
     var pick = App.iconSet();
     if (!pick.list.length) { App.toast('画布上没有图标', 'err'); return; }
@@ -938,6 +951,44 @@
       grid = n0 <= 2 ? [2, 1] : (n0 === 3 ? [3, 1] : (n0 === 4 ? [2, 2] : (n0 <= 6 ? [3, 2] : (n0 <= 8 ? [4, 2] : [3, 3]))));
     } else grid = [parseInt(spec, 10) || 3, Math.ceil(total / (parseInt(spec, 10) || 3))];
 
+    if (spec === 'pattern') {
+      var cnt = Math.min(9, set.length);
+      var pat = CV_PATTERNS[cnt] || CV_PATTERNS[9];
+      var d0 = Math.round(App.doc.w * (CV_DIAM[cnt] || 0.115));
+      var gp = Math.round(d0 * 0.06);
+      var xs = pat.map(function (p) { return p[0]; }), ys = pat.map(function (p) { return p[1]; });
+      var minX = Math.min.apply(null, xs), maxX = Math.max.apply(null, xs);
+      var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+      var tw = (maxX - minX + 1) * d0 + (maxX - minX) * gp;
+      var th = (maxY - minY + 1) * d0 + (maxY - minY) * gp;
+      var bx = 1e9, by = 1e9, bx2 = -1e9, by2 = -1e9;
+      set.forEach(function (l) {
+        bx = Math.min(bx, l.x); by = Math.min(by, l.y);
+        bx2 = Math.max(bx2, l.x + (l.w || 0)); by2 = Math.max(by2, l.y + (l.h || l.w || 0));
+      });
+      var ox0 = Math.round((bx + bx2) / 2 - tw / 2), oy0 = Math.round((by + by2) / 2 - th / 2);
+      App.doc.layers = App.doc.layers.filter(function (l) { return String(l.role).indexOf('cring_') !== 0; });
+      set.forEach(function (l, i) {
+        var p = pat[i] || [0, 0];
+        var cx3 = ox0 + (p[0] - minX) * (d0 + gp), cy3 = oy0 + (p[1] - minY) * (d0 + gp);
+        var el3 = App.map[l.id];
+        var bc = '#101114';
+        if (App.__ringOpts.brand) { try { bc = CV.ringColorFor(l.icon) || CV.brandColorOf(el3) || '#101114'; } catch (e) { } }
+        App.doc.layers.splice(App.doc.layers.indexOf(l), 0, CV.S('cring_' + l.id, 'circle', {
+          x: cx3, y: cy3, w: d0, h: d0, color: '#ffffff', radius: 999,
+          bw: Math.max(2, Math.round(d0 * 0.028)), bc: bc
+        }));
+        l.clusterD = d0;
+        l.w = Math.round(d0 * 0.54); l.h = l.w;
+        l.x = cx3 + Math.round(d0 * 0.23); l.y = cy3 + Math.round(d0 * 0.23);
+        l.rot = 0;
+      });
+      App.__cluster = { cols: cnt, rows: 1, d: d0, gap: 6, cx: ox0 + tw / 2, cy: oy0 + th / 2,
+        base: clusterMembers().map(function (l) { return { id: l.id, x: l.x, y: l.y, w: l.w, h: l.h || l.w, rot: l.rot || 0 }; }) };
+      App.apply(); App.commit();
+      App.toast('已排成 ' + cnt + ' 枚 skill 圆阵', 'ok');
+      return;
+    }
     var gap = App.__ringOpts.gap == null ? 8 : App.__ringOpts.gap;
     var d = 0;
     set.forEach(function (l) {
@@ -1255,6 +1306,56 @@
     return (k || 'cover') + '_' + App.doc.style + '_' + App.doc.layout;
   };
   /* 只导出「信息底纹」这一层，得到纯背景 PNG */
+  /* cover-studio 的 5 条质量门禁 */
+  App.selfCheck = function () {
+    var probs = [], doc = App.doc, root = App.root;
+    if (!root) return ['画布未就绪'];
+    var rr0 = root.getBoundingClientRect(), s = stageScale() || 1, M = CV.metrics(doc);
+    var rectOf = function (id) {
+      var el = App.map[id]; if (!el) return null;
+      var r = el.getBoundingClientRect();
+      return { x: (r.left - rr0.left) / s, y: (r.top - rr0.top) / s, w: r.width / s, h: r.height / s };
+    };
+    var byRole = {};
+    doc.layers.forEach(function (l) { if (l.opacity !== 0 && !byRole[l.role]) byRole[l.role] = l; });
+    var mast = byRole['kicker'], mr = mast ? rectOf(mast.id) : null;
+    if (mr) doc.layers.forEach(function (l) {
+      if (l === mast || l.hidden || (l.opacity == null ? 1 : l.opacity) < 0.35) return;
+      if (l.type !== 'text' && l.type !== 'icon') return;
+      var r = rectOf(l.id); if (!r) return;
+      var ix = Math.max(0, Math.min(mr.x + mr.w, r.x + r.w) - Math.max(mr.x, r.x));
+      var iy = Math.max(0, Math.min(mr.y + mr.h, r.y + r.h) - Math.max(mr.y, r.y));
+      if (ix * iy > mr.w * mr.h * 0.3) probs.push('报头被「' + l.role + '」遮挡');
+    });
+    var rings = doc.layers.filter(function (l) { return String(l.role).indexOf('cring_') === 0; });
+    if (rings.length) {
+      var icons = doc.layers.filter(function (l) { return l.type === 'icon' && l.opacity !== 0; });
+      if (rings.length !== icons.length) probs.push('圆阵 ' + rings.length + ' 环 / ' + icons.length + ' 图标 数量不符');
+      var seen = {}, dup = 0;
+      icons.forEach(function (i2) { if (seen[i2.icon]) dup++; seen[i2.icon] = 1; });
+      if (dup) probs.push('圆阵里有 ' + dup + ' 个重复图标');
+      rings.forEach(function (r2) { if (r2.x < 0 || r2.y < 0 || r2.x + r2.w > M.W || r2.y + r2.h > M.H) probs.push('圆阵越界'); });
+    }
+    var ti = byRole['title'];
+    if (ti && doc.style === 'press') {
+      var el2 = App.map[ti.id];
+      var lhpx = el2 ? parseFloat(getComputedStyle(el2).fontSize) * (ti.lh || 1.1) : 1;
+      var lines = el2 ? Math.max(1, Math.round(el2.offsetHeight / Math.max(1, lhpx))) : 1;
+      if (lines > 3) probs.push('标题 ' + lines + ' 行（建议 ≤3）');
+      if (M.fs(ti.size) < 130) probs.push('标题字号 ' + Math.round(M.fs(ti.size)) + 'px < 130px');
+    }
+    if (doc.style === 'swiss2') {
+      var safe = 1040 * (M.W / 1920);
+      ['title', 'sub'].forEach(function (r3) {
+        var l = byRole[r3]; if (!l) return;
+        if (l.x + l.w > safe + 2) probs.push((r3 === 'title' ? '品牌名' : '产品名') + ' 超出 1040px 安全区');
+      });
+    }
+    if (Math.abs(doc.w / doc.h - 16 / 9) > 0.01) probs.push('画幅不是 16:9（' + doc.w + '×' + doc.h + '）');
+    if (doc.w % 2 || doc.h % 2) probs.push('画布尺寸必须偶数');
+    return probs;
+  };
+
   App.exportBgPattern = function (scale) {
     scale = scale || 2;
     var id = App.doc.bgPattern;
@@ -1480,7 +1581,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f56';
+  App.BUILD = '20261029-f58';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
