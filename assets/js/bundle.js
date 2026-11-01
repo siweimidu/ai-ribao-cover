@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:12:04.706Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:19:44.055Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -2634,6 +2634,51 @@
     b.addEventListener('click', function () { App.exportBgPattern(2); });
     box.appendChild(b);
     pane.appendChild(box);
+
+    /* 质量门禁自检 */
+    var sbox = document.createElement('div');
+    sbox.className = 'group';
+    var sh = document.createElement('div');
+    sh.className = 'group-h';
+    var st2 = document.createElement('span');
+    st2.className = 'group-t';
+    st2.textContent = '质量自检';
+    sh.appendChild(st2);
+    sbox.appendChild(sh);
+    var stip = document.createElement('p');
+    stip.className = 'empty';
+    stip.textContent = '出图前跑一遍：报头遮挡 / 圆阵完整 / 标题字号 / 安全区 / 画幅';
+    stip.style.padding = '0 0 8px';
+    sbox.appendChild(stip);
+    var sb = document.createElement('button');
+    sb.className = 'btn primary';
+    sb.type = 'button';
+    sb.textContent = '自检当前封面';
+    sb.style.width = '100%';
+    sb.style.justifyContent = 'center';
+    var list = document.createElement('div');
+    list.className = 'empty';
+    list.style.cssText = 'padding:10px 0 0;line-height:1.7;font-size:12.5px';
+    sb.addEventListener('click', function () {
+      var probs = App.selfCheck();
+      list.innerHTML = '';
+      if (!probs.length) {
+        list.style.color = '#0a8f4d';
+        list.textContent = '通过：5 条门禁全部满足';
+        App.toast('自检通过', 'ok');
+        return;
+      }
+      list.style.color = '#b4231d';
+      probs.forEach(function (p) {
+        var d = document.createElement('div');
+        d.textContent = '· ' + p;
+        list.appendChild(d);
+      });
+      App.toast('自检发现 ' + probs.length + ' 个问题', 'err');
+    });
+    sbox.appendChild(sb);
+    sbox.appendChild(list);
+    pane.appendChild(sbox);
   }
 
   function buildIconPane() {
@@ -3365,6 +3410,28 @@
     au.addEventListener('click', function () { App.circleCluster('auto'); });
     gr.appendChild(au);
     gb.appendChild(gr);
+
+    /* 更多排布：按枚数套用 cover-studio 的几何（三角 / 2-1-2 / 3-1-3 / 3-2-3） */
+    var gsub = el('div', 'group');
+    var hsub = el('div', 'group-h');
+    var tsub = el('span', 'group-t', '更多排布');
+    hsub.appendChild(tsub);
+    gsub.appendChild(hsub);
+    var nIcon = App.multi && App.multi.length ? App.multi.length : (App.doc.layers.filter(function (l) { return l.type === 'icon'; }).length || 0);
+    var nm = (function (n) {
+      return n <= 1 ? '单枚' : n === 2 ? '横排 2' : n === 3 ? '等边三角' : n === 4 ? '2×2' : n === 5 ? '2-1-2' :
+        n === 6 ? '2×3' : n === 7 ? '3-1-3' : n === 8 ? '3-2-3' : '3×3 方阵';
+    })(Math.min(9, nIcon));
+    var tsub2 = el('p', 'empty', '当前 ' + Math.min(9, nIcon) + ' 枚 → ' + nm + '（三角形/错位排法，比网格更像手排）');
+    tsub2.style.padding = '0 0 8px';
+    gsub.appendChild(tsub2);
+    var bsub = el('button', 'btn', '按枚数智能排布');
+    bsub.type = 'button';
+    bsub.style.width = '100%';
+    bsub.style.justifyContent = 'center';
+    bsub.addEventListener('click', function () { App.circleCluster('pattern'); });
+    gsub.appendChild(bsub);
+    gb.appendChild(gsub);
 
     [['圆间距', 0, 30, App.__ringOpts.gap, '%', function (v) { App.clusterGapLive(v); }, function () { App.__ringOpts.gap = +this.value; App.commit(); }],
      ['整体缩放', 40, 200, 100, '%', function (v) { App.clusterScale(v); }, function () { App.commit(); }],
@@ -6013,7 +6080,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f58';
+  App.BUILD = '20261029-f59';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
