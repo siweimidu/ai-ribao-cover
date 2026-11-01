@@ -41,6 +41,7 @@
     el.style.letterSpacing = (l.ls || 0) + 'em';
     el.style.textAlign = l.align || 'left';
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.mixBlendMode = l.blend || '';
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.maxHeight = l.maxH ? M.fs(l.maxH) + 'px' : '';
     var sh = [];
@@ -94,6 +95,7 @@
     el.style.width = M.w(l.w) + 'px';
     el.style.height = M.h(l.h || l.w) + 'px';
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
+    el.style.mixBlendMode = l.blend || '';
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.borderRadius = l.radius ? M.k * l.radius + 'px' : '';
     var tint = l.tint === 'mono' ? 'brightness(0)' : l.tint === 'invert' ? 'brightness(0) invert(1)' : '';
