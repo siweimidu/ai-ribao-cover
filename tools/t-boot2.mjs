@@ -1,0 +1,25 @@
+import { pathToFileURL } from 'node:url';
+import { createServer } from './server.mjs';
+const HELPER = 'C:/Users/35238/.agents/skills/ai-daily-video/scripts/chrome.mjs';
+const server = createServer();
+await new Promise(r => server.listen(0, '127.0.0.1', r));
+const base = 'http://127.0.0.1:' + server.address().port;
+const mod = await import(pathToFileURL(HELPER).href);
+const browser = await mod.launch();
+const page = await browser.newPage();
+await page.setViewport({ width: 1400, height: 900 });
+const errs = [];
+page.on('pageerror', e => errs.push(e.message));
+await page.goto(base + '/', { waitUntil: 'load' });
+await new Promise(r => setTimeout(r, 2500));
+const st = await page.evaluate(function () {
+  var out = { cv: document.querySelectorAll('.cv').length, n: (window.CV && CV.STYLES) ? CV.STYLES.length : -1, has: [] };
+  if (window.CV && CV.STYLES) CV.STYLES.forEach(function (s) { if (s.id === 'press' || s.id === 'swiss2') out.has.push(s.id); });
+  out.build = (window.App && App.BUILD) || '';
+  return JSON.stringify(out);
+});
+console.log('BOOT ' + st);
+console.log('ERRORS ' + JSON.stringify(errs.slice(0, 3)));
+await browser.close();
+server.close();
+process.exit(0);
