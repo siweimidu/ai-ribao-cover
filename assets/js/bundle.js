@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:56:14.808Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T10:00:52.113Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -482,10 +482,17 @@
       bg: 'linear-gradient(168deg,#ffffff 0%,#f2f7ff 52%,#eaf1fe 100%)', fx: ['vignette'], dark: false,
       title: { font: 'heavy', size: 92 },
       decor: function (x) {
-        var t = x.t;
-        if (x.layout !== 'poster') x.add(CV.S('d1', 'bar', { x: 1088, y: 210, w: 4, h: 116, color: t.accent, opacity: .9 }));
-        x.add(CV.S('d2', 'circle', { x: 672, y: 124, w: 468, h: 468, color: t.accent, opacity: .055 }));
-        x.add(CV.S('d3', 'bar', { x: 64, y: 636, w: 1032, h: 1, color: t.ink, opacity: .1 }));
+        var t = x.t, L = x.L;
+        if (x.layout === 'poster') return;
+        /* 淡色圆 + 严格居中的图标（同一圆心） */
+        var D = 452, cx = 906, cy = 358;
+        x.add(CV.S('d2', 'circle', { x: cx - D / 2, y: cy - D / 2, w: D, h: D, color: t.accent, opacity: .06 }));
+        var ic = find(L, 'icon');
+        if (ic) {
+          var IS = 300;
+          merge(ic, { x: cx - IS / 2, y: cy - IS / 2, w: IS, h: IS });
+        }
+        /* 底部只留一条线（原来 d3 与 footline 同 y 重复） */
       }
     },
     /* 2 —— 灵感港：报刊头版 ---------------------------- */
@@ -6089,7 +6096,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f67';
+  App.BUILD = '20261029-f68';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
