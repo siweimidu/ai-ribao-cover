@@ -1072,7 +1072,7 @@
         var grid = n === 9 ? [3, 3] : (n === 6 ? [3, 2] : (n === 4 ? [2, 2] : [3, 1]));
         var d = Math.round(Wd * 0.125);
         var gap = Math.round(Wd * 0.0106);
-        var gx = Math.round(Wd * 0.628);
+        var gx = Math.round(Wd - Wd * 0.045 - (grid[0] * d + (grid[0] - 1) * gap));
         var totalH = grid[1] * d + (grid[1] - 1) * gap;
         var gy = Math.round(Ht * 0.524 - totalH / 2);
         for (var k = 0; k < n; k++) {
@@ -1153,7 +1153,7 @@
         for (var i = 0; i < pool.length && ids.length < n; i++) if (pool[i] !== main) ids.push(pool[i]);
         var grid = n === 9 ? [3, 3] : (n === 6 ? [3, 2] : (n === 4 ? [2, 2] : [3, 1]));
         var d = Math.round(Wd * 0.125), gap = Math.round(Wd * 0.0106);
-        var gx = Math.round(Wd * 0.628);
+        var gx = Math.round(Wd - Wd * 0.045 - (grid[0] * d + (grid[0] - 1) * gap));
         var totalH = grid[1] * d + (grid[1] - 1) * gap;
         var gy = Math.round(Ht * 0.524 - totalH / 2);
         for (var k = 0; k < n; k++) {
@@ -1332,6 +1332,104 @@
   }
 
   /* 版式纠偏：装饰层是按 hero 设计的，换到通栏/巨化时统一收敛，避免穿模 */
+
+  /* ============================================================
+     几何归一化：所有风格出稿前统一跑一遍，兜住 26 套各自的坐标手误
+     1) 图标在圆内必须同心      2) 悬空细线不许压图标/文字
+     3) 越界元素夹回画布        4) 同一水平线的重复细线去重
+     ============================================================ */
+  function normalizeGeometry(doc) {
+    var L = doc.layers.filter(function (l) { return l && !l.hidden; });
+    var vis = function (l) { return (l.opacity == null ? 1 : l.opacity) > 0.02; };
+    var box = function (l) { return { x: l.x, y: l.y, w: l.w || 0, h: l.h || l.w || 0 }; };
+    var inter = function (a, b) {
+      var ix = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+      var iy = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+      return ix > 0 && iy > 0 ? ix * iy : 0;
+    };
+    /* 1) 图标与圆同心 */
+    L.forEach(function (ic) {
+      if (ic.type !== 'icon' || !vis(ic)) return;
+      var ib = box(ic), best = null, bestD = 1e9;
+      L.forEach(function (c) {
+        if (c === ic || c.type !== 'shape' || !vis(c)) return;
+        var isCircle = c.shape === 'circle' || (c.shape === 'round' && Math.abs((c.w || 0) - (c.h || 0)) < 3);
+        if (!isCircle) return;
+        var cw = c.w || 0, iw = ib.w || 0;
+        if (cw < iw * 1.15 || cw > iw * 2.6) return;                       /* 太大的是背景光晕，不算容器 */
+        var cop = (c.opacity == null ? 1 : c.opacity);
+        if (cop < 0.35 && !(c.bw > 0)) return;                             /* 淡色底纹不当容器 */
+        if (c.shape === 'circle' && cw > 620) return;                       /* 超大淡圆是背景 */
+
+        var d = Math.hypot((c.x + cw / 2) - (ib.x + ib.w / 2), (c.y + (c.h || 0) / 2) - (ib.y + ib.h / 2));
+        if (d < bestD) { bestD = d; best = c; }
+      });
+      if (best && bestD > 1) {
+        ic.x = Math.round(best.x + (best.w || 0) / 2 - ib.w / 2);
+        ic.y = Math.round(best.y + (best.h || 0) / 2 - ib.h / 2);
+      }
+    });
+    /* 1b) ringiconN 与 ringN 强制同心 */
+    var byRole = {};
+    L.forEach(function (l) { if (!byRole[l.role]) byRole[l.role] = l; });
+    L.forEach(function (ic) {
+      var m = /^ringicon(\d+)$/.exec(String(ic.role || ''));
+      if (!m) return;
+      var ring = byRole['ring' + m[1]];
+      if (!ring || ring === ic) return;
+      var rw = ring.w || 0, iw = ic.w || 0;
+      if (!rw || !iw) return;
+      ic.x = Math.round(ring.x + rw / 2 - iw / 2);
+      ic.y = Math.round(ring.y + (ring.h || rw) / 2 - (ic.h || iw) / 2);
+    });
+
+    /* 2) 悬空细线压图标/文字 -> 隐藏 */
+    L.forEach(function (b) {
+      if (b.type !== 'shape' || !vis(b)) return;
+      var thin = Math.min(b.w || 0, b.h || 0) <= 3 && Math.max(b.w || 0, b.h || 0) >= 40;
+      if (!thin) return;
+      var bb = box(b);
+      L.forEach(function (c) {
+        if (c === b || !vis(c)) return;
+        if (c.type !== 'icon' && c.type !== 'text') return;
+        var cb = box(c);
+        if (inter(bb, cb) > Math.min(bb.w * bb.h, cb.w * cb.h) * 0.3) b.hidden = true;
+      });
+    });
+    /* 3) 越界夹回画布（形状/图标/文字） */
+    L.forEach(function (l) {
+      if (l.type !== 'shape' && l.type !== 'icon' && l.type !== 'text') return;
+      if (!vis(l)) return;
+      var W2 = doc.w, H2 = doc.h;
+      if ((l.w || 0) >= W2 - 4 && (l.h || 0) >= H2 - 4) return;   /* 满幅底板不夹 */
+      var x2 = l.x + (l.w || 0), y2 = l.y + (l.h || l.w || 0);
+      if (l.x < -2 || x2 > W2 + 2) {
+        var over = Math.max(-l.x, x2 - W2);
+        if (over > (l.w || 0) * 0.6) { l.hidden = true; return; }   /* 大半在画布外，直接不要 */
+        l.x = Math.min(Math.max(l.x, 0), Math.max(0, W2 - (l.w || 0)));
+      }
+      if (l.y < -2 || y2 > H2 + 2) {
+        var overY = Math.max(-l.y, y2 - H2);
+        if (overY > (l.h || l.w || 0) * 0.6) { l.hidden = true; return; }
+        l.y = Math.min(Math.max(l.y, 0), Math.max(0, H2 - (l.h || l.w || 0)));
+      }
+    });
+    /* 4) 同 y 的重复横线去重 */
+    var lines = L.filter(function (l) {
+      return l.type === 'shape' && !l.hidden && vis(l) && (l.h || 0) <= 2 && (l.w || 0) >= 200;
+    });
+    for (var i = 0; i < lines.length; i++) {
+      for (var j = i + 1; j < lines.length; j++) {
+        if (lines[j].hidden) continue;
+        if (Math.abs(lines[i].y - lines[j].y) <= 2) {
+          if ((lines[j].opacity == null ? 1 : lines[j].opacity) <= (lines[i].opacity == null ? 1 : lines[i].opacity)) lines[j].hidden = true;
+          else lines[i].hidden = true;
+        }
+      }
+    }
+    doc.layers = doc.layers.filter(function (l) { return !l.hidden; });
+  }
+
   function layoutFix(p, lay, L, U) {
     var f = function (role) { return find(L, role); };
     var u = function (role) { return find(U, role); };
@@ -1559,12 +1657,17 @@
     else if (p.decor) p.decor(ctx);
     if (p.post) p.post(ctx);
     layoutFix(p, lay, L, under);
+    var __doc = {
+      w: RT.w, h: RT.h,
+      layers: under.filter(Boolean).concat(L.filter(Boolean))
+    };
+    try { normalizeGeometry(__doc); } catch (e) { }
     return {
       v: CV.VERSION, pv: CV.PRESET_VERSION, w: RT.w, h: RT.h, ratio: RT.id, master: MAST, style: p.id, layout: lay,
       bg: ctx.bgOverride || p.bg, fx: (p.fx || []).slice(), dark: !!p.dark, brand: ctx.brand,
       paper: { on: false, opacity: (p.paperCfg && p.paperCfg.opacity) || 80, noise: (p.paperCfg && p.paperCfg.noise) || 60, scale: (p.paperCfg && p.paperCfg.scale) || 260 },
       tokens: CV.clone(t), content: c,
-      layers: under.filter(Boolean).concat(L.filter(Boolean))
+      layers: __doc.layers
     };
   };
 })();
