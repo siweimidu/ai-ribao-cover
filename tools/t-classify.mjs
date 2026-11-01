@@ -30,6 +30,16 @@ const CHECK = function (sid, lay, ratio, overlapOK) {
       op: l.opacity == null ? 1 : l.opacity, bw: l.bw || 0, color: String(l.color || '').slice(0, 20) });
   });
   var out = [];
+  /* 文字溢出：这才是「乱成什么样」的真问题 */
+  doc.layers.forEach(function (l) {
+    if (l.type !== 'text' || l.opacity === 0 || l.hidden) return;
+    var el = host.querySelector('[data-id="' + l.id + '"]');
+    if (!el) return;
+    var fsz = parseFloat(getComputedStyle(el).fontSize) || 20;
+    var tol = Math.max(4, fsz * 0.5);
+    if (el.scrollHeight > el.clientHeight + tol) out.push({ k: 'CLIP', a: l.role, d: (el.scrollHeight - el.clientHeight) + 'px' });
+    if (el.scrollWidth > el.clientWidth + tol) out.push({ k: 'WIDE', a: l.role, d: (el.scrollWidth - el.clientWidth) + 'px' });
+  });
   B.forEach(function (b) {
     if (b.type !== 'icon') return;
     var best = null, bestD = 1e9;
