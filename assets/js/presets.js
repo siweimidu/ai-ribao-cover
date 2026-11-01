@@ -1194,12 +1194,12 @@
             hero.icon = hk.replace(/#appicon|#tile-light|#tile-dark|#symbol-color/, '#symbol-trans-color');   /* 白底变体统一换透明 */
           }
         }
-        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), blend: 'multiply', filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
+        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), blend: 'multiply', filter: 'drop-shadow(0 ' + k(14) + 'px ' + k(20) + 'px rgba(25,30,45,.26))' });
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
           stroke: k(9), strokeColor: '#151515', stroke2: k(4), stroke2Color: '#ffffff', fit: true, maxH: k(600), align: 'left' });
         var ft = find(L, 'foot');
-        if (ft) merge(ft, { x: k(76), y: Ht - k(74), w: k(900), size: k(22), font: 'bold', ls: .08, color: '#243252', opacity: 1 });
+        if (ft) ft.opacity = 0;   /* 参考图无页脚 */
         ['sub', 'rule', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
     },
