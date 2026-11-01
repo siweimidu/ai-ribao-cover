@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-10-31T15:06:13.285Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:01:15.618Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -1392,6 +1392,78 @@
       }
     },
 
+,
+
+    /* 26 —— 报纸版式（cover-studio press） */
+    {
+      id: 'press', name: '报纸版式', sub: 'cover-studio · 票据日期 + 巨型图标',
+      t: { ink: '#14100a', orange: '#e8612a', yellow: '#ffc21a', navy: '#1f2c4e' },
+      bg: '#efe9dc', paperCfg: { on: false, opacity: 10, noise: 12, scale: 360 }, fx: [], dark: false,
+      title: { font: 'heavy', size: 96, weight: 900, lh: 1.06, ls: -.02, color: '#ffc21a', fit: true, maxH: 600,
+               stroke: 9, strokeColor: '#151515', stroke2: 4, stroke2Color: '#ffffff' },
+      decor: function (x) {
+        var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
+        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var iss = CV.todayIssue();
+        x.add(CV.S('edge', 'round', { x: 0, y: 0, w: Wd, h: Ht, color: '#fbf7ee', radius: 0, bw: k(24), bc: '#fbf7ee' }));
+        x.add(CV.S('edge2', 'round', { x: k(24), y: k(24), w: Wd - k(48), h: Ht - k(48), color: 'transparent', radius: 0, bw: k(2), bc: 'rgba(45,34,20,.28)' }));
+        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(308), h: k(190), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
+        var se = find(L, 'series');
+        if (se) merge(se, { x: k(64), y: k(74), w: k(308), size: k(62), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: iss.date, rot: -3.5, opacity: 1 });
+        var da = find(L, 'date');
+        if (da) merge(da, { x: k(64), y: k(152), w: k(308), size: k(30), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: '第 ' + iss.issue + ' 期', rot: -3.5, opacity: 1 });
+        var mast = find(L, 'kicker');
+        if (mast) merge(mast, { x: k(430), y: k(16), w: k(800), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
+        var hero = find(L, 'icon');
+        if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
+          stroke: k(9), strokeColor: '#151515', stroke2: k(4), stroke2Color: '#ffffff', fit: true, maxH: k(600), align: 'left' });
+        var ft = find(L, 'foot');
+        if (ft) merge(ft, { x: k(76), y: Ht - k(74), w: k(900), size: k(22), font: 'bold', ls: .08, color: '#243252', opacity: 1 });
+        ['sub', 'rule', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    },
+
+    /* 27 —— 简报版式（cover-studio swiss） */
+    {
+      id: 'swiss2', name: '简报版式', sub: 'cover-studio · 品牌名 + 九宫圆阵',
+      t: { ink: '#101114', orange: '#e8612a', navy: '#1f2c4e' },
+      bg: '#ffffff', paperCfg: { on: false, opacity: 0, noise: 0, scale: 360 }, fx: [], dark: false,
+      title: { font: 'heavy', size: 96, weight: 900, lh: 1.02, ls: -.03, color: '#101114', fit: true, maxH: 170 },
+      decor: function (x) {
+        var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
+        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var main = c.icon || 'DeepSeek/DeepSeek#symbol-color';
+        var ring = CV.ringColorFor(main);
+        var tone = (ring === '#000000') ? '#5a5a5a' : ring;
+        x.bgOverride = 'radial-gradient(88% 88% at 50% 50%,#ffffff 0%,#ffffff 44%,rgba(255,255,255,0) 100%),' +
+          'linear-gradient(45deg,' + CV.tint(tone, 0.60) + ' 0%,' + CV.tint(tone, 0.88) + ' 24%,#ffffff 50%,#ffffff 62%,' +
+          CV.tint(tone, 0.89) + ' 78%,' + CV.tint(tone, 0.66) + ' 100%)';
+        var iss = CV.todayIssue();
+        var lines = String(c.title || '').split('\n');
+        var ti = find(L, 'title');
+        if (ti) merge(ti, { x: k(112), y: k(330), w: k(1040), size: k(150), font: 'heavy', weight: 900, lh: 1.02, ls: -.03, color: t.ink, text: (lines[0] || '').trim(), fit: true, maxH: k(170) });
+        var pr = find(L, 'sub');
+        if (pr) merge(pr, { x: k(112), y: k(505), w: k(1040), size: k(150), font: 'heavy', weight: 900, lh: 1.02, ls: -.03, color: tone, text: (lines.slice(1).join(' ') || String(c.kicker || '')).trim(), fit: true, maxH: k(170), opacity: 1 });
+        x.add(CV.S('hili', 'bar', { x: k(114), y: k(680), w: k(420), h: k(26), color: tone, opacity: .22, radius: k(3) }));
+        var mast = find(L, 'kicker');
+        if (mast) merge(mast, { x: k(460), y: k(20), w: k(760), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
+        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(260), h: k(140), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
+        var se2 = find(L, 'series');
+        if (se2) merge(se2, { x: k(64), y: k(56), w: k(260), size: k(48), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: iss.date, rot: -3.5, opacity: 1 });
+        var d = k(190), gap = Math.round(d * 0.06);
+        var gx = Wd - k(48) - (3 * d + 2 * gap);
+        var gy = Math.round(Ht / 2 - (3 * d + 2 * gap) / 2);
+        var pool = [main].concat((CV.JUYA_POOL || []).filter(function (p) { return p !== main; }).slice(0, 8));
+        for (var i2 = 0; i2 < 9; i2++) {
+          var cx2 = gx + (i2 % 3) * (d + gap), cy2 = gy + Math.floor(i2 / 3) * (d + gap);
+          x.add(CV.S('ring' + i2, 'circle', { x: cx2, y: cy2, w: d, h: d, color: '#ffffff', radius: 999, bw: Math.max(2, Math.round(d * 0.028)), bc: CV.ringColorFor(pool[i2] || main) }));
+          x.add(CV.I('ricon' + i2, pool[i2] || main, { x: cx2 + Math.round(d * 0.23), y: cy2 + Math.round(d * 0.23), w: Math.round(d * 0.54), h: Math.round(d * 0.54) }));
+        }
+        ['icon', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
+      }
+    }
 
   ];
 
@@ -1651,6 +1723,19 @@
   };
 
   CV.JUYA_POOL = ['Anthropic/Claude#symbol-color','Anthropic/Anthropic#symbol-color','Google/Gemini#symbol-color','DeepSeek/DeepSeek#symbol-color','月之暗面/Kimi#symbol-color','智谱 AI/ChatGLM#symbol-color','MiniMax/MiniMax#symbol-color','xAI/Grok#symbol-color','xAI/Cursor#symbol-color'];
+
+  CV.ICON_COLORS = {'OpenAI/OpenAI#symbol-color':'#000000','Anthropic/Claude#symbol-color':'#c15f3c','Google/Gemini#symbol-color':'#2f6bff','DeepSeek/DeepSeek#symbol-color':'#4d6bfe','月之暗面/Kimi#symbol-color':'#000000','智谱 AI/ChatGLM#symbol-color':'#2f62ff','MiniMax/MiniMax#symbol-color':'#ff4d6a','xAI/Grok#symbol-color':'#000000','Anthropic/Anthropic#symbol-color':'#c15f3c','xAI/Cursor#symbol-color':'#000000'};
+  CV.ringColorFor = function (ic) { return CV.ICON_COLORS[ic] || '#1f6bff'; };
+  /* 日期 / 期号：2026-10-01 为第 1 期，每过一天 +1（Asia/Shanghai） */
+  CV.todayIssue = function () {
+    var now = new Date(Date.now() + 8 * 3600 * 1000);
+    var y = now.getUTCFullYear(), m = now.getUTCMonth() + 1, d = now.getUTCDate();
+    var base = Date.UTC(2026, 9, 1);
+    var cur = Date.UTC(y, m - 1, d);
+    var issue = Math.max(1, Math.round((cur - base) / 86400000) + 1);
+    var mm = ('0' + m).slice(-2), dd = ('0' + d).slice(-2);
+    return { date: y + '.' + mm + '.' + dd, issue: issue };
+  };
 
   CV.PRESET_VERSION = 'p23';
 
@@ -4345,14 +4430,14 @@
 
 
 /* ==== studio.js ==== */
-/* studio core part 1 */
+﻿/* studio core part 1 */
 (function () {
   var CV = window.CV;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var App = { doc: null, sel: null, zoom: 1, hist: [], hi: -1, editing: false, map: {}, locked: false };
   window.App = App;
 
-  /* 命中兜底：没点到图层时按 7px 容差找最近的（细长条 / 1px 线专用） */
+  /* 鍛戒腑鍏滃簳锛氭病鐐瑰埌鍥惧眰鏃舵寜 7px 瀹瑰樊鎵炬渶杩戠殑锛堢粏闀挎潯 / 1px 绾夸笓鐢級 */
   function hitFallback(cx, cy) {
     var pad = 7, best = null;
     for (var i = App.doc.layers.length - 1; i >= 0; i--) {
@@ -4371,7 +4456,7 @@
   }
   App.hitFallback = hitFallback;
 
-  /* 命中栈：从顶到底列出盖住该点的图层；细线（屏幕宽或高 <=6px）额外给 5px 容差 */
+  /* 鍛戒腑鏍堬細浠庨《鍒板簳鍒楀嚭鐩栦綇璇ョ偣鐨勫浘灞傦紱缁嗙嚎锛堝睆骞曞鎴栭珮 <=6px锛夐澶栫粰 5px 瀹瑰樊 */
   function layersAt(cx, cy) {
     var out = [];
     App.doc.layers.forEach(function (l) {
@@ -4386,9 +4471,9 @@
         out.push({ l: l, el: el, thin: thin });
       }
     });
-    return out.reverse();   /* 顶层在前 */
+    return out.reverse();   /* 椤跺眰鍦ㄥ墠 */
   }
-  /* 取点上的图层：细线优先；deep=true 时从当前选中往下轮一个（Figma 的 Ctrl 深选） */
+  /* 鍙栫偣涓婄殑鍥惧眰锛氱粏绾夸紭鍏堬紱deep=true 鏃朵粠褰撳墠閫変腑寰€涓嬭疆涓€涓紙Figma 鐨?Ctrl 娣遍€夛級 */
   function pickAt(cx, cy, deep) {
     var stack = layersAt(cx, cy);
     if (!stack.length) return null;
@@ -4408,7 +4493,7 @@
     for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
     return null;
   };
-  /* 拖拽状态清理：pointerup 丢失 / 切窗口 / 失焦时兜底，避免永远「拖不动」 */
+  /* 鎷栨嫿鐘舵€佹竻鐞嗭細pointerup 涓㈠け / 鍒囩獥鍙?/ 澶辩劍鏃跺厹搴曪紝閬垮厤姘歌繙銆屾嫋涓嶅姩銆?*/
   function clearDragState() {
     document.body.classList.remove('cv-dragging');
     document.body.classList.remove('marquee-drag');
@@ -4422,12 +4507,12 @@
   window.addEventListener('blur', clearDragState);
   document.addEventListener('visibilitychange', function () { if (document.hidden) clearDragState(); });
   document.addEventListener('pointercancel', clearDragState);
-  /* 任何新的按下都先清一次历史状态 */
+  /* 浠讳綍鏂扮殑鎸変笅閮藉厛娓呬竴娆″巻鍙茬姸鎬?*/
   document.addEventListener('pointerdown', function () { 
     document.body.classList.remove('marquee-drag');
   }, true);
 
-  /* 真实缩放：量渲染宽 / CSS 宽反推，transform / zoom / 改宽度都准 */
+  /* 鐪熷疄缂╂斁锛氶噺娓叉煋瀹?/ CSS 瀹藉弽鎺紝transform / zoom / 鏀瑰搴﹂兘鍑?*/
   function stageScale() {
     var cv = App.root || document.querySelector('#cover .cv');
     if (!cv) return App.zoom || 1;
@@ -4437,15 +4522,15 @@
   }
   App.stageScale = stageScale;
 
-  /* 屏幕像素 → 设计单位：用图层自身渲染宽反推，内容被缩放也不会偏 */
+  /* 灞忓箷鍍忕礌 鈫?璁捐鍗曚綅锛氱敤鍥惧眰鑷韩娓叉煋瀹藉弽鎺紝鍐呭琚缉鏀句篃涓嶄細鍋?*/
   function screenToDoc(el, l) {
-    /* 与 style 写入严格互逆：style = M.x(l.x)，屏幕 = style * stageScale */
+    /* 涓?style 鍐欏叆涓ユ牸浜掗€嗭細style = M.x(l.x)锛屽睆骞?= style * stageScale */
     try {
       var M = CV.metrics(App.doc);
       var s = stageScale();
       if (s > 0 && M.k > 0) {
         var y0 = (l && l.y) || 0;
-        var dyDoc = Math.abs(M.y(y0 + 1) - M.y(y0)) || M.k;   /* y 方向是分段线性，取局部斜率 */
+        var dyDoc = Math.abs(M.y(y0 + 1) - M.y(y0)) || M.k;   /* y 鏂瑰悜鏄垎娈电嚎鎬э紝鍙栧眬閮ㄦ枩鐜?*/
         return { x: 1 / (M.k * s), y: 1 / (dyDoc * s) };
       }
     } catch (e) { }
@@ -4468,18 +4553,18 @@
     if (window.Panels) Panels.syncHist();
   };
   App.undo = function () {
-    if (!App.hist || App.hist.length < 2) { App.toast('没有可撤销的步骤'); return false; }
+    if (!App.hist || App.hist.length < 2) { App.toast('娌℃湁鍙挙閿€鐨勬楠?); return false; }
     if (App.hi <= 0) return;
     App.hi--; App.doc = JSON.parse(App.hist[App.hi]); App.sel = null; App.apply(); saveLocal();
     if (window.Panels) Panels.syncHist();
-    App.toast('已撤销');
+    App.toast('宸叉挙閿€');
   };
   App.redo = function () {
-    if (!App.future || !App.future.length) { App.toast('没有可重做的步骤'); return false; }
+    if (!App.future || !App.future.length) { App.toast('娌℃湁鍙噸鍋氱殑姝ラ'); return false; }
     if (App.hi >= App.hist.length - 1) return;
     App.hi++; App.doc = JSON.parse(App.hist[App.hi]); App.sel = null; App.apply(); saveLocal();
     if (window.Panels) Panels.syncHist();
-    App.toast('已重做');
+    App.toast('宸查噸鍋?);
   };
 
   function saveLocal() {
@@ -4523,7 +4608,7 @@
       App.commit();
       saveLocal();
     }
-    App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
+    App.toast('鐢诲箙锛? + RT.name + ' 路 ' + RT.w + '脳' + RT.h, 'ok');
   };
   App.recompose = function (opts) {
     opts = opts || {};
@@ -4532,13 +4617,13 @@
     var doc = CV.compose(opts.style || App.doc.style, opts.layout || App.doc.layout, content, opts.ratio || App.doc.ratio);
     if (keep.length) doc.layers = keep.concat(doc.layers);
     doc.id = App.doc.id;
-    doc.brand = App.doc.brand;   /* 保留采样到的品牌色 */
+    doc.brand = App.doc.brand;   /* 淇濈暀閲囨牱鍒扮殑鍝佺墝鑹?*/
     App.doc = doc; App.sel = null;
     App.pushHist(); App.apply(); saveLocal();
   };
 
-  /* 纸纹实时预览：拖滑块时只改 fx 的内联样式，零重绘 */
-  /* 背景：纯色 / 渐变（实时预览，松手才进撤销栈） */
+  /* 绾哥汗瀹炴椂棰勮锛氭嫋婊戝潡鏃跺彧鏀?fx 鐨勫唴鑱旀牱寮忥紝闆堕噸缁?*/
+  /* 鑳屾櫙锛氱函鑹?/ 娓愬彉锛堝疄鏃堕瑙堬紝鏉炬墜鎵嶈繘鎾ら攢鏍堬級 */
   App.setBgPattern = function (id) {
     if (!id) delete App.doc.bgPattern; else App.doc.bgPattern = id;
     App.apply(); App.commit();
@@ -4558,7 +4643,7 @@
     App.apply();
     App.commit();
   };
-  /* 上传图片 -> 压缩到 1920 宽以内，存 dataURL */
+  /* 涓婁紶鍥剧墖 -> 鍘嬬缉鍒?1920 瀹戒互鍐咃紝瀛?dataURL */
   App.readImageFile = function (file, cb) {
     var fr = new FileReader();
     fr.onload = function () {
@@ -4583,7 +4668,7 @@
     var p = App.doc.paper || {};
     var on = p.on === true;
     var hasPaper = !!root.querySelector('.cv-fx.paper');
-    if (on !== hasPaper) { App.apply(); return; }      /* 开关状态变化才需要重建 */
+    if (on !== hasPaper) { App.apply(); return; }      /* 寮€鍏崇姸鎬佸彉鍖栨墠闇€瑕侀噸寤?*/
     var po = (p.opacity == null ? 80 : p.opacity) / 100;
     var pn = (p.noise == null ? 60 : p.noise) / 100;
     var ps = p.scale == null ? 260 : p.scale;
@@ -4595,7 +4680,7 @@
     if (e3) { e3.style.opacity = (pn * 0.5).toFixed(3); e3.style.backgroundSize = Math.max(32, Math.round(ps * 0.5)) + 'px ' + Math.max(32, Math.round(ps * 0.5)) + 'px'; }
   };
 
-  /* 网格间距实时预览：直接挪 DOM，不整屏重绘 */
+  /* 缃戞牸闂磋窛瀹炴椂棰勮锛氱洿鎺ユ尓 DOM锛屼笉鏁村睆閲嶇粯 */
   App.gridLive = function (cols, gap) {
     var pk = App.iconSet();
     var set = pk.list;
@@ -4622,7 +4707,7 @@
     if (App.syncBrand) requestAnimationFrame(function () { App.syncBrand(); });
     (function () {
       var bs = document.getElementById('brandSub');
-      if (bs && CV.STYLES) bs.textContent = 'COVER STUDIO · ' + CV.STYLES.length + ' STYLES';
+      if (bs && CV.STYLES) bs.textContent = 'COVER STUDIO 路 ' + CV.STYLES.length + ' STYLES';
     })();
     if (window.Panels) {
       if (!App.suppress) Panels.syncInspector();
@@ -4630,7 +4715,7 @@
       Panels.syncStyles();
     }
   };
-  /* 从主视觉图标取品牌色，套到背景与标题上（只改颜色，不动版式） */
+  /* 浠庝富瑙嗚鍥炬爣鍙栧搧鐗岃壊锛屽鍒拌儗鏅笌鏍囬涓婏紙鍙敼棰滆壊锛屼笉鍔ㄧ増寮忥級 */
   App.__brandFor = null;
   App.syncBrand = function () {
     var doc = App.doc;
@@ -4727,7 +4812,7 @@
     App.sel = App.multi.length ? App.multi[App.multi.length - 1] : null;
     drawSel();
     if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
-    if (App.multi.length) App.toast('已框选 ' + App.multi.length + ' 个图层', 'ok');
+    if (App.multi.length) App.toast('宸叉閫?' + App.multi.length + ' 涓浘灞?, 'ok');
   };
   App.selectAll = function () {
     App.multi = App.doc.layers.filter(function (l) { return !l.hidden; }).map(function (l) { return l.id; });
@@ -4736,7 +4821,7 @@
     if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
   };
 
-  /* 参考线常显：中线 / 三分线 / 安全区（只画在编辑器覆盖层，不进出图） */
+  /* 鍙傝€冪嚎甯告樉锛氫腑绾?/ 涓夊垎绾?/ 瀹夊叏鍖猴紙鍙敾鍦ㄧ紪杈戝櫒瑕嗙洊灞傦紝涓嶈繘鍑哄浘锛?*/
   function drawGuides() {
     var host = $('#selLayer');
     if (!host) return;
@@ -4763,8 +4848,8 @@
   }
   App.drawGuides = drawGuides;
 
-  /* 选中圆阵成员时，返回整组包围盒（让外框包住整组并跟手） */
-  /* 用成员元素的屏幕矩形换算成覆盖层坐标（覆盖层与画布同为 doc 像素） */
+  /* 閫変腑鍦嗛樀鎴愬憳鏃讹紝杩斿洖鏁寸粍鍖呭洿鐩掞紙璁╁妗嗗寘浣忔暣缁勫苟璺熸墜锛?*/
+  /* 鐢ㄦ垚鍛樺厓绱犵殑灞忓箷鐭╁舰鎹㈢畻鎴愯鐩栧眰鍧愭爣锛堣鐩栧眰涓庣敾甯冨悓涓?doc 鍍忕礌锛?*/
   function unionRectInStage(ids) {
     var root = App.root; if (!root) return null;
     var rr = root.getBoundingClientRect(), s = stageScale() || 1;
@@ -4781,7 +4866,7 @@
   }
 
   function clusterSelBounds() {
-    /* 只用真实存在的圆阵成员（cring_ 环 + 对应图标）的当前坐标，不用历史 base */
+    /* 鍙敤鐪熷疄瀛樺湪鐨勫渾闃垫垚鍛橈紙cring_ 鐜?+ 瀵瑰簲鍥炬爣锛夌殑褰撳墠鍧愭爣锛屼笉鐢ㄥ巻鍙?base */
     var ids = clusterMembers().map(function (l) { return l.id; });
     if (ids.length < 2) return null;
     var sel = (App.multi && App.multi.length) ? App.multi : (App.sel ? [App.sel] : []);
@@ -4835,7 +4920,7 @@
       box.style.width = ur2.w + 'px'; box.style.height = ur2.h + 'px';
       var tg = document.createElement('div');
       tg.className = 'tag';
-      tg.textContent = set.length + ' 个图层 · Esc 取消';
+      tg.textContent = set.length + ' 涓浘灞?路 Esc 鍙栨秷';
       box.appendChild(tg);
       host.appendChild(box);
       return;
@@ -4853,8 +4938,8 @@
       if (l.id === App.sel) {
         var tag = document.createElement('div');
         tag.className = 'tag';
-        tag.textContent = (set.length > 1 ? set.length + ' 个 · ' : '') + (l.role || l.type) + ' · ' +
-          Math.round(l.w) + ' × ' + Math.round(el2.offsetHeight);
+        tag.textContent = (set.length > 1 ? set.length + ' 涓?路 ' : '') + (l.role || l.type) + ' 路 ' +
+          Math.round(l.w) + ' 脳 ' + Math.round(el2.offsetHeight);
         box.appendChild(tag);
         ['nw', 'ne', 'sw', 'se'].forEach(function (k) {
           if (l.type === 'text' && (k === 'nw' || k === 'sw')) return;
@@ -4880,9 +4965,9 @@
     }
     if (!set || set.length < 2) { selInfoEl.classList.remove('on'); return; }
     var l = App.selLayer();
-    selInfoEl.innerHTML = '<b>已选 ' + set.length + ' 个图层</b>' +
-      '<span>主选：' + CV.esc((l && (l.role || l.type)) || '-') + '</span>' +
-      '<button type="button">取消选择 (Esc)</button>';
+    selInfoEl.innerHTML = '<b>宸查€?' + set.length + ' 涓浘灞?/b>' +
+      '<span>涓婚€夛細' + CV.esc((l && (l.role || l.type)) || '-') + '</span>' +
+      '<button type="button">鍙栨秷閫夋嫨 (Esc)</button>';
     selInfoEl.querySelector('button').addEventListener('click', function () { App.deselect(); });
     selInfoEl.classList.add('on');
   }
@@ -4890,17 +4975,17 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Alt') document.body.classList.add('alt-down'); });
   document.addEventListener('keyup', function (e) { if (e.key === 'Alt') document.body.classList.remove('alt-down'); });
   window.addEventListener('blur', function () { document.body.classList.remove('alt-down'); });
-  /* ---------------- 画布交互 ---------------- */
+  /* ---------------- 鐢诲竷浜や簰 ---------------- */
   function bindStage(root) {
     if (root._bound) return;
     root._bound = true;
-    /* 中键：任意位置起框选，顺便压掉浏览器自动滚动 */
+    /* 涓敭锛氫换鎰忎綅缃捣妗嗛€夛紝椤轰究鍘嬫帀娴忚鍣ㄨ嚜鍔ㄦ粴鍔?*/
     root.addEventListener('mousedown', function (e) { if (e.button === 1) e.preventDefault(); });
     root.addEventListener('auxclick', function (e) { if (e.button === 1) e.preventDefault(); });
     root.addEventListener('pointerdown', function (e) {
       if (e.button === 1) {
         e.preventDefault();
-        startMarquee(e, e.shiftKey, true);   /* 中键：只框图标 */
+        startMarquee(e, e.shiftKey, true);   /* 涓敭锛氬彧妗嗗浘鏍?*/
         return;
       }
       if (e.button !== 0) return;
@@ -4913,7 +4998,7 @@
       }
       var el = pick.el;
       var l = pick.l;
-      /* 点已多选中的元素时不要打散多选，否则整组拖动失效 */
+      /* 鐐瑰凡澶氶€変腑鐨勫厓绱犳椂涓嶈鎵撴暎澶氶€夛紝鍚﹀垯鏁寸粍鎷栧姩澶辨晥 */
       var inMulti = App.multi.length > 1 && App.multi.indexOf(l.id) > -1;
       if (e.shiftKey || !inMulti) {
         App.select(l.id, e.shiftKey);
@@ -4923,7 +5008,7 @@
         if (window.Panels) { Panels.syncInspector(); Panels.syncLayers(); }
       }
       if (App.editing) return;
-      /* 自己判定双击：同一个文字图层 350ms 内点两下 → 直接进入编辑 */
+      /* 鑷繁鍒ゅ畾鍙屽嚮锛氬悓涓€涓枃瀛楀浘灞?350ms 鍐呯偣涓や笅 鈫?鐩存帴杩涘叆缂栬緫 */
       var now = Date.now();
       if (l.type === 'text' && App.__lastClick && App.__lastClick.id === l.id && now - App.__lastClick.t < 500) {
         App.__lastClick = null;
@@ -4965,7 +5050,7 @@
         return;
       }
       if (root._drop) root._drop.classList.remove('on');
-      /* 图标投放统一走 panels.js 的指针拖拽（比例换算 + 与格子同尺寸），这里不再处理 */
+      /* 鍥炬爣鎶曟斁缁熶竴璧?panels.js 鐨勬寚閽堟嫋鎷斤紙姣斾緥鎹㈢畻 + 涓庢牸瀛愬悓灏哄锛夛紝杩欓噷涓嶅啀澶勭悊 */
     });
   }
 
@@ -4986,7 +5071,7 @@
 
   function startDrag(e, el, l) {
     var sx = e.clientX, sy = e.clientY, ox = l.x, oy = l.y, moved = false, z = screenToDoc(el, l);
-    /* 命中已多选的图层时，整组一起拖 */
+    /* 鍛戒腑宸插閫夌殑鍥惧眰鏃讹紝鏁寸粍涓€璧锋嫋 */
     var group = null, fromCluster = false;
     if (App.multi.length > 1 && App.multi.indexOf(l.id) > -1) {
       group = App.selSet().map(function (x) { return { id: x.id, x: x.x, y: x.y }; });
@@ -5016,7 +5101,7 @@
         return;
       }
       var nx = ox + dx, ny = oy + dy;
-      var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 吸附默认关：要跟手 */
+      var sn = (!ev.altKey && App.doc.snap && App.doc.snap.on === true) ? snapPos(nx, ny, l) : null;   /* 鍚搁檮榛樿鍏筹細瑕佽窡鎵?*/
       if (sn) { nx = sn.x; ny = sn.y; showGuides(sn.guides); }
       var MWd = (CV.MASTER ? CV.MASTER.w : 1160), MHd = (CV.MASTER ? CV.MASTER.h : 720);
       var halfW = (l.w || 0) * 0.5, halfH = ((l.type === 'text' ? el.offsetHeight : l.h) || l.w || 0) * 0.5;
@@ -5032,7 +5117,7 @@
       document.body.classList.remove('cv-dragging');
       showGuides([]);
       if (moved) {
-        if (group) { App.apply(); if (fromCluster && App.refreshClusterBase) App.refreshClusterBase(); App.toast('已移动 ' + group.length + ' 个图层'); }
+        if (group) { App.apply(); if (fromCluster && App.refreshClusterBase) App.refreshClusterBase(); App.toast('宸茬Щ鍔?' + group.length + ' 涓浘灞?); }
         App.commit();
         if (window.Panels) Panels.syncInspector();
       }
@@ -5090,7 +5175,7 @@
     document.addEventListener('pointerup', up);
   }
 
-  /* ---------------- 框选（中键 或 左键空白处） ---------------- */
+  /* ---------------- 妗嗛€夛紙涓敭 鎴?宸﹂敭绌虹櫧澶勶級 ---------------- */
   function startMarquee(e, additive, onlyIcon) {
     var sx = e.clientX, sy = e.clientY;
     var base = additive ? App.multi.slice() : [];
@@ -5135,15 +5220,15 @@
         }
       });
       App.selectMany(ids);
-      if (ids.length) App.toast('已框选 ' + ids.length + ' 个' + (onlyIcon ? '图标' : '图层'), 'ok');
-      else App.toast(onlyIcon ? '范围内没有图标' : '框选范围内没有图层');
+      if (ids.length) App.toast('宸叉閫?' + ids.length + ' 涓? + (onlyIcon ? '鍥炬爣' : '鍥惧眰'), 'ok');
+      else App.toast(onlyIcon ? '鑼冨洿鍐呮病鏈夊浘鏍? : '妗嗛€夎寖鍥村唴娌℃湁鍥惧眰');
     }
     document.addEventListener('pointermove', move);
     document.addEventListener('pointerup', up);
     document.addEventListener('pointercancel', up);
   }
 
-  /* ---------------- 行内编辑 ---------------- */
+  /* ---------------- 琛屽唴缂栬緫 ---------------- */
   function serializeRich(el) {
     var out = '';
     (function walk(n) {
@@ -5173,7 +5258,7 @@
     function done(save) {
       el.removeEventListener('blur', onBlur);
       el.removeEventListener('keydown', onKey);
-      el.removeAttribute('contenteditable');   /* 关键：不摘掉的话双击会变浏览器选词 */
+      el.removeAttribute('contenteditable');   /* 鍏抽敭锛氫笉鎽樻帀鐨勮瘽鍙屽嚮浼氬彉娴忚鍣ㄩ€夎瘝 */
       try { var sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (e) { }
       App.editing = false;
       var t = serializeRich(el);
@@ -5199,7 +5284,7 @@
     if (el) startEdit(el, l);
   };
 
-  /* ---------------- 群组操作 ---------------- */
+  /* ---------------- 缇ょ粍鎿嶄綔 ---------------- */
   function selBounds(set) {
     var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     set.forEach(function (l) {
@@ -5224,11 +5309,11 @@
       else if (mode === 'vc') l.y = Math.round((H - h) / 2);
     });
     App.apply(); App.commit();
-    App.toast('已对齐');
+    App.toast('宸插榻?);
   };
   App.distribute = function (dir) {
     var set = App.selSet();
-    if (set.length < 3) { App.toast('至少选 3 个元素才能分布', 'err'); return; }
+    if (set.length < 3) { App.toast('鑷冲皯閫?3 涓厓绱犳墠鑳藉垎甯?, 'err'); return; }
     if (dir === 'h') {
       set.sort(function (a, b) { return a.x - b.x; });
       var x0 = set[0].x, xn = set[set.length - 1].x, s = (xn - x0) / (set.length - 1);
@@ -5239,9 +5324,9 @@
       set.forEach(function (l, i) { l.y = Math.round(y0 + s2 * i); });
     }
     App.apply(); App.commit();
-    App.toast('已等距分布');
+    App.toast('宸茬瓑璺濆垎甯?);
   };
-  /* 网格排列只对图标生效：优先用选中的图标，没有就用画布上全部图标 */
+  /* 缃戞牸鎺掑垪鍙鍥炬爣鐢熸晥锛氫紭鍏堢敤閫変腑鐨勫浘鏍囷紝娌℃湁灏辩敤鐢诲竷涓婂叏閮ㄥ浘鏍?*/
   App.iconSet = function () {
     var sel = App.selSet().filter(function (l) { return l.type === 'icon'; });
     if (sel.length >= 2) return { list: sel, from: 'sel' };
@@ -5250,8 +5335,8 @@
     return { list: [], from: 'none' };
   };
 
-  /* 网格落位：以选中图标的「原始包围盒中心」为锚点，不强制挪到画布正中 */
-  /* 图标圆阵：等径圆整齐堆叠 + 同步缩放/旋转/间距 */
+  /* 缃戞牸钀戒綅锛氫互閫変腑鍥炬爣鐨勩€屽師濮嬪寘鍥寸洅涓績銆嶄负閿氱偣锛屼笉寮哄埗鎸埌鐢诲竷姝ｄ腑 */
+  /* 鍥炬爣鍦嗛樀锛氱瓑寰勫渾鏁撮綈鍫嗗彔 + 鍚屾缂╂斁/鏃嬭浆/闂磋窛 */
   App.__ringOpts = { gap: 8, brand: true };
   App.__cluster = null;            /* { cols, rows, d, cx, cy, base: [{id,x,y,w,h}] } */
   App.CLUSTER_GRIDS = [[2, 1], [3, 1], [2, 2], [3, 2], [4, 2], [3, 3], [4, 3], [5, 3]];
@@ -5272,7 +5357,7 @@
 
   App.circleCluster = function (spec) {
     var pick = App.iconSet();
-    if (!pick.list.length) { App.toast('画布上没有图标', 'err'); return; }
+    if (!pick.list.length) { App.toast('鐢诲竷涓婃病鏈夊浘鏍?, 'err'); return; }
     var set = pick.list;
     var total = set.length;
     var grid;
@@ -5339,10 +5424,10 @@
       })
     };
     App.apply(); App.commit();
-    App.toast('已排成 ' + grid[0] + ' × ' + grid[1] + ' 圆阵（' + set.length + ' 个图标）', 'ok');
+    App.toast('宸叉帓鎴?' + grid[0] + ' 脳 ' + grid[1] + ' 鍦嗛樀锛? + set.length + ' 涓浘鏍囷級', 'ok');
   };
 
-  /* 圆阵成员 id（圆环 + 对应图标） */
+  /* 鍦嗛樀鎴愬憳 id锛堝渾鐜?+ 瀵瑰簲鍥炬爣锛?*/
   App.clusterIds = function () {
     var live = clusterMembers().map(function (l) { return l.id; });
     if (live.length > 1) return live;
@@ -5352,7 +5437,7 @@
     }
     return clusterMembers().map(function (l) { return l.id; });
   };
-  /* 拖动后刷新基点，保证后续缩放/旋转仍然以新位置为中心 */
+  /* 鎷栧姩鍚庡埛鏂板熀鐐癸紝淇濊瘉鍚庣画缂╂斁/鏃嬭浆浠嶇劧浠ユ柊浣嶇疆涓轰腑蹇?*/
   App.refreshClusterBase = function () {
     var c = App.__cluster; if (!c) return;
     var mem = clusterMembers();
@@ -5368,8 +5453,8 @@
     });
   };
 
-  /* 同步缩放（跟手，不重绘） */
-  /* 雷达图实时预览：只重画这一张 SVG */
+  /* 鍚屾缂╂斁锛堣窡鎵嬶紝涓嶉噸缁橈級 */
+  /* 闆疯揪鍥惧疄鏃堕瑙堬細鍙噸鐢昏繖涓€寮?SVG */
   App.radarLive = function (l) {
     var el = App.map[l.id];
     if (!el) return;
@@ -5398,7 +5483,7 @@
     if (App.drawSel) App.drawSel();
   };
 
-  /* 同步旋转（跟手） */
+  /* 鍚屾鏃嬭浆锛堣窡鎵嬶級 */
   App.clusterRotate = function (deg) {
     var c = App.__cluster; if (!c) return;
     c.base.forEach(function (b) {
@@ -5410,7 +5495,7 @@
     if (App.drawSel) App.drawSel();
   };
 
-  /* 同步间距（跟手：按新间距重排一次，不落盘） */
+  /* 鍚屾闂磋窛锛堣窡鎵嬶細鎸夋柊闂磋窛閲嶆帓涓€娆★紝涓嶈惤鐩橈級 */
   App.clusterGapLive = function (gapPct) {
     if (!App.__cluster) return;
     var keep = App.__ringOpts.gap;
@@ -5453,17 +5538,17 @@
 
   App.gridArrange = function (cols, gap) {
     var pick = App.iconSet();
-    if (!pick.list.length) { App.toast('画布上没有图标可排布', 'err'); return; }
+    if (!pick.list.length) { App.toast('鐢诲竷涓婃病鏈夊浘鏍囧彲鎺掑竷', 'err'); return; }
     var set = pick.list;
     if (pick.from === 'all') {
       App.selectMany(set.map(function (l) { return l.id; }));
-      App.toast('只排图标：本次作用于画布上全部 ' + set.length + ' 个图标');
+      App.toast('鍙帓鍥炬爣锛氭湰娆′綔鐢ㄤ簬鐢诲竷涓婂叏閮?' + set.length + ' 涓浘鏍?);
     } else if (set.length < App.selSet().length) {
-      App.toast('只排图标：忽略 ' + (App.selSet().length - set.length) + ' 个非图标图层');
+      App.toast('鍙帓鍥炬爣锛氬拷鐣?' + (App.selSet().length - set.length) + ' 涓潪鍥炬爣鍥惧眰');
     }
     var r = App.gridPlace(set, cols, gap);
     App.apply(); App.commit();
-    App.toast('已排成 ' + r.n + ' 列 × ' + r.rows + ' 行（' + set.length + ' 个图标，位置沿用原处）', 'ok');
+    App.toast('宸叉帓鎴?' + r.n + ' 鍒?脳 ' + r.rows + ' 琛岋紙' + set.length + ' 涓浘鏍囷紝浣嶇疆娌跨敤鍘熷锛?, 'ok');
   };
   App.scaleSelTo = function (pct) {
     var set = App.selSet(); if (!set.length) return;
@@ -5488,7 +5573,7 @@
     });
     App.suppress = true; App.apply(); App.suppress = false;
   };
-  /* 实时旋转：只改内联 transform，零重绘零落盘（跟手） */
+  /* 瀹炴椂鏃嬭浆锛氬彧鏀瑰唴鑱?transform锛岄浂閲嶇粯闆惰惤鐩橈紙璺熸墜锛?*/
   App.rotateLive = function (deg) {
     var set = App.selSet();
     set.forEach(function (l) {
@@ -5508,14 +5593,14 @@
     App.apply(); App.commit();
   };
 
-  /* ---------------- 图层操作 ---------------- */
+  /* ---------------- 鍥惧眰鎿嶄綔 ---------------- */
   App.commit = function () { App.pushHist(); saveLocal(); };
   App.addLayerAt = function (l, quiet, index) {
     App.doc.layers.splice(index == null ? App.doc.layers.length : index, 0, l);
     App.sel = l.id;
     App.apply();
     App.commit();
-    if (!quiet) App.toast('已添加图片图层');
+    if (!quiet) App.toast('宸叉坊鍔犲浘鐗囧浘灞?);
     return l;
   };
   App.addLayer = function (l, quiet) {
@@ -5523,7 +5608,7 @@
     App.sel = l.id;
     App.apply();
     App.commit();
-    if (!quiet) App.toast('已添加' + ({ text: '文字', icon: '图标', shape: '形状', raw: '图形' }[l.type] || '图层'));
+    if (!quiet) App.toast('宸叉坊鍔? + ({ text: '鏂囧瓧', icon: '鍥炬爣', shape: '褰㈢姸', raw: '鍥惧舰' }[l.type] || '鍥惧眰'));
     return l;
   };
   App.updateSel = function (patch) {
@@ -5542,13 +5627,13 @@
       return false;
     });
     var removed = before - App.doc.layers.length;
-    if (!removed) { App.toast(mode === 'icon' ? '没有图标可清空' : '画布已经是空的', 'err'); return; }
+    if (!removed) { App.toast(mode === 'icon' ? '娌℃湁鍥炬爣鍙竻绌? : '鐢诲竷宸茬粡鏄┖鐨?, 'err'); return; }
     App.sel = null;
     App.multi = [];
     App.apply();
     App.commit();
-    var what = mode === 'icon' ? '图标' : (mode === 'text' ? '文字（背景底纹保留）' : '全部');
-    App.toast('已清空 ' + removed + ' 个' + what + '图层 · Ctrl+Z 可撤销', 'ok');
+    var what = mode === 'icon' ? '鍥炬爣' : (mode === 'text' ? '鏂囧瓧锛堣儗鏅簳绾逛繚鐣欙級' : '鍏ㄩ儴');
+    App.toast('宸叉竻绌?' + removed + ' 涓? + what + '鍥惧眰 路 Ctrl+Z 鍙挙閿€', 'ok');
   };
 
   App.removeSel = function () {
@@ -5558,7 +5643,7 @@
     App.doc.layers = App.doc.layers.filter(function (x) { return !kill[x.id]; });
     App.sel = null; App.multi = [];
     App.apply(); App.commit();
-    App.toast('已删除 ' + set.length + ' 个图层');
+    App.toast('宸插垹闄?' + set.length + ' 涓浘灞?);
   };
   App.duplicate = function () {
     var set = App.selSet(); if (!set.length) return;
@@ -5572,7 +5657,7 @@
     });
     App.multi = made; App.sel = made[made.length - 1];
     App.apply(); App.commit();
-    App.toast('已创建副本 ×' + made.length);
+    App.toast('宸插垱寤哄壇鏈?脳' + made.length);
   };
   App.order = function (dir) {
     var l = App.selLayer(); if (!l) return;
@@ -5594,22 +5679,22 @@
     if (window.Panels) Panels.syncInspector();
   };
 
-  /* ---------------- 导出 ---------------- */
+  /* ---------------- 瀵煎嚭 ---------------- */
   App.slug = function () {
     var d = (App.doc.content && App.doc.content.date) || '';
     var k = d.replace(/[^\d]/g, '');
     if (k.length >= 8) k = k.slice(0, 4) + '-' + k.slice(4, 6) + '-' + k.slice(6, 8);
     return (k || 'cover') + '_' + App.doc.style + '_' + App.doc.layout;
   };
-  /* 只导出「信息底纹」这一层，得到纯背景 PNG */
+  /* 鍙鍑恒€屼俊鎭簳绾广€嶈繖涓€灞傦紝寰楀埌绾儗鏅?PNG */
   App.exportBgPattern = function (scale) {
     scale = scale || 2;
     var id = App.doc.bgPattern;
-    if (!id) { App.toast('先在「画布 → 背景」里选一个信息底纹', 'err'); return; }
-    if (!CV.bgPatternById(id)) { App.toast('底纹标识无效：' + id, 'err'); return; }
+    if (!id) { App.toast('鍏堝湪銆岀敾甯?鈫?鑳屾櫙銆嶉噷閫変竴涓俊鎭簳绾?, 'err'); return; }
+    if (!CV.bgPatternById(id)) { App.toast('搴曠汗鏍囪瘑鏃犳晥锛? + id, 'err'); return; }
     if (App.locked) return;
     App.locked = true;
-    App.toast('正在导出底纹…', 'wait');
+    App.toast('姝ｅ湪瀵煎嚭搴曠汗鈥?, 'wait');
     var doc = {
       w: App.doc.w, h: App.doc.h, master: App.doc.master, ratio: App.doc.ratio,
       bg: '#ffffff', fx: [], layers: [], dark: false, tokens: {}, content: {},
@@ -5624,11 +5709,11 @@
       return r.json();
     }).then(function (j) {
       App.locked = false;
-      if (j.ok) { App.toast('底纹已导出 ' + j.name, 'ok', j.size); if (window.Panels && Panels.showShot) Panels.showShot(j.url + '?t=' + Date.now(), j); }
-      else App.toast('导出失败：' + (j.error || '未知'), 'err');
+      if (j.ok) { App.toast('搴曠汗宸插鍑?' + j.name, 'ok', j.size); if (window.Panels && Panels.showShot) Panels.showShot(j.url + '?t=' + Date.now(), j); }
+      else App.toast('瀵煎嚭澶辫触锛? + (j.error || '鏈煡'), 'err');
     }).catch(function (err) {
       App.locked = false;
-      App.toast(err.message === 'no-render-api' ? '静态托管模式不支持服务端出图，请本地运行' : ('导出失败：' + err.message), 'err');
+      App.toast(err.message === 'no-render-api' ? '闈欐€佹墭绠℃ā寮忎笉鏀寔鏈嶅姟绔嚭鍥撅紝璇锋湰鍦拌繍琛? : ('瀵煎嚭澶辫触锛? + err.message), 'err');
     });
   };
 
@@ -5636,7 +5721,7 @@
     scale = scale || 2;
     if (App.locked) return;
     App.locked = true;
-    App.toast('正在出图…', 'wait');
+    App.toast('姝ｅ湪鍑哄浘鈥?, 'wait');
     fetch('api/render', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -5647,24 +5732,24 @@
     }).then(function (j) {
       App.locked = false;
       if (j.ok) {
-        App.toast('已出图 ' + j.name, 'ok', j.size);
+        App.toast('宸插嚭鍥?' + j.name, 'ok', j.size);
         if (window.Panels) Panels.showShot(j.url + '?t=' + Date.now(), j);
       } else {
-        App.toast('出图失败：' + (j.error || '未知'), 'err');
+        App.toast('鍑哄浘澶辫触锛? + (j.error || '鏈煡'), 'err');
       }
     }).catch(function (err) {
       App.locked = false;
       if (err.message === 'no-render-api') {
-        App.toast('静态托管模式：已改为导出 JSON（本地跑工具可出图）', 'ok');
+        App.toast('闈欐€佹墭绠℃ā寮忥細宸叉敼涓哄鍑?JSON锛堟湰鍦拌窇宸ュ叿鍙嚭鍥撅級', 'ok');
         App.exportJson();
       } else {
-        App.toast('出图失败：' + err.message, 'err');
+        App.toast('鍑哄浘澶辫触锛? + err.message, 'err');
       }
     });
   };
-  /* 读图 -> 压到 1600px 宽 -> dataURL，避免 JSON 过大 */
+  /* 璇诲浘 -> 鍘嬪埌 1600px 瀹?-> dataURL锛岄伩鍏?JSON 杩囧ぇ */
   App.pickImage = function (file, asBg) {
-    if (!file || !/^image\//.test(file.type)) { App.toast('请拖入图片文件', 'err'); return; }
+    if (!file || !/^image\//.test(file.type)) { App.toast('璇锋嫋鍏ュ浘鐗囨枃浠?, 'err'); return; }
     var fr = new FileReader();
     fr.onload = function () {
       var img = new Image();
@@ -5682,9 +5767,9 @@
         });
         if (asBg) App.addLayerAt(layer, true, 0);
         else App.addLayer(layer, true);
-        App.toast(asBg ? '已设为背景图' : '已插入图片', 'ok');
+        App.toast(asBg ? '宸茶涓鸿儗鏅浘' : '宸叉彃鍏ュ浘鐗?, 'ok');
       };
-      img.onerror = function () { App.toast('图片读取失败', 'err'); };
+      img.onerror = function () { App.toast('鍥剧墖璇诲彇澶辫触', 'err'); };
       img.src = fr.result;
     };
     fr.readAsDataURL(file);
@@ -5696,7 +5781,7 @@
     var i = App.doc.layers.indexOf(l);
     if (i > 0) { App.doc.layers.splice(i, 1); App.doc.layers.unshift(l); }
     App.apply(); App.commit();
-    App.toast('已设为背景图', 'ok');
+    App.toast('宸茶涓鸿儗鏅浘', 'ok');
   };
   function toDataUrl(url) {
     return fetch(url).then(function (r) { return r.blob(); }).then(function (b) {
@@ -5709,7 +5794,7 @@
     });
   }
   App.exportHtml = function () {
-    App.toast('正在打包 HTML…', 'wait');
+    App.toast('姝ｅ湪鎵撳寘 HTML鈥?, 'wait');
     var steps = [fetch('assets/css/cover.css').then(function (r) { return r.text(); })];
     Promise.all(steps).then(function (arr) {
       var css = arr[0];
@@ -5750,8 +5835,8 @@
       a.download = App.slug() + '.html';
       a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 3000);
-      App.toast('已导出 HTML（含内联图片/纹理，双击即开）', 'ok');
-    }).catch(function (e) { App.toast('导出失败：' + e.message, 'err'); });
+      App.toast('宸插鍑?HTML锛堝惈鍐呰仈鍥剧墖/绾圭悊锛屽弻鍑诲嵆寮€锛?, 'ok');
+    }).catch(function (e) { App.toast('瀵煎嚭澶辫触锛? + e.message, 'err'); });
   };
   App.exportJson = function () {
     var blob = new Blob([JSON.stringify(App.doc, null, 2)], { type: 'application/json' });
@@ -5760,17 +5845,17 @@
     a.download = App.slug() + '.cover.json';
     a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
-    App.toast('已导出 JSON');
+    App.toast('宸插鍑?JSON');
   };
   App.importJson = function (file) {
     var fr = new FileReader();
     fr.onload = function () {
       try {
         var d = JSON.parse(fr.result);
-        if (!d.layers) throw new Error('不是有效的封面 JSON');
+        if (!d.layers) throw new Error('涓嶆槸鏈夋晥鐨勫皝闈?JSON');
         App.sel = null; App.setDoc(d);
-        App.toast('已载入 ' + (file.name || 'JSON'), 'ok');
-      } catch (err) { App.toast('载入失败：' + err.message, 'err'); }
+        App.toast('宸茶浇鍏?' + (file.name || 'JSON'), 'ok');
+      } catch (err) { App.toast('杞藉叆澶辫触锛? + err.message, 'err'); }
     };
     fr.readAsText(file);
   };
@@ -5791,7 +5876,7 @@
     }, kind === 'wait' ? 1400 : 2800);
   };
 
-  /* ---------------- 快捷键 ---------------- */
+  /* ---------------- 蹇嵎閿?---------------- */
   document.addEventListener('keydown', function (e) {
     var tag = (e.target.tagName || '').toLowerCase();
     var inField = tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable;
@@ -5823,11 +5908,11 @@
       e.preventDefault();
       App.updateSel({ size: Math.max(10, l.size + (e.key === ']' ? 2 : -2)) });
     }
-    if (e.code === 'Backquote') { e.preventDefault(); App.recompose(); App.toast('已按当前预设重排'); }
+    if (e.code === 'Backquote') { e.preventDefault(); App.recompose(); App.toast('宸叉寜褰撳墠棰勮閲嶆帓'); }
   });
 
-  /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f56';
+  /* ---------------- 鍚姩 ---------------- */
+  App.BUILD = '20261029-f57';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
@@ -5835,7 +5920,7 @@
     var tag = document.createElement('span');
     tag.id = 'buildTag';
     tag.className = 'pill';
-    tag.title = '当前运行的前端构建号，用于确认是否已更新';
+    tag.title = '褰撳墠杩愯鐨勫墠绔瀯寤哄彿锛岀敤浜庣‘璁ゆ槸鍚﹀凡鏇存柊';
     tag.textContent = 'build ' + App.BUILD;
     tag.style.opacity = '.62';
     bar.appendChild(tag);
@@ -5846,7 +5931,7 @@
     var doc = App.loadLocal();
     if (!doc || !doc.layers) doc = CV.compose('swiss', 'hero', CV.defaultContent(), 'land');
     if (!doc.ratio) doc.ratio = 'land';
-    /* 版式升级：老存档按当前预设自动重排，避免看到过期布局 */
+    /* 鐗堝紡鍗囩骇锛氳€佸瓨妗ｆ寜褰撳墠棰勮鑷姩閲嶆帓锛岄伩鍏嶇湅鍒拌繃鏈熷竷灞€ */
     var prevPv = doc.pv;
     if (doc.style && prevPv && prevPv !== CV.PRESET_VERSION && CV.styleById(doc.style)) {
       var cc = doc.content || CV.defaultContent();
@@ -5854,7 +5939,7 @@
       fresh.brand = doc.brand;
       fresh.id = doc.id;
       doc = fresh;
-      setTimeout(function () { App.toast('版式已升级到 ' + CV.PRESET_VERSION + '（text 内容保留）', 'ok'); }, 600);
+      setTimeout(function () { App.toast('鐗堝紡宸插崌绾у埌 ' + CV.PRESET_VERSION + '锛坱ext 鍐呭淇濈暀锛?, 'ok'); }, 600);
     }
     doc.paper = Object.assign({ on: false, opacity: 80, noise: 60, scale: 260 }, doc.paper || {});
     if (doc.paper.on !== true) doc.paper.on = false;
@@ -5863,7 +5948,7 @@
     App.hi = 0;
     App.apply();
     window.addEventListener('resize', function () { App.fitZoom(); drawSel(); });
-    App.toast('就绪 · 左侧拖图标进画布，双击文字直接改', 'ok');
+    App.toast('灏辩华 路 宸︿晶鎷栧浘鏍囪繘鐢诲竷锛屽弻鍑绘枃瀛楃洿鎺ユ敼', 'ok');
   };
   window.addEventListener('DOMContentLoaded', function () {
     if (window.Panels) Panels.init(App);
