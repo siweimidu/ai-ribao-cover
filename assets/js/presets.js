@@ -1176,18 +1176,23 @@
                stroke: 9, strokeColor: '#151515', stroke2: 4, stroke2Color: '#ffffff' },
       decor: function (x) {
         var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
-        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var k = function (v) { return Math.round(v * Wd / 1920); };
         var iss = CV.todayIssue();
         x.add(CV.S('edge', 'round', { x: 0, y: 0, w: Wd, h: Ht, color: '#fbf7ee', radius: 0, bw: k(24), bc: '#fbf7ee' }));
         x.add(CV.S('edge2', 'round', { x: k(24), y: k(24), w: Wd - k(48), h: Ht - k(48), color: 'transparent', radius: 0, bw: k(2), bc: 'rgba(45,34,20,.28)' }));
-        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(308), h: k(190), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
-        var se = find(L, 'series');
-        if (se) merge(se, { x: k(64), y: k(74), w: k(308), size: k(62), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: iss.date, rot: -3.5, opacity: 1 });
-        var da = find(L, 'date');
-        if (da) merge(da, { x: k(64), y: k(152), w: k(308), size: k(30), font: 'heavy', weight: 900, align: 'center', color: t.orange, text: '第 ' + iss.issue + ' 期', rot: -3.5, opacity: 1 });
+        x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(350), h: k(196), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
+        x.add(CV.T('ticket_date', iss.date, { x: k(56), y: k(74), w: k(348), size: k(48), fit: true, maxH: k(66), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .01 }));
+        x.add(CV.T('ticket_issue', '第 ' + iss.issue + ' 期', { x: k(56), y: k(158), w: k(348), size: k(26), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .06 }));
+        ['series', 'date'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
         var mast = find(L, 'kicker');
         if (mast) merge(mast, { x: k(430), y: k(16), w: k(800), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
-        var hero = find(L, 'icon');
+        var hero = find(L, 'icon');   /* hero_icon_transparent */
+        if (hero) {
+          var hk = String(hero.icon || '');
+          if (hk.indexOf('#appicon') > -1 || hk.indexOf('#tile-') > -1) {
+            hero.icon = hk.replace(/#appicon|#tile-light|#tile-dark|#symbol-color/, '#symbol-trans-color');
+          }
+        }
         if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), filter: 'drop-shadow(0 0 ' + k(24) + 'px rgba(255,255,255,.98)) drop-shadow(0 ' + k(16) + 'px ' + k(22) + 'px rgba(25,30,45,.32))' });
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
@@ -1206,7 +1211,7 @@
       title: { font: 'heavy', size: 96, weight: 900, lh: 1.02, ls: -.03, color: '#101114', fit: true, maxH: 170 },
       decor: function (x) {
         var t = x.t, L = x.L, c = x.c, Wd = x.W, Ht = x.H;
-        var k = function (v) { return Math.round(v * Wd / 1160); };
+        var k = function (v) { return Math.round(v * Wd / 1920); };
         var main = c.icon || 'DeepSeek/DeepSeek#symbol-color';
         var ring = CV.ringColorFor(main);
         var tone = (ring === '#000000') ? '#5a5a5a' : ring;
