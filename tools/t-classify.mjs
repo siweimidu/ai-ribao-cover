@@ -38,7 +38,7 @@ const CHECK = function (sid, lay, ratio, overlapOK) {
       var isC = c.shape === 'circle' || (c.shape === 'round' && Math.abs(c.w - c.h) < 3);
       if (!isC) return;
       if (c.w < b.w * 1.15 || c.w > b.w * 2.6) return;
-      if (c.op < 0.35 && !(c.bw > 0)) return;
+      if (c.op < 0.55 && !(c.bw > 0)) return;      /* 淡色圆是背景光晕，不是容器 */
       var d = Math.hypot((c.x + c.w / 2) - (b.x + b.w / 2), (c.y + c.h / 2) - (b.y + b.h / 2));
       if (d < bestD) { bestD = d; best = { c: c, d: d }; }
     });
@@ -52,7 +52,12 @@ const CHECK = function (sid, lay, ratio, overlapOK) {
       if (c.op < 0.3) return;
       var ix = Math.max(0, Math.min(b.x + b.w, c.x + c.w) - Math.max(b.x, c.x));
       var iy = Math.max(0, Math.min(b.y + b.h, c.y + c.h) - Math.max(b.y, c.y));
-      if (ix > 0 && iy > 0 && ix * iy > Math.min(b.w * b.h, c.w * c.h) * 0.3) out.push({ k: 'LINEX', a: b.role, b: c.role, aop: b.op, bop: c.op });
+      if (ix <= 0 || iy <= 0) return;
+      /* 只报真正穿过文字中间区域的线 */
+      var midY = c.y + c.h / 2, midX = c.x + c.w / 2;
+      var crossesV = (b.x <= midX && b.x + b.w >= midX) && (Math.abs(b.y - midY) < c.h * 0.35 || (b.y < midY && b.y + b.h > midY));
+      var crossesH = (b.y <= midY && b.y + b.h >= midY) && (Math.abs(b.x - midX) < c.w * 0.35 || (b.x < midX && b.x + b.w > midX));
+      if (crossesV || crossesH) out.push({ k: 'LINEX', a: b.role, b: c.role, aop: b.op, bop: c.op });
     });
   });
   B.forEach(function (b) {
@@ -63,16 +68,19 @@ const CHECK = function (sid, lay, ratio, overlapOK) {
       var a = B[i], c2 = B[j];
       if (a.type !== 'shape' || c2.type !== 'shape') continue;
       if (a.shape === 'line' || c2.shape === 'line') continue;
+      if (a.w >= W - 4 || c2.w >= W - 4) continue;
       if (a.op < 0.5 || c2.op < 0.5) continue;
       if (a.bw > 0 && a.color === 'transparent') continue;
       if (c2.bw > 0 && c2.color === 'transparent') continue;
-      var iArea = ix2 * iy2, mn = Math.min(a.w * a.h, c2.w * c2.h);
-      if (iArea >= mn * 0.85) continue;                                   /* 嵌套/包含 */
-      if (a.w >= W - 4 || c2.w >= W - 4) continue;
+      if (a.rot && c2.rot && Math.abs(a.rot - c2.rot) < 1) continue;
+      if (a.shape === 'circle' && a.op < 0.85) continue;
+      if (c2.shape === 'circle' && c2.op < 0.85) continue;
       var ix2 = Math.max(0, Math.min(a.x + a.w, c2.x + c2.w) - Math.max(a.x, c2.x));
       var iy2 = Math.max(0, Math.min(a.y + a.h, c2.y + c2.h) - Math.max(a.y, c2.y));
       if (ix2 <= 0 || iy2 <= 0) continue;
       var small = Math.min(a.w * a.h, c2.w * c2.h);
+      var iArea = ix2 * iy2;
+      if (iArea >= small * 0.85) continue;
       if ((ix2 * iy2) / small > 0.55 && !overlapOK) out.push({ k: 'HIT', a: a.role, b: c2.role, aop: a.op, bop: c2.op, aShape: a.shape, bShape: c2.shape });
     }
   }
