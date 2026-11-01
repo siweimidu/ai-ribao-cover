@@ -1188,12 +1188,6 @@
         var mast = find(L, 'kicker');
         if (mast) merge(mast, { x: k(420), y: k(4), w: k(1480), size: k(84), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
         var hero = find(L, 'icon');   /* hero_icon_transparent */
-        if (hero) {
-          var hk = String(hero.icon || '');
-          if (hk.indexOf('#appicon') > -1 || hk.indexOf('#tile-') > -1 || hk.indexOf('#symbol-color') > -1) {
-            hero.icon = hk.replace(/#appicon|#tile-light|#tile-dark|#symbol-color/, '#symbol-trans-color');   /* 白底变体统一换透明 */
-          }
-        }
         if (hero) merge(hero, { x: k(6), y: k(330), w: k(680), h: k(680), blend: 'multiply', filter: 'drop-shadow(0 ' + k(14) + 'px ' + k(20) + 'px rgba(25,30,45,.26))' });
         var ti = find(L, 'title');
         if (ti) merge(ti, { x: k(710), y: k(360), w: k(1150), size: k(150), font: 'heavy', weight: 900, lh: 1.06, ls: -.02, color: t.yellow,
