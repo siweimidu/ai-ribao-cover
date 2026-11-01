@@ -42,6 +42,10 @@
     el.style.textAlign = l.align || 'left';
     el.style.opacity = l.opacity == null ? 1 : l.opacity;
     el.style.mixBlendMode = l.blend || '';
+    Array.prototype.forEach.call(el.querySelectorAll('img'), function (im) {
+      im.onerror = function () { im.style.visibility = 'hidden'; el.style.background = 'transparent'; };
+      if (im.complete && im.naturalWidth === 0) { im.style.visibility = 'hidden'; el.style.background = 'transparent'; }
+    });
     el.style.transform = l.rot ? 'rotate(' + l.rot + 'deg)' : '';
     el.style.maxHeight = l.maxH ? M.fs(l.maxH) + 'px' : '';
     var sh = [];
@@ -87,9 +91,10 @@
     }
   }
 
-  function applyIcon(el, l, doc) {
+  function applyIcon(el, l, doc) {   /* icon_missing_guard */
     var M = CV.metrics(doc);
     el.className = 'cv-el cv-icon';
+    el.style.backgroundColor = 'transparent';
     el.style.left = M.x(l.x) + 'px';
     el.style.top = M.y(l.y) + 'px';
     el.style.width = M.w(l.w) + 'px';
