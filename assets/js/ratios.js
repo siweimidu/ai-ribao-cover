@@ -55,6 +55,11 @@
         if (v >= y1) return H - (M.h - v) * k;
         return ty0 + (v - y0) * sy;
       },
+      iy: function (Y) {                       /* 渲染坐标 -> 文档坐标（y 是分段线性） */
+        if (Y <= ty0) return Y / k;
+        if (Y >= ty1) return M.h - (H - Y) / k;
+        return y0 + (Y - ty0) / sy;
+      },
       w: function (v) { return v * k; },
       h: function (v) { return v * k; },
       fs: function (v) { return v * k; }
