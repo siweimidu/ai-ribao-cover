@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:45:01.637Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:46:57.323Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -1406,11 +1406,12 @@
         x.add(CV.S('edge', 'round', { x: 0, y: 0, w: Wd, h: Ht, color: '#fbf7ee', radius: 0, bw: k(24), bc: '#fbf7ee' }));
         x.add(CV.S('edge2', 'round', { x: k(24), y: k(24), w: Wd - k(48), h: Ht - k(48), color: 'transparent', radius: 0, bw: k(2), bc: 'rgba(45,34,20,.28)' }));
         x.add(CV.S('dbox', 'round', { x: k(64), y: k(30), w: k(350), h: k(196), color: 'rgba(251,244,232,.86)', radius: k(4), bw: k(4), bc: t.orange, rot: -3.5, shadow: k(7) + 'px ' + k(8) + 'px 0 rgba(232,97,42,.16)' }));
-        x.add(CV.T('ticket_date', iss.date, { x: k(56), y: k(74), w: k(348), size: k(48), fit: true, maxH: k(66), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .01 }));
-        x.add(CV.T('ticket_issue', '第 ' + iss.issue + ' 期', { x: k(56), y: k(158), w: k(348), size: k(26), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .06 }));
+        x.add(CV.T('ticket_y', iss.date.slice(0, 4), { x: k(56), y: k(58), w: k(348), size: k(54), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .04 }));
+        x.add(CV.T('ticket_md', iss.date.slice(5).replace('.', '-'), { x: k(56), y: k(112), w: k(348), size: k(54), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .04 }));
+        x.add(CV.T('ticket_issue', '第 ' + iss.issue + ' 期', { x: k(56), y: k(168), w: k(348), size: k(24), font: 'heavy', weight: 900, align: 'center', color: t.orange, rot: -3.5, ls: .06 }));
         ['series', 'date'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
         var mast = find(L, 'kicker');
-        if (mast) merge(mast, { x: k(430), y: k(16), w: k(800), size: k(64), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
+        if (mast) merge(mast, { x: k(420), y: k(4), w: k(1480), size: k(84), font: 'heavy', weight: 900, ls: .01, color: t.navy, text: 'AI日报 | 第 ' + iss.issue + ' 期', opacity: 1, stroke: k(6), strokeColor: '#ffffff' });
         var hero = find(L, 'icon');   /* hero_icon_transparent */
         if (hero) {
           var hk = String(hero.icon || '');
@@ -4682,7 +4683,11 @@
     }
     App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
   };
-  App.recompose = function (opts) {
+  App.recompose = function (opts) {   /* pressDefaultBg */
+    try {
+      var want = (opts && opts.style) || (App.doc && App.doc.style);
+      if (want === 'press' && App.doc && !App.doc.bgPattern) App.doc.bgPattern = 'skeuomorphism';
+    } catch (e) { }
     opts = opts || {};
     var content = opts.content || App.content();
     var keep = App.doc.layers.filter(function (l) { return l.type === 'image' && l.role === 'bg'; });
@@ -6085,7 +6090,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f64';
+  App.BUILD = '20261029-f65';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
