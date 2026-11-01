@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T11:20:54.597Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T11:38:04.537Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -555,7 +555,7 @@
             x.add(CV.I('mi' + mi, MAT[mi], { x: mx + 14, y: my + 14, w: 44, h: 44, opacity: .88 }));
           }
         }
-        x.add(CV.S('line1', 'line', { x: M, y: x.layout === 'poster' ? 96 : 120, w: 620, h: 1, color: t.ink, opacity: .12 }));
+        x.add(x.layout !== 'poster' && x.add(CV.S('line1', 'line', { x: M, y: 120, w: 620, h: 1, color: t.ink, opacity: .12 })));
       }
     },
     /* 4 —— JJZY：纸质涂鸦 ------------------------------ */
@@ -1583,6 +1583,7 @@
       return !(rw >= W2 - 8 && rh >= H2 - 8);
     });
     deco.forEach(function (l) {
+      if (l.type === 'text') return;                  /* 文字高度自适应，不参与 */
       var rw = M.w(l.w || 0), rh = M.h(l.h || l.w || 0);
       /* 横版通栏装饰在竖版放不下 -> 直接隐藏，别硬塞 */
       if (rw > W2 * 0.98 && rh > H2 * 0.98) { l.hidden = true; return; }
@@ -1687,9 +1688,11 @@
         if (inter(bb, cb) > Math.min(bb.w * bb.h, cb.w * cb.h) * 0.3) b.hidden = true;
       });
     });
-    /* 2c) 渲染坐标越界 -> 用 metrics 逆函数夹回（竖版 y 是分段拉伸的） */
+    /* 2c) 渲染坐标越界 -> 用 metrics 逆函数夹回（竖版 y 是分段拉伸的）
+       注意：文字层高度由内容决定，l.h 为空，绝不能拿 l.w 当高度，否则 y 会被误夹到 0 */
     L.forEach(function (l) {
       if (!vis(l)) return;
+      if (l.type === 'text') return;                 /* 文字交给 3a 段，只收窄宽度 */
       var rx = MG.x(l.x), ry = MG.y(l.y);
       var rw = MG.w(l.w || 0), rh = MG.h(l.h || l.w || 0);
       if (rw >= doc.w - 4 && rh >= doc.h - 4) return;               /* 满幅底板 */
@@ -1716,9 +1719,9 @@
       if (l.x + l.w > doc.w - 12) l.x = Math.max(12, doc.w - 12 - l.w);
     });
 
-    /* 3) 越界夹回画布（形状/图标/文字） */
+    /* 3) 越界夹回画布（仅形状/图标；文字由 3a 段处理，其高度自适应不能当数值用） */
     L.forEach(function (l) {
-      if (l.type !== 'shape' && l.type !== 'icon' && l.type !== 'text') return;
+      if (l.type !== 'shape' && l.type !== 'icon') return;
       if (!vis(l)) return;
       var W2 = doc.w, H2 = doc.h;
       if ((l.w || 0) >= W2 - 4 && (l.h || 0) >= H2 - 4) return;   /* 满幅底板不夹 */
@@ -2000,6 +2003,14 @@
       w: RT.w, h: RT.h, master: MAST,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
+    /* 全局文字保护：所有文字强制 fit + 合理 maxH（必须在 decor 之后） */
+    __doc.layers.forEach(function (l) {
+      if (!l || l.type !== 'text') return;
+      l.fit = true;
+      var line = (l.lh || 1.1);
+      var cap = l.maxH && l.maxH > 0 ? l.maxH : Math.round((l.size || 40) * line * 3.2);
+      l.maxH = Math.max(cap, Math.round((l.size || 40) * line * 1.05));
+    });
     try { normalizeGeometry(__doc); } catch (e) { if (window.console) console.error('[normalize]', e); }
     try { tallFallback(__doc); } catch (e) { if (window.console) console.error('[tallFallback]', e); }
     try { normalizeGeometry(__doc); } catch (e) { }   /* 第二遍：容器挪动后重新对齐图标 */
@@ -6317,7 +6328,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f72';
+  App.BUILD = '20261029-f73';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
