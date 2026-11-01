@@ -178,7 +178,11 @@
     }
     App.toast('画幅：' + RT.name + ' · ' + RT.w + '×' + RT.h, 'ok');
   };
-  App.recompose = function (opts) {
+  App.recompose = function (opts) {   /* pressDefaultBg */
+    try {
+      var want = (opts && opts.style) || (App.doc && App.doc.style);
+      if (want === 'press' && App.doc && !App.doc.bgPattern) App.doc.bgPattern = 'skeuomorphism';
+    } catch (e) { }
     opts = opts || {};
     var content = opts.content || App.content();
     var keep = App.doc.layers.filter(function (l) { return l.type === 'image' && l.role === 'bg'; });
@@ -1581,7 +1585,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f64';
+  App.BUILD = '20261029-f65';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
