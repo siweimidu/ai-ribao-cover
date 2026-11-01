@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T11:38:04.537Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T17:09:08.244Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -1756,6 +1756,46 @@
       l.w = nw; l.h = nh;
     });
 
+    /* 3b2) 图标过大 -> 按画布比例收缩（保持中心不动） */
+    L.forEach(function (l) {
+      if (l.type !== 'icon' || !vis(l)) return;
+      var rw = MG.w(l.w || 0), rh = MG.h(l.h || l.w || 0);
+      var maxW = doc.w * 0.55, maxH = doc.h * 0.58;
+      if (rw <= maxW && rh <= maxH) return;
+      var sc = Math.min(maxW / rw, maxH / rh);
+      var nw = Math.round((l.w || 0) * sc), nh = Math.round((l.h || l.w || 0) * sc);
+      var ncx = (l.x || 0) + (l.w || 0) / 2, ncy = (l.y || 0) + (l.h || l.w || 0) / 2;
+      l.w = nw; l.h = nh;
+      l.x = Math.round(ncx - nw / 2);
+      l.y = Math.round(ncy - nh / 2);
+    });
+
+    /* 3c) 文字压图标 -> 收窄文字让开（最影响观感的一类） */
+    var texts = L.filter(function (l) {
+      return l.type === 'text' && vis(l) && /^(title|sub|series|kicker|foot|date)$/.test(String(l.role));
+    });
+    var icons = L.filter(function (l) { return l.type === 'icon' && vis(l); });
+    texts.forEach(function (t) {
+      var tw = t.w || 0, th = Math.round((t.maxH || 0) || (t.size || 40) * (t.lh || 1.1) * 2);
+      var ty0 = t.y, ty1 = t.y + th;
+      icons.forEach(function (ic) {
+        var iw = ic.w || 0, ih = ic.h || iw;
+        var ix0 = ic.x, ix1 = ic.x + iw, iy0 = ic.y, iy1 = ic.y + ih;
+        /* 纵向有交叠才算 */
+        if (Math.min(ty1, iy1) - Math.max(ty0, iy0) < ih * 0.25) return;
+        var ov = Math.min(t.x + tw, ix1) - Math.max(t.x, ix0);
+        if (ov <= iw * 0.12) return;                                  /* 只轻微擦到，不动 */
+        if (ix0 >= t.x + tw * 0.55) {                                  /* 图标在右 -> 收窄 */
+          var nw = Math.max(160, Math.round(ix0 - t.x - 14));
+          if (nw < tw) t.w = nw;
+        } else if (ix1 <= t.x + tw * 0.45) {                            /* 图标在左 -> 右移 */
+          var nx = Math.round(ix1 + 14);
+          t.w = Math.max(160, Math.round(t.x + tw - nx));
+          t.x = nx;
+        }
+      });
+    });
+
     /* 4) 同 y 的重复横线去重 */
     var lines = L.filter(function (l) {
       return l.type === 'shape' && !l.hidden && vis(l) && (l.h || 0) <= 2 && (l.w || 0) >= 200;
@@ -2003,14 +2043,28 @@
       w: RT.w, h: RT.h, master: MAST,
       layers: under.filter(Boolean).concat(L.filter(Boolean))
     };
-    /* 全局文字保护：所有文字强制 fit + 合理 maxH（必须在 decor 之后） */
-    __doc.layers.forEach(function (l) {
-      if (!l || l.type !== 'text') return;
-      l.fit = true;
-      var line = (l.lh || 1.1);
-      var cap = l.maxH && l.maxH > 0 ? l.maxH : Math.round((l.size || 40) * line * 3.2);
-      l.maxH = Math.max(cap, Math.round((l.size || 40) * line * 1.05));
-    });
+    /* 全局文字保护：maxH 按「同一列下一个文字层的 y」反推，绝不压到下一层 */
+    (function () {
+      var tx = __doc.layers.filter(function (l) {
+        return l && l.type === 'text' && (l.opacity == null ? 1 : l.opacity) > 0.02;
+      });
+      tx.forEach(function (l) {
+        l.fit = true;
+        var line = Math.round((l.size || 40) * (l.lh || 1.1));
+        /* 同一左列（x 接近）且在本层下方最近的那个文字层 */
+        var nextY = 1e9;
+        tx.forEach(function (o) {
+          if (o === l) return;
+          if (Math.abs((o.x || 0) - (l.x || 0)) > 120) return;      /* 不在同一列 */
+          if ((o.y || 0) <= (l.y || 0) + 4) return;
+          if (o.y < nextY) nextY = o.y;
+        });
+        var room = nextY < 1e9 ? (nextY - (l.y || 0) - 6) : 1e9;
+        var capByNext = room > 0 ? room : line;
+        var declared = l.maxH && l.maxH > 0 ? l.maxH : capByNext;
+        l.maxH = Math.max(line, Math.min(declared, capByNext));
+      });
+    })();
     try { normalizeGeometry(__doc); } catch (e) { if (window.console) console.error('[normalize]', e); }
     try { tallFallback(__doc); } catch (e) { if (window.console) console.error('[tallFallback]', e); }
     try { normalizeGeometry(__doc); } catch (e) { }   /* 第二遍：容器挪动后重新对齐图标 */
@@ -6328,7 +6382,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f73';
+  App.BUILD = '20261029-f74';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
