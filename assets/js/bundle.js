@@ -1,4 +1,4 @@
-/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T07:29:23.809Z */
+/* AI 日报封面工作室 · bundle（自动生成，勿手改） · 2026-11-01T08:30:24.669Z */
 
 /* ==== model.js ==== */
 /* ==========================================================================
@@ -1391,8 +1391,6 @@
         ['kicker', 'date', 'rule', 'foot', 'footline'].forEach(function (r) { var l = find(L, r); if (l) l.opacity = 0; });
       }
     },
-
-,
 
     /* 26 —— 报纸版式（cover-studio press） */
     {
@@ -6080,7 +6078,7 @@
   });
 
   /* ---------------- 启动 ---------------- */
-  App.BUILD = '20261029-f60';
+  App.BUILD = '20261029-f62';
   function stampBuild() {
     document.documentElement.dataset.build = App.BUILD;
     var bar = document.querySelector('.stage-bar');
