@@ -1167,8 +1167,6 @@
       }
     },
 
-,
-
     /* 26 —— 报纸版式（cover-studio press） */
     {
       id: 'press', name: '报纸版式', sub: 'cover-studio · 票据日期 + 巨型图标',
