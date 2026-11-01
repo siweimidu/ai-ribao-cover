@@ -131,7 +131,9 @@
   function applyShape(el, l, doc) {
     var M = CV.metrics(doc);
     el.className = 'cv-el cv-shape sh-' + (l.shape || 'rect');
-    var fullW = l.w >= 1000, fullH = (l.h || 0) >= 700;
+    /* 只有真正等于画布尺寸的形状才拉满，避免 1120 宽的纸边被撑到 1160 */
+    var MW = M.W, MH = M.H;
+    var fullW = Math.abs(l.w - MW) <= 2, fullH = Math.abs((l.h || 0) - MH) <= 2;
     el.style.left = M.x(l.x) + 'px';
     el.style.top = fullH ? '0px' : M.y(l.y) + 'px';
     el.style.width = (fullW ? M.W : M.w(l.w)) + 'px';
